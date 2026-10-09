@@ -1,6 +1,6 @@
 export const WIDTH=15,HEIGHT=17;
 export const index=(x,y)=>y*WIDTH+x;
-export function createFloor(map,run,floor){
+export function createFloor(map,run,floor,mode='normal'){
  let seed=(Number(map.replace('map',''))+1)*7919+run*104729+floor*997;
  const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
  const cells=Array.from({length:WIDTH*HEIGHT},(_,i)=>{const x=i%WIDTH,y=Math.floor(i/WIDTH);return x===0||y===0||x===WIDTH-1||y===HEIGHT-1||random()<0.21?'#':'.';});
@@ -13,9 +13,9 @@ export function createFloor(map,run,floor){
  let found=reachable();
  for(let y=1;y<HEIGHT-1;y++)for(let x=1;x<WIDTH-1;x++){const i=index(x,y);if(cells[i]==='.'&&!found.has(i)){for(let cx=Math.min(x,7);cx<=Math.max(x,7);cx++)cells[index(cx,y)]='.';found=reachable();}}
  cells[index(7,15)]='E';cells[index(13,1)]='X';cells[index(13,2)]='B';
- const objects=[[6,15,'C'],[5,15,'M'],[7,12,'H'],[3,3,'C'],[11,6,'C'],[3,9,'M'],[10,11,'M'],[6,5,'T']];
+ const objects=[[6,15,'C'],[5,15,'M'],[7,12,'H'],[3,3,'C'],[11,6,'C'],[3,9,'M'],[10,11,'M'],[6,5,'T'],[8,12,'Q']];
  for(const [x,y,type] of objects){for(let cx=Math.min(x,7);cx<=Math.max(x,7);cx++)if(cells[index(cx,y)]==='#')cells[index(cx,y)]='.';cells[index(x,y)]=type;}
- return {map,run,floor,width:WIDTH,height:HEIGHT,cells,x:start.x,y:start.y,bossDefeated:false,defeated:0,chests:0,steps:0,visited:[index(start.x,start.y)]};
+ return {map,run,floor,mode,width:WIDTH,height:HEIGHT,cells,x:start.x,y:start.y,bossDefeated:false,defeated:0,chests:0,steps:0,visited:[index(start.x,start.y)]};
 }
 export function resolveDungeonCombat(s,foe,outcome){
  const d=s.dungeon;if(!d||foe.dungeonTile===undefined||foe.dungeonFloor!==d.floor)return;

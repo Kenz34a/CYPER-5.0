@@ -1,4 +1,5 @@
-import {bagSize,capacity,ownsGear} from './inventory-state.js';
+import {equipmentSlots} from './gear-rules.js';
+import {bagSize,bagCapacity,ownsGear} from './inventory-state.js';
 import {record as log,activity} from './journal.js';
 import {gear} from './content.js';
 import {calibration,upgradeCost,itemStats} from './equipment.js';
@@ -7,7 +8,7 @@ export function resources(s){return {units:s.units??3,scrap:s.scrap??6,bank:s.ba
 export function printing(s){return s.printing??{rank:1,xp:0,total:0};}
 export function printPlan(s,slot){const p=printing(s);return {cost:40+p.rank*10,scrap:2,xp:25,maxLevel:Math.min(50,p.rank+2),pool:gear.filter(g=>g.slot===slot&&g.level<=p.rank+2&&!ownsGear(s,g.id))};}
 export function printItem(s,slot,random=Math.random){
- if(!['weapon','armor','implant'].includes(slot)||s.combat||s.work||bagSize(s)>=capacity)return false;
+ if(!equipmentSlots.includes(slot)||s.combat||s.work||bagSize(s)>=bagCapacity(s))return false;
  const plan=printPlan(s,slot),r=resources(s);if(s.credits<plan.cost||r.scrap<plan.scrap||!plan.pool.length)return false;
  const g=plan.pool[Math.min(plan.pool.length-1,Math.floor(random()*plan.pool.length))];
  s.credits-=plan.cost;s.scrap=r.scrap-plan.scrap;s.inventory.push(g.id);const p={...printing(s)};p.xp+=plan.xp;p.total++;

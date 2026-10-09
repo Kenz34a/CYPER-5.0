@@ -1,4 +1,4 @@
-import {bagSize,capacity} from './inventory-state.js';
+import {bagSize,bagCapacity} from './inventory-state.js';
 import {activity} from './journal.js';
 import {gear,npcs} from './content.js';
 import {stats,note,rest} from './game.js';
@@ -12,6 +12,6 @@ export function cityAction(s,b){
  if(b.action==='housing-rent'){if(s.housing||s.level<housingLevel||s.credits<housingPrice)return false;s.credits-=housingPrice;s.housing={storage:[]};note(s,'Đã thuê căn hộ Neon. Phí một lần 2.500 ₡.');return true;}
  if(!s.housing)return false;
  if(b.action==='housing-rest')return rest(s);
- if(['housing-deposit','housing-withdraw'].includes(b.action)){const g=gear.find(g=>g.id===b.id),storage=s.housing.storage;if(!g)return false;if(b.action==='housing-deposit'){if(!s.inventory.includes(g.id)||Object.values(s.equipped).includes(g.id)||storage.includes(g.id)||storage.length>=20)return false;s.inventory=s.inventory.filter(id=>id!==g.id);storage.push(g.id);}else{if(!storage.includes(g.id)||s.inventory.includes(g.id)||bagSize(s)>=capacity)return false;s.housing.storage=storage.filter(id=>id!==g.id);s.inventory.push(g.id);}note(s,`${b.action==='housing-deposit'?'Cất':'Lấy'} ${g.name}.`);return true;}
+ if(['housing-deposit','housing-withdraw'].includes(b.action)){const g=gear.find(g=>g.id===b.id),storage=s.housing.storage;if(!g)return false;if(b.action==='housing-deposit'){if(!s.inventory.includes(g.id)||Object.values(s.equipped).includes(g.id)||storage.includes(g.id)||storage.length>=20)return false;s.inventory=s.inventory.filter(id=>id!==g.id);storage.push(g.id);}else{if(!storage.includes(g.id)||s.inventory.includes(g.id)||bagSize(s)>=bagCapacity(s))return false;s.housing.storage=storage.filter(id=>id!==g.id);s.inventory.push(g.id);}note(s,`${b.action==='housing-deposit'?'Cất':'Lấy'} ${g.name}.`);return true;}
  return false;
 }

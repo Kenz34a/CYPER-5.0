@@ -15,11 +15,11 @@ Nhận nhiệm vụ → khám phá và chiến đấu theo lượt → nhận th
 
 ## Nội dung
 
-580 hồ sơ: 230 trang bị, 90 NPC, 50 khu vực, 110 nhiệm vụ, 50 địch, 50 boss. Giữ nguyên 500 hồ sơ ban đầu và thêm 80 hồ sơ Thiên Đỉnh. Nội dung được sinh theo các mẫu, phe phái và cấp độ; chưa phải 500 câu chuyện viết riêng. Có shop thường, chợ đen bán trang bị hiếm, loot, bán đồ, XP, chỉ số trang bị và nhật ký chiến đấu.
+880 hồ sơ: 530 trang bị, 90 NPC, 50 khu vực, 110 nhiệm vụ, 50 địch, 50 boss. Giữ nguyên 500 hồ sơ ban đầu và thêm 80 hồ sơ Thiên Đỉnh cùng 300 món cho sáu khe trang bị mới. Nội dung được sinh theo các mẫu, phe phái và cấp độ; chưa phải 500 câu chuyện viết riêng. Có shop thường, chợ đen bán trang bị hiếm, loot, bán đồ, XP, chỉ số trang bị và nhật ký chiến đấu.
 
 ## Trang bị và xưởng
 
-Trang bị có màn hình chi tiết, chất lượng, hiệu chuẩn +0 đến +5 và 3 khe module. Mỗi lần hiệu chuẩn cộng 2 sức mạnh; mở thêm khe ở +2 và +4. Module mua bằng credits để tăng sát thương, sinh lực, phòng thủ hoặc chí mạng. Chỉ trang bị đang dùng mới cộng chỉ số cho nhân vật. Thay module phải trả phí và không hoàn lại module cũ. Chất lượng là thông số hiển thị tăng theo hiệu chuẩn, không có cơ chế hao mòn trong phiên bản này. Tài khoản online lưu nâng cấp trên server; chế độ khách lưu trong trình duyệt.
+Trang bị có màn hình chi tiết, chất lượng, hiệu chuẩn +0 đến +5 và tối đa 3 khe module. Bộ chiến đấu có chín khe, gồm ba vũ khí, mũ, giáp thân, giáp chân, giày, cấy ghép và ba lô. Mỗi lần hiệu chuẩn cộng 2 sức mạnh; mở thêm khe ở +2 và +4. Module tăng sát thương, sinh lực, phòng thủ, chí mạng, khiên, choáng, hồi HP hoặc sức chứa túi. Lắp ưu tiên module rời trong túi; nếu không có thì mua bằng credits. Chỉ trang bị đang dùng mới cộng chỉ số cho nhân vật. Có thể tháo module để giữ trong túi nếu còn chỗ. Thay trực tiếp không hoàn lại module cũ. Chất lượng là thông số hiển thị tăng theo hiệu chuẩn, không có cơ chế hao mòn trong phiên bản này. Tài khoản online lưu nâng cấp trên server; chế độ khách lưu trong trình duyệt.
 
 Giao diện điện thoại có thanh điều hướng dưới; mở menu ☰ để vào shop, chợ đen và các mục khác. Shop có tab mua/bán. Hình thợ vũ khí là SVG riêng của dự án, không sử dụng hình nhân vật trong ảnh tham khảo.
 
@@ -39,7 +39,7 @@ Vào Dungeon từ Terminal, menu hoặc Trung tâm Neon. Mỗi lượt gồm ba 
 
 Di chuyển bằng phím mũi tên/WASD, nút hướng hoặc chạm ô liền kề. Vào dungeon tốn 3 EN; giao tranh tốn 2 EN, di chuyển không tốn EN. Rương chỉ nhận một lần mỗi tầng; trạm cứu trợ và terminal chỉ dùng một lần. Địch và boss được dọn sau khi thắng, vẫn tính tiến trình nhiệm vụ hiện có. Rút lui quay về ô trước và giữ địch; thua trận đóng dungeon theo cơ chế phạt hiện tại. Hạ boss để mở cửa, hoàn thành tầng ba có thưởng thêm. Không thể nghỉ, chuyển khu vực hoặc vào PvP khi còn trong dungeon.
 
-Rời dungeon ngoài giao tranh giữ loot và đóng lượt, lần vào sau tạo lượt mới. Tiến trình dungeon và trận đấu đang diễn ra được lưu trong trình duyệt cho khách, trên server cho tài khoản online. Đây là dungeon chơi đơn; chưa có party hoặc các runner cùng hiện trên một bản đồ.
+Rời dungeon ngoài giao tranh giữ loot và đóng lượt, lần vào sau tạo lượt mới. Tiến trình dungeon và trận đấu đang diễn ra được lưu trong trình duyệt cho khách, trên server cho tài khoản online. Đồng đội và phòng phối hợp lưu trên server. Ngoài dungeon cá nhân còn có phòng phối hợp tối đa bốn tài khoản với HP địch dùng chung, rương riêng và đồng đội hiện trên bản đồ; xem phần v0.10 bên dưới.
 
 ## Tài khoản và multiplayer
 
@@ -88,11 +88,11 @@ Tặng danh tiếng cộng 1 uy tín cho một tài khoản khác, mỗi tài kh
 
 ## Túi đồ, vật phẩm và chế tạo
 
-Túi đồ có bốn tab: Đang mặc, Túi đồ, Hộp thư và Chế tạo. Bộ chiến đấu hiện có ba loại trang bị: vũ khí, giáp và cấy ghép. Túi chứa 60 ô; mỗi trang bị hoặc chồng vật phẩm dương chiếm một ô. Đồ đang mặc cũng nằm trong túi. Bản lưu cũ vượt 60 ô vẫn giữ toàn bộ đồ, nhưng cần dọn túi trước khi mua/in/nhận thêm.
+Túi đồ có bốn tab: Đang mặc, Túi đồ, Hộp thư và Chế tạo. Bộ trang bị gồm ba vũ khí, mũ, giáp thân, giáp chân, giày, cấy ghép và ba lô. Túi có 60 ô cơ bản, cộng ô từ ba lô/module pocket đang dùng; mỗi trang bị hoặc chồng vật phẩm dương chiếm một ô. Đồ đang mặc cũng nằm trong túi. Bản lưu cũ vượt 60 ô vẫn giữ toàn bộ đồ, nhưng cần dọn túi trước khi mua/in/nhận thêm.
 
 Khởi đầu có 3 thuốc giảm đau và 1 pin năng lượng. Bản lưu cũ thiếu trường vật phẩm nhận cùng mức khởi đầu, chỉ áp dụng khi chưa có trường này. Thuốc hồi 40 HP; pin hồi 10 EN; nanobot hồi 80 HP và 15 EN. Ba khe nhanh tự chọn; dùng thuốc trong giao tranh tốn một lượt và địch phản công. Không dùng được khi các chỉ số mà vật phẩm hồi đã đầy. Mua từng đơn vị trong Túi đồ; có thể chế tạo từ linh kiện, credits và Hash. Giá/công thức hiển thị trước thao tác.
 
-Mỗi ba địch/boss PvE hạ được nhận một bản vẽ; độ hiếm theo khu vực và loại xoay vòng vũ khí/giáp/cấy ghép. Mỗi rương dungeon có thêm một bản vẽ thường. Có 18 mẫu bản vẽ, nằm ngoài 500 hồ sơ ban đầu. Chế tạo dùng một bản vẽ, `2 + độ hiếm` linh kiện và `50 + độ hiếm × 80` credits; nhận mẫu đầu tiên chưa sở hữu, đúng loại/độ hiếm, không vượt cấp nhân vật. Không tính chế tạo bản vẽ là in phân tử; nghề in và nhiệm vụ in vẫn yêu cầu Máy in 3D.
+Mỗi ba địch/boss PvE hạ được nhận một bản vẽ; độ hiếm theo khu vực và loại xoay vòng chín khe trang bị. Mỗi rương dungeon có thêm một bản vẽ thường. Có 54 mẫu bản vẽ, nằm ngoài 500 hồ sơ ban đầu. Chế tạo dùng một bản vẽ, `2 + độ hiếm` linh kiện và `50 + độ hiếm × 80` credits; nhận mẫu đầu tiên chưa sở hữu, đúng loại/độ hiếm, không vượt cấp nhân vật. Không tính chế tạo bản vẽ là in phân tử; nghề in và nhiệm vụ in vẫn yêu cầu Máy in 3D.
 
 Chiến lợi phẩm vượt sức chứa chuyển vào Hộp thư; trang bị giữ hiệu chuẩn/module. Chồng bản vẽ chờ nhận cũng được giữ nguyên số lượng. Vật phẩm tự nhận khi còn ô ngoài dungeon và giao tranh; có nút lấy tất cả và nhận từng món. Chiến lợi phẩm mới khi tràn túi có hạn 7 ngày. Kiện cũ không có hạn dùng và trang bị thu hồi từ chợ không hết hạn. Có một kiện tiếp tế nhận một lần gồm 2 thuốc, 50 credits và 2 linh kiện. Các giao dịch mua/in/rút kho bị từ chối khi thiếu ô, trước khi trừ tài nguyên. Thu hồi tin chợ khi túi đầy gửi vào hộp thư. Mẫu trang bị trong hộp thư vẫn tính là đã sở hữu.
 
@@ -152,3 +152,26 @@ Hoạt ảnh NPC áp dụng cho minh họa shop/xưởng; Ẩn NPC ẩn minh h�
 Huy hiệu riêng tư đồng bộ với Hồ sơ → Tài sản. Ẩn bí danh thay tên trong hồ sơ công khai bằng “Runner ẩn danh”; tên dùng trong chat và giao dịch vẫn là danh tính nhân vật. Ẩn quyên góp bỏ tên/mức đóng góp khỏi danh sách công khai, giữ tổng quỹ và giảm giá. Các mục dịch chat, bản dịch của tôi, ẩn tin gốc, quảng cáo/Skip, gửi quà và tường căn hộ được khóa với giải thích vì chưa có dịch vụ/cơ chế tương ứng; tin gốc luôn hiện.
 
 **Xóa tài khoản** là luồng riêng, không xảy ra khi bấm Áp dụng. Phải nhập đúng bí danh hiện tại và mật khẩu, sau đó xác nhận trong hộp thoại thứ hai. Server xác minh phiên, nguồn yêu cầu, mật khẩu và tên; yêu cầu kết thúc combat/dungeon/công việc. Xóa nhân vật, tin rao, thư liên quan và tin chat của tài khoản, bỏ trích dẫn vào tin đã xóa, chuyển trưởng tập đoàn cho thành viên còn lại hoặc xóa nhóm trống; thu hồi mọi phiên của tài khoản. Khoản đóng góp trong sổ tổng quỹ được giữ dưới ID không còn liên kết danh tính. Các tài khoản khác và nhân vật khách trên thiết bị được giữ lại. Mật khẩu xác nhận chỉ ở bộ nhớ giao diện đến khi gửi hoặc hủy, không ghi vào localStorage hoặc dữ liệu nhân vật. Kiểm thử xóa dùng tài khoản tạm trong thư mục dữ liệu riêng.
+
+
+## Mở rộng sau đối chiếu CyberCode Online (v0.10)
+
+Bản đối chiếu chi tiết, nguồn tham khảo và các phần còn thiếu nằm trong [docs/reference-comparison.md](docs/reference-comparison.md). Repository tham chiếu không chứa toàn bộ game để chạy lại; CYPER dùng mã, văn bản và SVG riêng, không sao chép dữ liệu/hình ảnh của repository đó.
+
+**Trang bị và chiến đấu:** thêm 300 món cấp 1–50: vũ khí đặc biệt, hủy diệt, mũ, giáp chân, giày và ba lô. Giữ 230 món cũ và mọi ID; loadout ba khe cũ vẫn áp dụng được. Mũ tăng HP, giáp chân tạo khiên, giày cộng phòng thủ/hồi HP, ba lô thêm 5–20 ô. Tháo ba lô giữ toàn bộ đồ; nếu quá sức chứa thì chặn nhận thêm.
+
+Vũ khí chính không tốn đạn. Vũ khí đặc biệt dùng một Pin vũ khí đặc biệt/phát; hủy diệt dùng một Đạn phản vật chất/phát. Khi địch còn khiên, toàn đòn đánh dùng hệ số 1,2 hoặc 0,5; sát thương dư sau khiên giữ hệ số này khi tràn vào HP. Nếu khiên đã hết trước đòn đánh thì dùng 100% sát thương. Thiếu đạn hoặc vũ khí bị từ chối trước khi tốn lượt. Pin/đạn mua bằng 18/35 credits; chế tạo pin từ một vật liệu đạn nhận ba pin, chế tạo đạn ở nghề cấp 5 từ hai vật liệu và một linh kiện nhận hai viên. Pin Nitron cũ tiếp tục dùng để hồi EN, khác với đạn vũ khí.
+
+Module khiên cộng 20 khiên, choáng cộng 5%, tái sinh cộng 2 HP/lượt, pocket cộng hai ô. Choáng tối đa 50%, khiến địch bỏ lượt phản công; địch Phản xạ giảm 20% cơ hội bị choáng. Tái sinh chỉ khi còn sống sau lượt, không hồi sinh. Khiên của nhân vật được nạp khi bắt đầu trận; HP và đạn không tự hồi. Sáu biến thể địch có chỉ số và thưởng khác nhau, xem trước ở Terminal. Ba dấu Xuyên thấu/Phân rã/Chết chóc xác định theo mẫu đồ và đa số bảy món chiến đấu; bỏ qua cấy ghép/ba lô. Hòa thì không có dấu chủ đạo. Dấu tăng 10% sát thương lên một phe và nhận thêm 10% từ một phe khác. Không áp dụng lợi thế phe lên PvP.
+
+**Module và tái chế:** tháo module chuyển thành stack rời; lắp lại dùng stack trước khi mua bằng credits. Tháo hoặc tái chế bị từ chối toàn bộ nếu không đủ ô. Tái chế một món hoặc lô đã chọn cho `1 + độ hiếm` linh kiện/món và trả module vào túi; không cho tái chế đồ đang mặc. Bán đồ vẫn giữ quy tắc cũ: module mất theo món. Bản vẽ của mọi khe được mở trong catalog và rơi từ PvE/rương.
+
+**Dungeon:** thường/thử thách/tập đoàn dùng 3/4/5 EN. Nhân vật tập đoàn cần thành viên thật và cấp 10. HP địch nhân 1/1,4/2,5, tấn công nhân 1/1,2/1,6, thưởng trận nhân 1/1,5/2,5 trước hệ số tầng. Chế độ thử thách/tập đoàn có biến thể địch; rút lui có xác suất 75% cộng chỉ số giày (tối đa 100%), thất bại bị phản công. Solo thường giữ rút lui bảo đảm và cân bằng cũ.
+
+Dấu `?` mỗi tầng mở lời đề nghị đổi hai linh kiện lấy 30 credits, 20 XP và một buff +10% tấn công/phòng thủ/khiên trong mười phút. Nhận một lần/tầng, buff cùng loại thay thời hạn, các loại khác nhau cùng có hiệu lực. Dấu `!` lưu một hồ sơ ký ức cho khu vực, không cấp tiền/XP. Xem lại ở menu Ký ức Neon. Hoàn thành dungeon nhận 1/2/3 token theo độ khó; đổi ba token lấy sáu pin và ba đạn, hoặc mười token lấy mẫu hiếm trở lên chưa sở hữu, đủ cấp. Loot tràn túi vào hộp thư theo cơ chế cũ.
+
+**Phối hợp thật:** tài khoản mở phòng trong cửa dungeon, đặt tên 3–40 ký tự và mật khẩu tùy chọn 4–64 ký tự. Mật khẩu băm scrypt trên server, không gửi qua API đọc. Runner phải ở cùng khu vực, đủ điều kiện đường tàu/cấp và còn EN; tối đa bốn người đang trong phòng. Phòng tập đoàn chỉ cùng thành viên mới xem/gia nhập. Địch dùng HP/khiên chung; mỗi người có HP, vị trí, rương và phần thưởng hoàn thành riêng. Thưởng một địch chỉ cấp một lần cho từng thành viên vẫn trong phòng, đóng góp ít nhất 20% tổng HP + khiên và không cao hơn địch quá 12 cấp. Server cộng đóng góp từ sát thương thực, không nhận số từ client. Một địch chết mở đường/boss cho mọi người, kể cả người không nhận thưởng. Đồng đội hiển thị bằng `◉`, cập nhật tối đa mỗi năm giây.
+
+Rời, thua hoặc hoàn thành sẽ không thể vào lại cùng phòng. Phòng hết hạn sau hai giờ không có hành động dungeon thành công, giữ loot đã nhận. Người vào muộn bắt đầu tầng một của cùng lượt, boss đã hạ vẫn được dọn; rương còn riêng. Các phòng, HP và sổ thưởng lưu qua restart, cần đăng nhập lại vì phiên vẫn ở RAM. Nhiều người có thể ở các tầng khác nhau; đây chưa phải mạng phòng nhiều cửa của CCO hoặc mô hình MMO nhiều tiến trình. Chưa có hồi máu đồng đội AOE.
+
+**Điểm danh và hợp đồng ngày:** ngày mới lúc 00:00 Việt Nam. Điểm danh một lần/ngày theo chu kỳ bảy ngày: 40–160 credits, 1–4 linh kiện, 1 thuốc (ngày bảy là 3 thuốc). Bỏ ngày đặt lại chuỗi. Ba hợp đồng yêu cầu năm địch PvE, hai bản in và một lượt dungeon; tiến trình tính từ lần kết nối/hành động đầu ngày, không tính lại lịch sử. Phải nhận thưởng ngoài giao tranh/dungeon/công việc; server tính ngày và phần thưởng. Chế độ khách dùng đồng hồ thiết bị. Tất cả thưởng tràn túi giữ cùng quy tắc hộp thư bảy ngày.

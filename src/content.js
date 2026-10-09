@@ -22,4 +22,11 @@ for(let i=0;i<10;i++){
  quests.push({id:`quest${100+i}`,name:'Ký ức Thiên Đỉnh: '+summit[i],map,npc,level,target:i%5===4?'boss':'enemy',count:i%5===4?1:3,xp:400+i*20,credits:800+i*50,story:`Cư dân ${summit[i]} cần bạn giành lại bộ lõi chứa ký ức của họ từ lực lượng chiếm đóng.`});
  for(let j=0;j<3;j++)gear.push({id:`gear${200+i*3+j}`,name:['Carbine quang tử','Giáp phản trọng lực','Lõi đồng bộ'][j]+' Thiên Đỉnh-'+String(i+1).padStart(2,'0'),slot:['weapon','armor','implant'][j],rarity:5,level,power:75+i*3+j,price:2000+i*160+j*80,black:true,description:`Nguyên mẫu Di sản cấp ${level}, thu hồi từ xưởng quang học Thiên Đỉnh. Các mạch tự ổn định được thiết kế cho môi trường ngoài vành đai.`});
 }
+// Additional slots are appended; no existing item IDs are reassigned.
+const extraSlots=['special','destructive','helmet','legs','boots','backpack'];
+const extraNames=['SMG cộng hưởng','Pháo hạt nhân','Mũ sóng não','Giáp chân từ tính','Giày phản lực','Ba lô sợi quang'];
+for(let level=1;level<=50;level++)for(let j=0;j<extraSlots.length;j++){
+ const slot=extraSlots[j],rarity=Math.min(5,Math.floor((level-1)/8)),power=slot==='backpack'?0:Math.ceil((3+level*1.6)*(slot==='special'?1.3:slot==='destructive'?1.9:slot==='helmet'?.35:.25));
+ gear.push({id:`gear${gear.length}`,name:`${extraNames[j]} ${['Tro','Neon','Helix','Ma','Zero','Thiên Đỉnh'][rarity]}-${String(level).padStart(2,'0')}`,slot,rarity,level,power,price:50+level*35+j*12,black:rarity>=3,health:slot==='helmet'?level*2:0,shield:slot==='legs'?5+level*2:0,regen:slot==='boots'?1+Math.floor(level/12):0,escape:slot==='boots'?.1:0,pocket:slot==='backpack'?5+rarity*3:0,description:`Thiết bị ${extraNames[j].toLowerCase()} của xưởng Neon. ${slot==='special'?'Mỗi phát dùng một pin năng lượng; phá khiên với hiệu suất 120%.':slot==='destructive'?'Mỗi phát dùng một đạn phản vật chất; chỉ gây 50% sát thương lên khiên.':slot==='backpack'?'Tăng sức chứa khi đang đeo. Tháo không xóa đồ đang mang.':'Chỉ số chỉ có hiệu lực khi đang trang bị.'}`});
+}
 export const contentCount=Object.values(content).reduce((n,list)=>n+list.length,0);

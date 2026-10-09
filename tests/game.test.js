@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {content,gear,maps,quests,npcs,enemies,bosses} from '../src/content.js';
 import {fresh,stats,gain,move,startFight,pvp,turn,buy,equip,sell,accept,claim,questProgress,rest} from '../src/game.js';
-test('original 500 IDs preserved, 80 expansion records unique with valid relationships',()=>{
- const records=Object.values(content).flat();assert.equal(records.length,580);assert.equal(new Set(records.map(r=>r.id)).size,580);
+test('original 500 IDs preserved, 380 expansion records unique with valid relationships',()=>{
+ const records=Object.values(content).flat();assert.equal(records.length,880);assert.equal(new Set(records.map(r=>r.id)).size,880);
  for(const [list,prefix,count] of [[maps,'map',40],[gear,'gear',200],[npcs,'npc',80],[enemies,'enemy',40],[bosses,'boss',40],[quests,'quest',100]])for(let i=0;i<count;i++)assert.equal(list[i].id,prefix+i);
  for(const q of quests){assert(maps.some(m=>m.id===q.map));assert(npcs.some(n=>n.id===q.npc));assert(q.count>0);}
  for(const m of maps){assert(enemies.some(e=>e.map===m.id));assert(bosses.some(e=>e.map===m.id));assert(npcs.some(n=>n.map===m.id));}
