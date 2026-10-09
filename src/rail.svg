@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540">
+ <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#122d32"/><stop offset="1" stop-color="#080f17"/></linearGradient><linearGradient id="train"><stop stop-color="#183844"/><stop offset=".7" stop-color="#3b5960"/><stop offset="1" stop-color="#a7d7cf"/></linearGradient><pattern id="roof" width="95" height="70" patternUnits="userSpaceOnUse"><path d="M0 0L95 70M95 0L0 70" stroke="#356067" stroke-width="5"/></pattern><filter id="glow"><feGaussianBlur stdDeviation="5"/></filter></defs>
+ <path fill="url(#sky)" d="M0 0h900v540H0z"/><path fill="url(#roof)" d="M0 0h900v170L420 255z"/>
+ <path d="M0 20L420 255M900 10L420 255M0 92L420 255M900 100L420 255" stroke="#79b6b5" opacity=".5" stroke-width="3"/>
+ <path d="M0 400L425 265L900 420v120H0z" fill="#23343b"/>
+ <path d="M0 445L425 275L900 485M0 475L425 282L720 540M90 540L425 290L590 540" fill="none" stroke="#82cfc8" stroke-width="5"/>
+ <path d="M0 453L420 284M110 540L420 293" stroke="#36e6d1" filter="url(#glow)" stroke-width="8"/>
+ <path d="M0 180L403 260L399 309L0 419z" fill="url(#train)"/><path d="M0 211L388 266L387 285L0 347z" fill="#071822"/>
+ <path d="M65 206L65 346M171 226L171 322M266 246L266 296M343 260L343 283" stroke="#74b8b8" stroke-width="4"/><path d="M0 364L396 289" stroke="#d7d352" stroke-width="8"/>
+ <path d="M535 0v335M799 0v450" stroke="#24424b" stroke-width="24"/><path d="M531 0v331M795 0v450" stroke="#568486" stroke-width="3"/>
+ <path d="M535 120h190v59H535z" fill="#071719" stroke="#679b98"/><text x="556" y="146" fill="#d8d640" font-size="14" font-family="monospace">NEON / HYPERLOOP</text><text x="556" y="166" fill="#a6d5cf" font-size="12" font-family="monospace">01 — 04  DEPARTURES</text>
+ <g fill="#101b23" stroke="#3b6365" stroke-width="2"><circle cx="526" cy="269" r="16"/><path d="M513 288h27l12 54-11 35-1 55h-13l-4-58-7 58h-14l4-74z"/><circle cx="633" cy="284" r="13"/><path d="M622 302h23l12 45-10 25-1 73h-13l-5-71-8 71h-11l5-98z"/><circle cx="736" cy="339" r="20"/><path d="M719 361h35l21 64-19 31-2 84h-17l-8-82-9 82h-15l4-105z"/><circle cx="449" cy="272" r="8"/><path d="M441 283h16l6 25-6 24-2 41h-7l-5-44-6 43h-7z"/></g>
+ <path d="M800 474h100M825 461h75" stroke="#598783" stroke-width="3"/><path d="M0 518L425 323L900 537" fill="none" stroke="#d8d640" stroke-width="2" opacity=".6"/>
+</svg>
