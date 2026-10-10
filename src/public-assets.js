@@ -56,6 +56,7 @@ export const publicAssets = [
   "/src/audio.js",
   "/src/platform.js",
   "/src/platform-view.js",
+  "/src/auth-view.js",
   "/src/public-assets.js",
   "/sw.js",
   "/manifest.webmanifest",

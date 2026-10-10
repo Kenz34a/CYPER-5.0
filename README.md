@@ -15,6 +15,10 @@ v0.12 có bản web cài được (PWA), dự án Android và dự án iOS dùng
 
 `npm run mobile:sync` chuẩn bị cả hai app. `npm run android:debug` tạo APK thử (cần JDK 21/Android SDK 36). `npm run ios:open` mở dự án trên Mac có Xcode 26+; chưa có IPA đã ký. GitHub Actions **Build apps** hỗ trợ tạo APK debug và bản iOS simulator theo yêu cầu.
 
+## Đăng nhập Google
+
+v0.13 thêm nút **Tiếp tục với Google** trên web và app, liên kết Google với nhân vật cũ sau khi xác nhận mật khẩu, tạo/đổi mật khẩu và thu hồi các phiên khác. Đăng nhập Google cần cấu hình `PUBLIC_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` riêng trên server. Chưa có credentials thì nút được khóa, tài khoản/mật khẩu vẫn dùng bình thường. Xem [cách bật Google và giữ nhân vật cũ](docs/google-login.md).
+
 ## Quản trị
 
 Có bảng quản trị người chơi, khóa/cấm chat, thu hồi tin rao, hỗ trợ tài nguyên, thông báo, bảo trì và nhật ký. Đăng ký tài khoản trước, dừng server JSON, chạy `npm run admin -- grant ten_tai_khoan`, rồi khởi động và đăng nhập lại. Xem [hướng dẫn admin](docs/admin.md) cho Neon/Render và giới hạn. Quyền không được cấp từ trình duyệt.

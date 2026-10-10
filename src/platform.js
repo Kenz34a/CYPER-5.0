@@ -5,6 +5,7 @@ let reachable = true;
 let installPrompt = null;
 let waitingWorker = null;
 let changed = () => {};
+let googlePending = null;
 const serverKey = 'cyper-server-url';
 
 export function validateServerURL(value, allowLocalHTTP = false) {
@@ -85,10 +86,80 @@ export async function installWebApp() {
 }
 export function applyWebUpdate() { waitingWorker?.postMessage({type: 'ACTIVATE_UPDATE'}); }
 
+const googleErrors = {
+  invalid:'Phiên Google đã hết hạn hoặc không hợp lệ. Hãy thử lại.', denied:'Đã hủy đăng nhập Google.',
+  disabled:'Server chưa bật Google.', unavailable:'Không xác minh được Google. Hãy thử lại.',
+  conflict:'Google này đã liên kết với một nhân vật khác.', banned:'Tài khoản đang bị khóa.',
+  maintenance:'Game đang bảo trì; đăng ký tạm dừng.', session:'Đăng nhập lại tài khoản cũ trước khi liên kết Google.'
+};
+export function googleReturnNotice() {
+  const url = new URL(location.href), error = url.searchParams.get('auth_error'), success = url.searchParams.get('auth');
+  if (!error && !success) return '';
+  url.searchParams.delete('auth_error'); url.searchParams.delete('auth');
+  history.replaceState(null, '', url.pathname + url.search + url.hash);
+  return error ? googleErrors[error] || googleErrors.unavailable : 'Đã kết nối Google.';
+}
+export async function cancelGoogleLogin() {
+  const pending = googlePending;
+  if (!pending || pending.phase === 'finishing') return;
+  pending.phase = 'cancelled';
+  pending.reject(new Error('Đã hủy đăng nhập Google.'));
+  apiRequest('/api/auth/google/native/cancel', {flow:pending.flow,verifier:pending.verifier}).catch(() => {});
+  native?.browser.close().catch(() => {});
+}
+export async function handleGoogleReturn(value) {
+  let url;
+  try { url = new URL(value); } catch { return; }
+  const pending = googlePending;
+  if (url.protocol !== 'com.kenz34a.cyperzero:' || url.host !== 'auth' || url.pathname !== '/google' ||
+    !pending || pending.phase !== 'waiting' || url.searchParams.getAll('flow').length !== 1 || url.searchParams.get('flow') !== pending.flow) return;
+  pending.phase = 'finishing';
+  try {
+    if (url.searchParams.has('error')) throw new Error(googleErrors[url.searchParams.get('error')] || googleErrors.unavailable);
+    if (url.searchParams.getAll('code').length !== 1 || !/^[A-Za-z0-9_-]{43}$/.test(url.searchParams.get('code') || '')) throw new Error(googleErrors.invalid);
+    const result = await apiRequest('/api/auth/google/native/finish', {flow:pending.flow,verifier:pending.verifier,code:url.searchParams.get('code')});
+    pending.resolve(result);
+  } catch (error) {
+    apiRequest('/api/auth/google/native/cancel', {flow:pending.flow,verifier:pending.verifier}).catch(() => {});
+    pending.reject(error);
+  } finally { native.browser.close().catch(() => {}); }
+}
+export async function startGoogleLogin(password) {
+  if (!native) {
+    const target = password === undefined ? '/api/auth/google/start' :
+      (await apiRequest('/api/auth/google/link/start', {password,channel:'web'})).url;
+    location.assign(target); return null;
+  }
+  if (googlePending) throw new Error('Một phiên Google đang chờ hoàn tất.');
+  if (!serverURL()) throw new Error('Thêm địa chỉ server HTTPS trong Cài đặt trước.');
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+  const verifier = btoa(String.fromCharCode(...bytes)).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
+  const prepared = await apiRequest(password === undefined ? '/api/auth/google/native/start' : '/api/auth/google/link/start',
+    {verifier,channel:'native',...(password === undefined ? {} : {password})});
+  const target = new URL(prepared.url);
+  if (target.protocol !== 'https:' || target.username || target.password || target.pathname !== '/api/auth/google/start' ||
+    !/^[A-Za-z0-9_-]{43}$/.test(prepared.flow || '') || target.searchParams.get('flow') !== prepared.flow) throw new Error('Địa chỉ đăng nhập Google không hợp lệ.');
+  let finish, fail, listener, timer;
+  const completed = new Promise((resolve,reject) => {finish=resolve;fail=reject;});
+  // Attach a rejection handler before the browser can close during open().
+  completed.catch(() => {});
+  googlePending = {flow:prepared.flow,verifier,phase:'waiting',resolve:finish,reject:fail};
+  try {
+    listener = await native.browser.addListener('browserFinished', () => {if(googlePending?.phase==='waiting')cancelGoogleLogin();});
+    timer = setTimeout(() => {if(googlePending?.phase==='waiting')cancelGoogleLogin();}, 10*60000);
+    await native.browser.open({url:target.href});
+    return await completed;
+  } catch (error) {
+    if (googlePending?.phase === 'waiting') await cancelGoogleLogin();
+    throw error;
+  } finally { clearTimeout(timer); await listener?.remove().catch(() => {}); googlePending = null; }
+}
+
 export function startPlatform({onChange, onBack, onResume}) {
   changed = onChange;
   const connection = value => { connected = value; changed(); };
   if (native) {
+    native.app.addListener('appUrlOpen', ({url}) => handleGoogleReturn(url));
     native.network.getStatus().then(s => connection(s.connected)).catch(() => {});
     native.network.addListener('networkStatusChange', s => connection(s.connected));
     if (native.name === 'android') native.app.addListener('backButton', async () => { if (!onBack() && confirm('Thoát CYPER ZERO? Tiến trình đã được lưu.')) await native.app.exitApp(); });

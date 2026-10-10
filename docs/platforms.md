@@ -105,3 +105,7 @@ npm run mobile:sync
 GitHub Actions **Build apps** có thể chạy thủ công ở tab Actions: chọn Android, iOS simulator hoặc cả hai. Artifact Android là APK debug; artifact iOS là `.app` cho simulator, không có chữ ký phân phối. Build iOS trên GitHub vẫn cần runner macOS có Xcode 26+. Các workflow không triển khai Render, không ký release và không xuất bản cửa hàng.
 
 Trước khi đưa ra cửa hàng, chọn app ID riêng của bạn (hiện `com.kenz34a.cyperzero`), cấu hình quyền sở hữu/chữ ký, chính sách riêng tư, URL hỗ trợ, ảnh chụp và thử trên thiết bị thật. Thay app ID phải cập nhật đồng bộ cấu hình Capacitor, Android namespace/applicationId và Bundle Identifier iOS.
+
+## Đăng nhập Google
+
+v0.13 hỗ trợ Google qua trình duyệt hệ thống trên app. Cấu hình OAuth ở server HTTPS, app dùng cùng Web client với bản web; không đưa Client secret vào bản build. Xem [hướng dẫn bật Google](google-login.md). Dự án Android/iOS đã có scheme quay lại game; nếu đổi app ID cần đổi scheme đồng bộ.
