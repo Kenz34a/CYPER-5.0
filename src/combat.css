@@ -1,0 +1,89 @@
+/* Focused combat scene; controls use the existing turn-based actions. */
+.combat.combat-view { background: transparent; border: 0; border-radius: 0; padding: 0; margin: 0; }
+.combat-view .battle-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.battle-heading button { background: transparent; border: 0; color: var(--cyan); padding: 5px 0; min-height: 32px; font-size: 11px; }
+.battle-heading > small { font-size: 9px; color: var(--muted); text-align: right; }
+.battle-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.battle-tags span { font: 9px/1.4 monospace; padding: 3px 8px; border: 1px solid #758a8155; color: #afc9c0; background: #a8cebf0b; border-radius: 2px; }
+.combat.combat-view h2 { font-size: 24px; font-weight: 600; color: #c2e2d7; margin: 8px 0 14px; line-height: 1.3; overflow-wrap: anywhere; }
+.battle-vital { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+.battle-vital > span { flex: 0 0 105px; font: 9px monospace; color: #a6c3b9; }
+.battle-vital > div { flex: 1; position: relative; min-width: 0; height: 14px; background: #4b515166; overflow: hidden; border-radius: 2px; }
+.battle-vital i { display: block; height: 100%; background: #87948e; }
+.battle-vital.health > div { background: #e81c581c; }
+.battle-vital.health i { background: #e72865; }
+.battle-vital b { position: absolute; inset: 0; text-align: center; color: #ebf7f0; font: 600 10px/14px monospace; text-shadow: 0 1px 3px #0008; }
+.battle-stage { position: relative; isolation: isolate; min-height: 210px; height: clamp(210px, calc(100dvh - var(--combat-deck-height, 250px) - var(--combat-nav-offset, 64px) - 265px), 430px); margin: 16px 0 12px; overflow: hidden; border-top: 1px solid #789c8833; border-bottom: 1px solid #789c8833; background: radial-gradient(ellipse at 68% 60%, #6dc2a014, transparent 62%), repeating-linear-gradient(0deg, transparent 0 3px, #9cdcb702 3px 4px); }
+.enemy-silhouette { position: absolute; height: 100%; width: 65%; bottom: 0; right: -3%; color: #070d0d; stroke: #a6d3c155; stroke-width: 1.3; filter: drop-shadow(0 0 14px #9df0c813); z-index: -1; }
+.silhouette-plate { fill: #14201f; stroke: #4a665d; }
+.silhouette-light { fill: #85cdb4; stroke: none; }
+.silhouette-line { fill: none; stroke: #668578; stroke-width: 2; }
+.silhouette-boss .silhouette-light { fill: #ef496a; }
+.silhouette-drone { width: 72%; }
+.battle-log { display: flex; flex-direction: column; width: min(70%, 360px); height: calc(100% - 34px); padding: 14px 8px 4px 0; }
+.battle-log-title { flex: none; display: flex; flex-wrap: wrap; gap: 5px 14px; color: #92c0ad; font: 9px monospace; letter-spacing: .05em; margin-bottom: 9px; }
+.battle-log-title span { color: var(--muted); letter-spacing: 0; }
+.battle-log-entries { min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: thin; }
+.battle-log-entries p { font: 11px/1.7 monospace; color: #adc1b7; margin: 0 0 9px; overflow-wrap: anywhere; text-shadow: 0 1px 3px #000; }
+.battle-log-entries p:last-child { color: #d6e9df; }
+.battle-log-entries:focus-visible { outline: 1px solid var(--acid); outline-offset: -1px; }
+.battle-stage-footer { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; flex-wrap: wrap; gap: 4px 12px; color: #9caa7f; font: 9px/1.5 monospace; }
+.battle-last-hit { padding: 6px 0 10px; font: 10px monospace; display: flex; align-items: center; flex-wrap: wrap; gap: 5px 12px; color: #b5c7be; }
+.battle-last-hit b { color: #e7ee73; font-weight: 500; }
+.battle-last-hit small { font-size: 9px; color: var(--muted); }
+.battle-impact { height: 3px; width: 100%; background: #4b5b5033; margin-top: 3px; }
+.battle-impact i { display: block; height: 100%; background: #cbdc57; }
+.combat-command-anchor { display: none; }
+.combat-command-deck { position: fixed; left: 16px; right: 16px; bottom: var(--combat-nav-offset, 72px); max-width: 600px; margin: 0 auto; padding: 10px 12px 8px; background: #1a2322fa; border: 1px solid #638475; border-radius: 8px; box-shadow: 0 -8px 24px #0003; z-index: 29; }
+.combat-active main { padding-bottom: calc(var(--combat-deck-height, 270px) + var(--combat-nav-offset, 72px) + 28px); }
+.battle-player-vitals { margin-bottom: 10px; }
+.battle-quick-slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 10px; }
+.battle-quick-slots .battle-quick-slot { min-height: 44px; padding: 7px 9px; border-radius: 2px; border: 1px solid #bac444; background: #b9c52a07; color: #c4dfd1; display: flex; flex-direction: column; justify-content: center; gap: 4px; min-width: 0; }
+.battle-quick-slot > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; font-weight: 500; }
+.battle-quick-slot > small { color: #c7ce6e; font: 9px monospace; align-self: flex-end; }
+.battle-weapons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 8px; }
+.battle-weapon-slot { min-width: 0; }
+.battle-weapon-slot > span { display: inline-block; padding: 3px 8px; background: #d2dd45; color: #26331f; border-radius: 2px 7px 0 0; font: 9px monospace; }
+.battle-weapon-slot .battle-weapon { display: block; width: 100%; min-height: 65px; padding: 6px 9px; border: 1px solid #bcc544; border-radius: 0 6px 2px 6px; background: #252b1e; color: #c4e4d7; text-align: left; }
+.battle-weapon > small { font: 9px monospace; }
+.battle-weapon > small b { font-weight: 500; }
+.battle-weapon > div { display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: 6px; }
+.battle-weapon svg { width: 44px; height: 27px; flex: none; }
+.battle-weapon em { font: 9px monospace; text-align: right; overflow-wrap: anywhere; }
+.battle-utilities { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.battle-utilities button { min-height: 34px; padding: 6px 4px; border-radius: 3px; font-size: 10px; background: transparent; color: #b1c7be; border-color: #4c6358; }
+.battle-turn-hint { display: block; margin-top: 7px; color: #95ada1; font: 8px/1.4 monospace; text-align: center; }
+.dungeon-screen.is-fighting { display: block; }
+.dungeon-screen.is-fighting > .dungeon-top, .dungeon-screen.is-fighting > .dungeon-health,
+.dungeon-screen.is-fighting .dungeon-navigation, .dungeon-screen.is-fighting .dungeon-last-log,
+.dungeon-screen.is-fighting .dungeon-battle > .dungeon-details,
+.dungeon-control-dock.is-fighting { display: none !important; }
+.dungeon-screen.is-fighting .dungeon-workspace { display: block; }
+.desktop-workspace .combat-active main { padding-bottom: calc(var(--combat-deck-height, 270px) + var(--combat-nav-offset, 72px) + 28px); }
+.desktop-workspace .combat-command-deck { border-radius: 3px; }
+.desktop-workspace .battle-heading button { background: transparent; border: 0; }
+@media (max-width: 680px), (max-width: 1000px) and (max-height: 500px) {
+ .combat.combat-view h2 { font-size: 20px; margin: 8px 0 12px; }
+ .combat-view .battle-heading { margin-bottom: 9px; }
+ .battle-heading > small { font-size: 8px; }
+ .battle-vital > span { flex-basis: 96px; font-size: 8px; }
+ .battle-log { width: 72%; }
+ .battle-log-entries p { font-size: 10px; }
+ .battle-log-title { font-size: 8px; }
+ .combat-command-deck { padding: 8px 9px 7px; }
+ .battle-quick-slots, .battle-weapons, .battle-utilities { gap: 6px; }
+ .battle-player-vitals { margin-bottom: 8px; }
+ .battle-weapon-slot .battle-weapon { padding: 6px; }
+ .battle-weapon svg { width: 34px; }
+ .battle-weapon em { font-size: 8px; }
+ .battle-quick-slot > span { font-size: 9px; }
+}
+@media (min-width: 560px) and (max-width: 1000px) and (max-height: 500px) and (orientation: landscape) {
+ .combat-active main { padding-right: 310px; padding-bottom: calc(var(--nav-height) + 20px); }
+ .combat-active > .combat-command-deck { left: auto !important; right: 12px !important; width: 280px; top: calc(58px + var(--safe-area-inset-top, env(safe-area-inset-top, 0px))); bottom: var(--combat-nav-offset, 72px); max-height: none; overflow-y: auto; }
+ .battle-stage { height: 220px; min-height: 220px; }
+ .battle-log { width: 80%; }
+ .battle-stage-footer { font-size: 8px; }
+ .battle-tags { gap: 4px; }
+ .battle-tags span { font-size: 8px; padding: 2px 6px; }
+}

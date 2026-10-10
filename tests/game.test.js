@@ -28,6 +28,14 @@ test('boss pulse, death recovery and PvP outcome',()=>{
 test('healing spends credits and a turn; skills require energy',()=>{
  const s=fresh();startFight(s);s.hp=30;const credit=s.credits;turn(s,'heal',()=>0.8);assert.equal(s.credits,credit-25);assert(s.hp>30);assert.equal(s.combat.turn,1);s.energy=2;assert(!turn(s,'skill'));assert.equal(s.combat.turn,1);
 });
+test('battle journal follows the current encounter, is bounded and supports an existing fight without a journal',()=>{
+ const s=fresh();assert(startFight(s,'boss'));assert.equal(s.combat.log.length,1);assert(s.combat.log[0].includes(s.combat.name));
+ s.combat.currentHp=10000;s.combat.attack=1;
+ for(let i=0;i<10;i++)assert(turn(s,'attack',()=>.8));
+ assert.equal(s.combat.log.length,16);assert(s.combat.log.some(line=>line.startsWith('Tấn công')));assert(s.combat.log[0].includes('gây'));
+ assert(turn(s,'escape'));assert(startFight(s));assert.equal(s.combat.log.length,1);assert(!s.combat.log.some(line=>line.startsWith('Tấn công')));
+ delete s.combat.log;assert(turn(s,'attack',()=>.8));assert(s.combat.log.some(line=>line.startsWith('Tấn công')));
+});
 test('level-50 expansion gear, NPC area, boss combat and final contract form a playable progression',()=>{
  const s=fresh();s.level=50;s.railKeys=['red','summit'];s.credits=12000;rest(s);assert(move(s,'map49'));for(const id of ['gear227','gear228','gear229']){assert(buy(s,id,true));assert(equip(s,id));}rest(s);assert.equal(stats(s).attack,262);assert(accept(s,'quest109'));assert(startFight(s,'boss'));assert.equal(s.combat.id,'boss49');for(let i=0;s.combat&&i<20;i++)assert(turn(s,'attack',()=>0));assert.equal(s.combat,null);assert.equal(s.progress['map49:boss'],1);assert.equal(questProgress(s,quests.find(v=>v.id==='quest109')),1);assert(claim(s,'quest109'));assert(!claim(s,'quest109'));
 });

@@ -1,14 +1,42 @@
 import {stats} from './game.js';
 import {enemyVariants,enemyProfile,playerMark} from './gear-rules.js';
 import {enemies} from './content.js';
-import {stacks} from './inventory-state.js';
+import {stacks,supplies} from './inventory-state.js';
+import {quickSlots} from './inventory.js';
+import {enemySilhouette,weaponSilhouette} from './combat-visuals.js';
 import {settings} from './settings.js';
 
+function vital(value,max,label,kind) {
+ const current=Math.max(0,Math.min(max,value||0)),percent=max>0?current/max*100:0;
+ return `<div class="battle-vital ${kind}"><span>${label}</span><div role="progressbar" aria-label="${label}" aria-valuemin="0" aria-valuemax="${Math.max(1,max)}" aria-valuenow="${current}" aria-valuetext="${current} / ${max}"><i style="width:${percent}%"></i><b>${current} / ${max}</b></div></div>`;
+}
 export function combatView({s,online,esc,button}) {
  const f=s.combat;if(!f)return '';
- const st=stats(s),bag=stacks(s),hit=s.lastHit;
- const shield=(value,max,name)=>max>0?`<div class="combat-shield"><label><span>${name}</span><b>${Math.max(0,value||0)} / ${max}</b></label><div class="bar shield"><i style="width:${Math.max(0,(value||0)/max*100)}%"></i></div></div>`:'';
- return `<section class="combat" aria-label="Chiến đấu"><div class="combat-heading"><div class="eyebrow">${f.pvp?(online?'PVP BẤT ĐỒNG BỘ':'ĐỐI THỦ MÔ PHỎNG'):'GIAO TRANH'}</div><span>LƯỢT ${f.turn+1}</span></div><h2>${esc(f.name)}</h2><div class="combat-stats"><span>LV <b>${f.level}</b></span><span>ATK <b>${f.attack}</b></span><span>DEF <b>${f.defense}</b></span>${f.faction?`<span>${esc(f.faction)}</span>`:''}</div><div class="combat-hp"><label><span>HP ĐỊCH</span><b>${Math.max(0,f.currentHp)} / ${f.hp}</b></label><div class="bar danger"><i style="width:${Math.max(0,f.currentHp/f.hp*100)}%"></i></div></div><div class="combat-shields">${shield(f.currentShield,f.shield,'Khiên địch')}${shield(s.shield,st.maxShield,'Khiên của bạn')}</div>${!settings(s).hideDamageMeter&&hit?.name===f.name?`<div class="attack-meter"><span>ĐÒN VỪA ĐÁNH <b>${hit.damage}${hit.critical?' · CHÍ MẠNG':''}</b></span><small>${hit.healthDamage??hit.damage} HP · ${hit.shieldDamage||0} khiên</small><div class="bar"><i style="width:${Math.min(100,hit.damage/f.hp*100)}%"></i></div></div>`:''}${s.dungeon?.instance?`<p class="reward">Đóng góp ${f.contribution||0}% / cần 20%${s.level>f.level+12?' · vượt giới hạn cấp nhận thưởng':''}</p>`:''}<div class="combat-weapons"><div><span>CHÍNH · MIỄN PHÍ</span>${button('Tấn công','attack')}<small>${st.attack} ATK</small></div><div><span>ĐẶC BIỆT · ${bag['energy-cell']||0} PIN</span>${button('Phá khiên 120%','special','',!s.equipped.special||!(bag['energy-cell']>0))}<small>${st.specialAttack} ATK</small></div><div><span>HỦY DIỆT · ${bag.antimatter||0} ĐẠN</span>${button('Phá khiên 50%','destructive','',!s.equipped.destructive||!(bag.antimatter>0))}<small>${st.destructiveAttack} ATK</small></div></div><div class="actions combat-utilities">${button('Xung · 3 EN','skill','',s.energy<3)}${button('Thuốc · 25 ₡','heal','',s.credits<25)}${button('Rút lui','escape')}</div><details class="combat-help" data-ui-panel="combat-help"><summary>Chi tiết chiến đấu</summary><p class="hint">Vũ khí đặc biệt và hủy diệt dùng một viên mỗi phát; mua hoặc chế tạo ở Túi đồ. ${st.stun?`Choáng ${Math.round(st.stun*100)}% · `:''}${st.regen?`Tái sinh ${st.regen} HP/lượt · `:''}${s.dungeon?.mode&&s.dungeon.mode!=='normal'?`Rút lui: ${Math.round(st.escape*100)}% thành công.`:'Rút lui luôn thành công ở chế độ hiện tại.'}</p></details></section>`;
+ const st=stats(s),bag=stacks(s),hit=s.lastHit,variant=enemyVariants.find(v=>v.id===f.variant);
+ const journal=f.log?.length?f.log:[`Chạm trán ${f.name}.`];
+ const weapon=(slot,action,label,power,ammo)=>{
+  const count=ammo?bag[ammo]||0:0,missing=!s.equipped[slot],disabled=slot!=='weapon'&&missing||!!ammo&&count<=0;
+  const status=missing?slot==='weapon'?'Tay không':'Chưa trang bị':ammo?count>0?`×${count} ${slot==='special'?'pin':'đạn'}`:`Hết ${slot==='special'?'pin':'đạn'}`:'Miễn phí';
+  const hint=slot==='special'?'Sát thương lên khiên ×1,2. Dùng 1 pin mỗi lượt.':slot==='destructive'?'Sát thương lên khiên ×0,5. Dùng 1 đạn mỗi lượt.':'Tấn công bằng vũ khí chính, không tốn đạn.';
+  return `<div class="battle-weapon-slot"><span>${label}</span><button class="battle-weapon" data-action="${action}" title="${hint}" aria-label="${label}: ${power} sát thương. ${status}" ${disabled?'disabled':''}><small>DMG <b>${power}</b></small><div>${weaponSilhouette(slot)}<em>${status}</em></div></button></div>`;
+ };
+ const quick=quickSlots(s).map((id,i)=>{
+  const item=supplies.find(v=>v.id===id),count=item?bag[item.id]||0:0;
+  const disabled=!item||count<=0||(!item.hp||s.hp>=st.maxHp)&&(!item.energy||s.energy>=st.maxEnergy);
+  return `<button class="battle-quick-slot" data-action="item-use" data-id="${item?.id||''}" ${disabled?'disabled':''} title="${item?`+${item.hp} HP / +${item.energy} EN. Dùng một lượt; quái sẽ phản công.`:'Chọn vật phẩm trong tab Đang mặc của Túi đồ.'}"><span>${item?esc(item.name):`Khe nhanh ${i+1}`}</span><small>${item?'×'+count:'Chưa gán'}</small></button>`;
+ }).join('');
+ const lastHit=!settings(s).hideDamageMeter&&hit?.name===f.name?`<div class="battle-last-hit" role="status"><span>ĐÒN VỪA ĐÁNH <b>${hit.damage}${hit.critical?' · CHÍ MẠNG':''}</b></span><small>${hit.healthDamage??hit.damage} HP · ${hit.shieldDamage||0} lá chắn</small><div class="battle-impact"><i style="width:${Math.min(100,hit.damage/f.hp*100)}%"></i></div></div>`:'';
+ return `<section class="combat combat-view" aria-label="Chiến đấu">
+ <div class="battle-heading">${button('← Chạy thoát','escape')}<small>${f.pvp?(online?'PVP BẤT ĐỒNG BỘ':'ĐỐI THỦ MÔ PHỎNG'):s.dungeon?`PHÓ BẢN · TẦNG ${s.dungeon.floor}`:'PVE'} / LƯỢT ${f.turn+1}</small></div>
+ <div class="battle-tags"><span>LEVEL ${f.level}</span>${f.faction?`<span>${esc(f.faction)}</span>`:''}<span>${f.boss?'BOSS':variant?.name||'RUNNER'}</span></div><h2>${esc(f.name)}</h2>
+ <div class="battle-enemy-vitals">${vital(f.currentShield,f.shield||0,'LÁ CHẮN ĐỊCH','shield')}${vital(f.currentHp,f.hp,'MÁU ĐỊCH','health')}</div>
+ <div class="battle-stage">${enemySilhouette(f)}<div class="battle-log"><div class="battle-log-title">NHẬT KÝ GIAO TRANH <span>ATK ${f.attack} / DEF ${f.defense}</span></div><div class="battle-log-entries" role="log" aria-label="Nhật ký giao tranh" aria-live="polite" tabindex="0">${journal.slice(0,16).reverse().map(text=>`<p>${esc(text)}</p>`).join('')}</div></div><div class="battle-stage-footer"><span>${f.boss&&((f.turn+1)%3===0)?'⚠ Đòn tiếp theo: xung điện ×2':variant?.description||'Không có biến thể.'}</span>${s.dungeon?.instance?`<span>Đóng góp ${f.contribution||0}% / cần 20%${s.level>f.level+12?' · vượt cấp nhận thưởng':''}</span>`:''}</div></div>
+ ${lastHit}<div class="combat-command-anchor"><div class="combat-command-deck" role="group" aria-label="Điều khiển chiến đấu">
+ <div class="battle-player-vitals">${vital(s.shield,st.maxShield,'LÁ CHẮN CỦA BẠN','shield')}${vital(s.hp,st.maxHp,'MÁU CỦA BẠN','health')}</div>
+ <div class="battle-quick-slots" role="group" aria-label="Vật phẩm nhanh">${quick}</div>
+ <div class="battle-weapons" role="group" aria-label="Vũ khí">${weapon('weapon','attack','CHÍNH',st.attack)}${weapon('special','special','ĐẶC BIỆT',st.specialAttack,'energy-cell')}${weapon('destructive','destructive','HỦY DIỆT',st.destructiveAttack,'antimatter')}</div>
+ <div class="battle-utilities">${button('Xung · 3 EN','skill','',s.energy<3)}${button('Tiêm · 25 ₡','heal','',s.credits<25||s.hp>=st.maxHp)}${button('Rút lui','escape')}</div><small class="battle-turn-hint">${s.energy} / ${st.maxEnergy} EN · Mỗi đòn đánh hoặc vật phẩm dùng một lượt</small></div></div>
+ <details class="combat-help" data-ui-panel="combat-help"><summary>Chi tiết chiến đấu</summary><p class="hint">Vũ khí đặc biệt và hủy diệt dùng một viên mỗi phát; mua hoặc chế tạo ở Túi đồ. ${st.stun?`Choáng ${Math.round(st.stun*100)}% · `:''}${st.regen?`Tái sinh ${st.regen} HP/lượt · `:''}${s.dungeon?.mode&&s.dungeon.mode!=='normal'?`Rút lui: ${Math.round(st.escape*100)}% thành công.`:'Rút lui luôn thành công ở chế độ hiện tại.'}</p></details></section>`;
 }
 export function nearbyView({s,esc,button}){
  const source=enemies.find(e=>e.map===s.map),mark=playerMark(s);

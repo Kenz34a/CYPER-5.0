@@ -59,6 +59,8 @@ export const publicAssets = [
   "/src/auth-view.js",
   "/src/workspace-view.js",
   "/src/workspace.css",
+  "/src/combat.css",
+  "/src/combat-visuals.js",
   "/src/public-assets.js",
   "/sw.js",
   "/manifest.webmanifest",

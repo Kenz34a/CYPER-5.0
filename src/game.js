@@ -14,7 +14,7 @@ export function stats(s){
  const buffs=(s.buffs||[]).filter(b=>b.expiresAt>Date.now()),mult=k=>1+buffs.filter(b=>b.kind===k).reduce((n,b)=>n+b.value,0),attack=8+s.level*2+weapon.power+Math.floor(implant.power/2)+sum('damage');
  return {maxHp:90+s.level*10+sum('health'),attack:Math.floor(attack*mult('attack')),specialAttack:s.equipped.special?Math.floor((8+s.level*2+special.power+sum('damage'))*mult('attack')):0,destructiveAttack:s.equipped.destructive?Math.floor((8+s.level*2+destructive.power+sum('damage'))*mult('attack')):0,defense:Math.floor((2+s.level+armor.power+extraArmor+sum('armor'))*mult('defense')),crit:Math.min(.5,.15+sum('crit')),maxShield:Math.floor(sum('shield')*mult('shield')),stun:Math.min(.5,sum('stun')),regen:sum('regen'),escape:Math.min(1,.75+sum('escape')),maxEnergy:30};
 }
-export function note(s,t){record(s,t);}
+export function note(s,t){record(s,t);if(s.combat){(s.combat.log??=[]).unshift(t);s.combat.log=s.combat.log.slice(0,16);}}
 export function gain(s,xp){s.xp+=xp;while(s.xp>=s.level*60){s.xp-=s.level*60;s.level++;s.hp=stats(s).maxHp;s.energy=30;note(s,`Lên cấp ${s.level}! Sinh lực và năng lượng hồi đầy.`);}}
 export function move(s,id){const m=maps.find(m=>m.id===id);if(s.work||s.dungeon||s.combat||!m||!areaAccess(s,m)||m.level>s.level+2||s.energy<1)return false;s.map=id;s.energy--;note(s,`Đã đến ${m.name}.`);return true;}
 export function startFight(s,type='enemy',inDungeon=false,variant='plain'){

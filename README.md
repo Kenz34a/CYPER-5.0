@@ -19,6 +19,10 @@ v0.12 có bản web cài được (PWA), dự án Android và dự án iOS dùng
 
 v0.14 dùng ba cột khi cửa sổ web rộng từ 1.200 px: túi đồ bên trái, màn chơi ở giữa và chat/thư/thông báo bên phải. Mỗi cột cuộn riêng. Quản lý đồ và gửi tin không đổi màn chơi; bản nháp chat/thư được giữ khi thay đổi kích thước cửa sổ. Bản desktop có nền xám tối, viền xanh nhạt, dịch vụ nhấn vàng và menu ☰ trong cột giữa. Điều khiển phó bản cố định phía trên thanh điều hướng. Màn hình hẹp và app native tiếp tục dùng bố cục gọn hiện có.
 
+## Màn chiến đấu
+
+Màn chiến đấu v0.15 hiển thị hình quái dạng vector, máu/lá chắn của hai bên, nhật ký riêng từng trận và số đạn thật. Ba khe vật phẩm nhanh dùng cùng cấu hình trong Túi đồ. Cụm điều khiển cố định trong màn chơi; khi điện thoại xoay ngang, điều khiển nằm bên phải. Thuốc vẫn dùng một lượt và quái phản công theo luật hiện có.
+
 ## Đăng nhập Google
 
 v0.13 thêm nút **Tiếp tục với Google** trên web và app, liên kết Google với nhân vật cũ sau khi xác nhận mật khẩu, tạo/đổi mật khẩu và thu hồi các phiên khác. Đăng nhập Google cần cấu hình `PUBLIC_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` riêng trên server. Chưa có credentials thì nút được khóa, tài khoản/mật khẩu vẫn dùng bình thường. Xem [cách bật Google và giữ nhân vật cũ](docs/google-login.md).
