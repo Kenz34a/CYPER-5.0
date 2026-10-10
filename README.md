@@ -25,7 +25,7 @@ Nhận nhiệm vụ → khám phá và chiến đấu theo lượt → nhận th
 
 Trang bị có màn hình chi tiết, chất lượng, hiệu chuẩn +0 đến +5 và tối đa 3 khe module. Bộ chiến đấu có chín khe, gồm ba vũ khí, mũ, giáp thân, giáp chân, giày, cấy ghép và ba lô. Mỗi lần hiệu chuẩn cộng 2 sức mạnh; mở thêm khe ở +2 và +4. Module tăng sát thương, sinh lực, phòng thủ, chí mạng, khiên, choáng, hồi HP hoặc sức chứa túi. Lắp ưu tiên module rời trong túi; nếu không có thì mua bằng credits. Chỉ trang bị đang dùng mới cộng chỉ số cho nhân vật. Có thể tháo module để giữ trong túi nếu còn chỗ. Thay trực tiếp không hoàn lại module cũ. Chất lượng là thông số hiển thị tăng theo hiệu chuẩn, không có cơ chế hao mòn trong phiên bản này. Tài khoản online lưu nâng cấp trên server; chế độ khách lưu trong trình duyệt.
 
-Giao diện điện thoại có thanh điều hướng dưới; mở menu ☰ để vào shop, chợ đen và các mục khác. Shop có tab mua/bán. Hình thợ vũ khí là SVG riêng của dự án, không sử dụng hình nhân vật trong ảnh tham khảo.
+Giao diện v0.11 dùng nền xanh tối, thẻ bo góc, icon SVG và thanh chỉ số gọn. Menu ☰ chia theo nhóm; thanh điều hướng dưới mở nhanh năm trang chính. Trung tâm có lối vào phó bản/nhiệm vụ; thông tin cộng đồng và hướng dẫn trong trang nhiệm vụ có thể mở khi cần. Shop có tab mua/bán. Hình thợ vũ khí là SVG riêng của dự án, không sử dụng hình nhân vật trong ảnh tham khảo.
 
 ## Trung tâm thành phố và dịch vụ
 
@@ -42,6 +42,8 @@ Sàn đổi dùng tỉ giá 100 credits = 1 Unit theo cả hai chiều. Ngân h�
 Vào Dungeon từ Terminal, menu hoặc Trung tâm Neon. Mỗi lượt gồm ba tầng được sinh theo khu vực và số lượt vào. Đường đi nối thông tới mọi rương, điểm cứu trợ và boss. `@` là nhân vật, `#` là tường, `♟` là địch, `Ω` là boss, `▤` là rương, `+` là trạm cứu trợ, `!` là terminal, `△` là cửa tầng.
 
 Di chuyển bằng phím mũi tên/WASD, nút hướng hoặc chạm ô liền kề. Vào dungeon tốn 3 EN; giao tranh tốn 2 EN, di chuyển không tốn EN. Rương chỉ nhận một lần mỗi tầng; trạm cứu trợ và terminal chỉ dùng một lần. Địch và boss được dọn sau khi thắng, vẫn tính tiến trình nhiệm vụ hiện có. Rút lui quay về ô trước và giữ địch; thua trận đóng dungeon theo cơ chế phạt hiện tại. Hạ boss để mở cửa, hoàn thành tầng ba có thưởng thêm. Không thể nghỉ, chuyển khu vực hoặc vào PvP khi còn trong dungeon.
+
+Trên điện thoại, thanh điều khiển cố định phía trên menu đáy, có nút hướng tối thiểu 46 px và tự đổi sang đánh/thuốc/rút lui khi giao tranh. Bản đồ co theo chiều cao màn hình; phần ký hiệu, đội và nhiệm vụ tầng mở trong các mục thu gọn. Trên desktop, điều khiển ở sát bản đồ và chiến đấu nằm ở cột bên cạnh. Các nút vũ khí, xung điện và thông tin rút lui vẫn có trong khung chiến đấu.
 
 Rời dungeon ngoài giao tranh giữ loot và đóng lượt, lần vào sau tạo lượt mới. Tiến trình dungeon và trận đấu đang diễn ra được lưu trong trình duyệt cho khách, trên server cho tài khoản online. Đồng đội và phòng phối hợp lưu trên server. Ngoài dungeon cá nhân còn có phòng phối hợp tối đa bốn tài khoản với HP địch dùng chung, rương riêng và đồng đội hiện trên bản đồ; xem phần v0.10 bên dưới.
 
