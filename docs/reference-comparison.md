@@ -29,7 +29,7 @@ Các hướng dẫn còn lại chỉ ra những hệ thống lớn cần thiết
 - [Handlers](https://github.com/DexterHuang/CyberCodeOnline/blob/473ed6f1ce96cccf077fa0729a29a9f1320cc6cf/contribution/mobile/en/tutorial/handlers.md): quan hệ hướng dẫn người mới và kiểm tra điều kiện thưởng. Chưa có hệ thống này hoặc chống tài khoản phụ.
 - [Reclamation depot](https://github.com/DexterHuang/CyberCodeOnline/blob/473ed6f1ce96cccf077fa0729a29a9f1320cc6cf/contribution/mobile/en/tutorial/reclamation-depot.md), community raffle, giới thiệu, kết hôn, gửi quà, dịch chat và quản trị/báo cáo.
 
-Backend hiện vẫn là một tiến trình Node và file JSON. Chơi phối hợp đã thực hiện thật trên server, nhưng để vận hành MMO lớn cần database giao dịch, quản lý phiên bền vững, chống spam, giám sát và nhiều nội dung viết riêng. Bản đối chiếu này không tuyên bố CYPER giống CyberCode Online 100%.
+Backend hỗ trợ file JSON để test trên máy hoặc PostgreSQL/Neon để chạy trên Render, với phiên đăng nhập bền vững và giao dịch giữ dữ liệu nhất quán giữa các tiến trình. Chơi phối hợp đã thực hiện thật trên server. Database vẫn lưu cả thế giới trong một hàng JSONB; để vận hành MMO lớn cần đo tải, tách các bảng, chống spam, giám sát và nhiều nội dung viết riêng. Xem [hướng dẫn Neon + Render](neon-render.md). Bản đối chiếu này không tuyên bố CYPER giống CyberCode Online 100%.
 
 ## Kiểm chứng
 

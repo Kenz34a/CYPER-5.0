@@ -1,13 +1,13 @@
 # CYPER // ZERO
 
-RPG văn bản cyberpunk bằng tiếng Việt với thế giới riêng. Chạy bằng Node.js 24, không cần cài thư viện.
+RPG văn bản cyberpunk bằng tiếng Việt với thế giới riêng. Chạy bằng Node.js 24. Test trên máy với file JSON; có chế độ PostgreSQL để triển khai Neon + Render.
 
 ```sh
-cd /workspace/CYPER-5.0
+npm ci
 npm start
 ```
 
-Server mặc định dùng cổng 3000; có thể đặt `PORT`. Chạy kiểm thử bằng `npm test`.
+Chạy các lệnh trong thư mục có `package.json`. Server mặc định dùng cổng 3000; có thể đặt `PORT`. Chạy kiểm thử bằng `npm test`. Xem [hướng dẫn test trên máy và triển khai Neon + Render](docs/neon-render.md); `render.yaml` đã chuẩn bị Web Service, cần tự cấu hình secret `DATABASE_URL`.
 
 ## Vòng chơi
 
@@ -45,7 +45,7 @@ Rời dungeon ngoài giao tranh giữ loot và đóng lượt, lần vào sau t�
 
 Có hai chế độ: khách lưu cục bộ với đối thủ mô phỏng; tài khoản lưu trên server với bảng xếp hạng người chơi thật và PvP bất đồng bộ. Đăng ký/đăng nhập trong mục Tài khoản. Mật khẩu băm bằng scrypt với salt riêng; cookie phiên HttpOnly, SameSite=Strict. Khi triển khai qua HTTPS, đặt `COOKIE_SECURE=1`. Logic chiến đấu online và phần thưởng xử lý trên server; client không gửi chỉ số hoặc tiến trình tùy ý.
 
-PvP đấu với bản sao trang bị của nhân vật người chơi khác, do máy điều khiển; chưa có đấu trực tiếp hai người. Có chat toàn cầu và chợ người chơi. Chợ đen vẫn là NPC vendor. Dữ liệu tài khoản nằm trong `.data/players.json` (được gitignore); không commit, không xóa nếu muốn giữ nhân vật. Backend dùng một tiến trình và file JSON ghi nguyên tử, phù hợp demo nhỏ; production cần cơ sở dữ liệu, backup, HTTPS và quản lý phiên bền vững. Phiên đăng nhập nằm trong RAM, phải đăng nhập lại sau khi server restart.
+PvP đấu với bản sao trang bị của nhân vật người chơi khác, do máy điều khiển; chưa có đấu trực tiếp hai người. Có chat toàn cầu và chợ người chơi. Chợ đen vẫn là NPC vendor. Khi test trên máy không có `DATABASE_URL`, dữ liệu tài khoản nằm trong `.data/players.json` (được gitignore); không commit hoặc xóa nếu muốn giữ nhân vật. Khi cấu hình `DATABASE_URL`, backend lưu toàn bộ thế giới bằng PostgreSQL/Neon với giao dịch khóa hàng; phản hồi thành công chỉ gửi sau khi lưu. Phiên đăng nhập lưu bền vững bằng hash token, giữ qua restart, thu hồi khi đăng xuất/xóa tài khoản. Production bắt buộc PostgreSQL và cookie Secure. Backend hiện dùng một hàng JSONB cho thế giới, phù hợp triển khai ban đầu; chưa có kiểm thử tải để cam kết số người đồng thời. Xem [Neon + Render](docs/neon-render.md) để cấu hình, chuyển tài khoản JSON và sao lưu.
 
 Thế giới, tên và văn bản trong game là nội dung riêng; không sử dụng tài sản hoặc dữ liệu của CyberCode Online.
 
@@ -172,6 +172,6 @@ Dấu `?` mỗi tầng mở lời đề nghị đổi hai linh kiện lấy 30 c
 
 **Phối hợp thật:** tài khoản mở phòng trong cửa dungeon, đặt tên 3–40 ký tự và mật khẩu tùy chọn 4–64 ký tự. Mật khẩu băm scrypt trên server, không gửi qua API đọc. Runner phải ở cùng khu vực, đủ điều kiện đường tàu/cấp và còn EN; tối đa bốn người đang trong phòng. Phòng tập đoàn chỉ cùng thành viên mới xem/gia nhập. Địch dùng HP/khiên chung; mỗi người có HP, vị trí, rương và phần thưởng hoàn thành riêng. Thưởng một địch chỉ cấp một lần cho từng thành viên vẫn trong phòng, đóng góp ít nhất 20% tổng HP + khiên và không cao hơn địch quá 12 cấp. Server cộng đóng góp từ sát thương thực, không nhận số từ client. Một địch chết mở đường/boss cho mọi người, kể cả người không nhận thưởng. Đồng đội hiển thị bằng `◉`, cập nhật tối đa mỗi năm giây.
 
-Rời, thua hoặc hoàn thành sẽ không thể vào lại cùng phòng. Phòng hết hạn sau hai giờ không có hành động dungeon thành công, giữ loot đã nhận. Người vào muộn bắt đầu tầng một của cùng lượt, boss đã hạ vẫn được dọn; rương còn riêng. Các phòng, HP và sổ thưởng lưu qua restart, cần đăng nhập lại vì phiên vẫn ở RAM. Nhiều người có thể ở các tầng khác nhau; đây chưa phải mạng phòng nhiều cửa của CCO hoặc mô hình MMO nhiều tiến trình. Chưa có hồi máu đồng đội AOE.
+Rời, thua hoặc hoàn thành sẽ không thể vào lại cùng phòng. Phòng hết hạn sau hai giờ không có hành động dungeon thành công, giữ loot đã nhận. Người vào muộn bắt đầu tầng một của cùng lượt, boss đã hạ vẫn được dọn; rương còn riêng. Các phòng, HP, sổ thưởng và phiên đăng nhập lưu qua restart. Nhiều người có thể ở các tầng khác nhau; đây chưa phải mạng phòng nhiều cửa của CCO hoặc mô hình MMO nhiều tiến trình. Chưa có hồi máu đồng đội AOE.
 
 **Điểm danh và hợp đồng ngày:** ngày mới lúc 00:00 Việt Nam. Điểm danh một lần/ngày theo chu kỳ bảy ngày: 40–160 credits, 1–4 linh kiện, 1 thuốc (ngày bảy là 3 thuốc). Bỏ ngày đặt lại chuỗi. Ba hợp đồng yêu cầu năm địch PvE, hai bản in và một lượt dungeon; tiến trình tính từ lần kết nối/hành động đầu ngày, không tính lại lịch sử. Phải nhận thưởng ngoài giao tranh/dungeon/công việc; server tính ngày và phần thưởng. Chế độ khách dùng đồng hồ thiết bị. Tất cả thưởng tràn túi giữ cùng quy tắc hộp thư bảy ngày.
