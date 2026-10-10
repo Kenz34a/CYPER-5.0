@@ -109,3 +109,7 @@ Trước khi đưa ra cửa hàng, chọn app ID riêng của bạn (hiện `com
 ## Đăng nhập Google
 
 v0.13 hỗ trợ Google qua trình duyệt hệ thống trên app. Cấu hình OAuth ở server HTTPS, app dùng cùng Web client với bản web; không đưa Client secret vào bản build. Xem [hướng dẫn bật Google](google-login.md). Dự án Android/iOS đã có scheme quay lại game; nếu đổi app ID cần đổi scheme đồng bộ.
+
+## Bố cục desktop v0.14
+
+Trên web rộng từ 1.200 px, ba cột hoạt động cùng lúc và dùng chung tài khoản: túi đồ, màn chơi, trò chuyện. Menu ☰ mở các trang trong cột giữa; nút Túi đồ/Trò chuyện trên thanh dưới đưa focus tới cột tương ứng. Cửa sổ hẹp hơn dùng giao diện theo trang; app Android/iOS giữ giao diện di động cả khi xoay ngang.
