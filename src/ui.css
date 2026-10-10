@@ -1,14 +1,14 @@
 /* A shared visual system over the feature layouts in style.css. */
 :root {
-  --bg: #0c121a;
-  --panel: #131d28;
-  --panel-raised: #192634;
-  --line: #283746;
-  --muted: #94a6b6;
-  --green: #72e2c0;
-  --cyan: #a3d6df;
-  --acid: #e5cc7a;
-  --text: #e5edf4;
+  --bg: #1b1e1f;
+  --panel: #202425;
+  --panel-raised: #292e2e;
+  --line: #3b4946;
+  --muted: #91aaa2;
+  --green: #bee1d6;
+  --cyan: #a9d5cd;
+  --acid: #dce649;
+  --text: #d0e2dc;
   --nav-height: calc(64px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
 }
 body { background: var(--bg); color: var(--text); font: 14px/1.55 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
@@ -18,7 +18,7 @@ button:hover:not(:disabled) { transform: none; filter: brightness(1.08); }
 button:active:not(:disabled) { filter: brightness(.9); }
 button:disabled { opacity: .45; }
 button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
-input, select, textarea { min-width: 0; max-width: 100%; background: #0f1924; color: var(--text); border: 1px solid var(--line); border-radius: 9px; padding: 11px 12px; }
+input, select, textarea { min-width: 0; max-width: 100%; background: #1b2422; color: var(--text); border: 1px solid var(--line); border-radius: 9px; padding: 11px 12px; }
 input::placeholder, textarea::placeholder { color: #8093a5; }
 input[type=checkbox], input[type=range] { accent-color: var(--green); }
 svg { vertical-align: middle; }
@@ -26,7 +26,7 @@ h1, h2, h3 { color: var(--text); letter-spacing: -.035em; }
 h1 { font-size: clamp(25px, 3vw, 36px); margin: 12px 0 16px; font-weight: 700; }
 h2 { font-size: 19px; }
 p { overflow-wrap: anywhere; }
-aside { width: 228px; padding: 26px 16px 16px; background: #0e1620; border-color: var(--line); }
+aside { width: 228px; padding: 26px 16px 16px; background: #1e2223; border-color: var(--line); }
 .brand { font: 750 25px system-ui, sans-serif; letter-spacing: .06em; }
 .brand span { display: inline; color: var(--green); font-size: 12px; letter-spacing: .12em; margin-left: 5px; }
 .sub-brand { font: 9px system-ui, sans-serif; letter-spacing: .13em; margin: 7px 0 18px; color: #879caf; }
@@ -38,9 +38,9 @@ aside nav { display: block; }
 .nav-group .nav .nav-label { width: auto; font: inherit; }
 .nav-group .nav.active { background: #72e2c014; color: var(--green); }
 .nav-group .nav small { font: 10px system-ui, sans-serif; background: #72e2c018; border-radius: 5px; padding: 1px 5px; }
-.aside-foot { position: sticky; bottom: -16px; padding: 15px 8px 12px; background: #0e1620; border-top: 1px solid var(--line); font-size: 9px; color: var(--green); }
+.aside-foot { position: sticky; bottom: -16px; padding: 15px 8px 12px; background: #1e2223; border-top: 1px solid var(--line); font-size: 9px; color: var(--green); }
 .main { margin-left: 228px; width: calc(100% - 228px); }
-header { height: 58px; padding: 0 30px; background: #0e1620; border-color: var(--line); letter-spacing: .06em; font: 11px system-ui, sans-serif; color: #a8bacb; }
+header { height: 58px; padding: 0 30px; background: #1e2223; border-color: var(--line); letter-spacing: .06em; font: 11px system-ui, sans-serif; color: #a8bacb; }
 header > span:first-of-type { font-weight: 650; }
 .wallet { display: flex; align-items: center; gap: 12px; font: 650 13px system-ui, sans-serif; color: var(--text); letter-spacing: 0; }
 .wallet small { color: var(--acid); font-size: 10px; font-weight: 500; padding-left: 12px; border-left: 1px solid var(--line); }
@@ -354,7 +354,7 @@ th { font-size: 10px; background: #192633; }
   .hud-settings { padding: 3px; }
   .hud-settings svg { width: 17px; height: 17px; }
   .chat-ticker { margin: 8px 16px 0; width: calc(100% - 32px); font-size: 9px; }
-  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: var(--nav-height); min-height: var(--nav-height); padding: 7px 8px calc(7px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))); background: #101a25f7; border-top: 1px solid #304251; backdrop-filter: blur(16px); z-index: 30; gap: 2px; }
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: var(--nav-height); min-height: var(--nav-height); padding: 7px 8px calc(7px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))); background: #1e2223f7; border-top: 1px solid #304251; backdrop-filter: blur(16px); z-index: 30; gap: 2px; }
   .bottom-nav button { flex: 1; display: grid; justify-items: center; align-content: center; position: relative; background: transparent; border: 0; color: #8a9faf; font: 500 9px system-ui, sans-serif; min-height: 44px; border-radius: 9px; padding: 5px 2px; gap: 3px; }
   .bottom-nav button > span { width: 21px; height: 21px; }
   .bottom-nav button > span svg { width: 21px; height: 21px; }

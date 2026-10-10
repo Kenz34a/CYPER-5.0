@@ -1,7 +1,8 @@
+import {queueLoot} from './loot.js';
 import {equipmentSlots} from './gear-rules.js';
 import {dungeonModes,modePlan,loreFor} from './dungeon-events.js';
 import {awardDungeonFragment} from './rail.js';
-import {ownsGear,receiveGear,receiveStack,blueprintDrop} from './inventory-state.js';
+import {ownsGear} from './inventory-state.js';
 import {gear,maps} from './content.js';
 import {startFight,stats,note,gain} from './game.js';
 import {createFloor,index} from './dungeon-layout.js';
@@ -25,14 +26,17 @@ export function stepDungeon(s,direction,random=Math.random){
  }
  d.x=x;d.y=y;d.steps++;if(!d.visited.includes(tile))d.visited.push(tile);
  if(cell==='C'){
-  d.cells[tile]='.';d.chests++;blueprintDrop(s,equipmentSlots[(d.chests+(d.floor-1)*3)%equipmentSlots.length]);const m=maps.find(m=>m.id===d.map);const credits=20+m.level*5;s.credits+=credits;s.scrap=(s.scrap??6)+2;note(s,`Mở rương: +${credits} ₡, +2 linh kiện.`);
-  const pool=gear.filter(g=>g.level<=s.level+1&&!ownsGear(s,g.id));if(random()<0.35&&pool.length){const item=pool[Math.floor(random()*pool.length)];receiveGear(s,item.id);note(s,`${s.itemInbox?.includes(item.id)?'Túi đầy, gửi vào hộp thư:':'Rương chứa'} ${item.name}.`);}
+  d.cells[tile]='.';d.chests++;
+  const slot=equipmentSlots[(d.chests+(d.floor-1)*3)%equipmentSlots.length],drops=[{kind:'stack',id:`bp-${slot}-0`,count:1},{kind:'stack',id:'ammo-material',count:3}];
+  const m=maps.find(m=>m.id===d.map),credits=20+m.level*5;s.credits+=credits;s.scrap=(s.scrap??6)+2;note(s,`Mở rương: +${credits} ₡, +2 linh kiện.`);
+  const pool=gear.filter(g=>g.level<=s.level+1&&!ownsGear(s,g.id));if(random()<0.35&&pool.length)drops.push({kind:'gear',id:pool[Math.floor(random()*pool.length)].id,count:1});
+  queueLoot(s,drops,{source:'Rương tiếp tế',description:'Bạn tìm thấy một thùng hàng trong hành lang. Bên trong vẫn còn vật tư dùng được.'});
  }else if(cell==='H'){d.cells[tile]='.';s.hp=Math.min(stats(s).maxHp,s.hp+35);s.energy=Math.min(30,s.energy+10);note(s,'Trạm cứu trợ: +35 HP, +10 EN.');}
  else if(cell==='T'){d.cells[tile]='.';const lore=loreFor(d.map);if(!s.loreFound?.includes(d.map))(s.loreFound??=[]).push(d.map);s.lastLore=lore;note(s,lore.title+': '+lore.text);}
  else if(cell==='Q'){d.cells[tile]='.';d.questFound=true;note(s,'Người giữ hầm đề nghị đổi 2 linh kiện lấy buff 10 phút.');}
  else if(cell==='X'){
   if(d.floor<3){s.dungeon=createFloor(d.map,d.run,d.floor+1,d.mode);note(s,`Đã xuống tầng ${d.floor+1}.`);}
-  else{const level=maps.find(m=>m.id===d.map).level;s.credits+=100+level*10;s.scrap=(s.scrap??6)+3;s.dungeonClears=(s.dungeonClears||0)+1;s.dungeonTokens=(s.dungeonTokens||0)+modePlan(d).tokens;receiveStack(s,'energy-cell',3);receiveStack(s,'antimatter',1);receiveStack(s,'nitron',2);note(s,'Thưởng dungeon: 2 pin Nitron; túi đầy sẽ gửi vào hộp thư.');awardDungeonFragment(s,d.map);s.dungeon=null;gain(s,50+level*5);note(s,`Hoàn thành dungeon 3 tầng: +${100+level*10} ₡, +3 linh kiện, +${50+level*5} XP.`);}
+  else{const level=maps.find(m=>m.id===d.map).level;s.credits+=100+level*10;s.scrap=(s.scrap??6)+3;s.dungeonClears=(s.dungeonClears||0)+1;s.dungeonTokens=(s.dungeonTokens||0)+modePlan(d).tokens;queueLoot(s,[{kind:'stack',id:'energy-cell',count:3},{kind:'stack',id:'antimatter',count:1},{kind:'stack',id:'nitron',count:2}],{source:'Hoàn thành phó bản',description:'Bạn đã thoát khỏi tầng cuối. Nhận số vật tư thu được từ chuyến thám hiểm.'});awardDungeonFragment(s,d.map);s.dungeon=null;gain(s,50+level*5);note(s,`Hoàn thành dungeon 3 tầng: +${100+level*10} ₡, +3 linh kiện, +${50+level*5} XP.`);}
  }
  return true;
 }

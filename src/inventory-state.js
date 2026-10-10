@@ -16,7 +16,7 @@ materials.push(...ammunition.map(v=>({...v,rarity:1,ammo:true})));
 export const stacks=s=>s.stacks??{balm:3,stim:1};
 export const bagSize=s=>s.inventory.length+Object.values(stacks(s)).filter(n=>n>0).length;
 export const hasRoom=(s,id)=>stacks(s)[id]>0||bagSize(s)<bagCapacity(s);
-export const ownsGear=(s,id)=>s.inventory.includes(id)||!!s.housing?.storage?.includes(id)||!!s.escrow?.includes(id)||!!s.itemInbox?.includes(id);
+export const ownsGear=(s,id)=>s.inventory.includes(id)||!!s.housing?.storage?.includes(id)||!!s.escrow?.includes(id)||!!s.itemInbox?.includes(id)||!!s.pendingLoot?.items.some(v=>v.kind==='gear'&&v.id===id);
 export function addStack(s,id,n=1){if(!hasRoom(s,id)||!Number.isSafeInteger(n)||n<1)return false;s.stacks??={...stacks(s)};s.stacks[id]=(s.stacks[id]||0)+n;return true;}
 export const inboxLifetime=7*86400000;
 export function receiveGear(s,id,{now=Date.now(),permanent=false}={}){if(!gear.some(g=>g.id===id)||ownsGear(s,id))return false;if(bagSize(s)<bagCapacity(s))s.inventory.push(id);else{(s.itemInbox??=[]).push(id);if(!permanent)(s.inboxGearExpiry??={})[id]=now+inboxLifetime;}return true;}

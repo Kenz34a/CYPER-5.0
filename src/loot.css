@@ -1,0 +1,27 @@
+.loot-screen {--loot-deck-height:120px;max-width:560px;width:100%;margin:0 auto;padding-bottom:calc(var(--loot-deck-height) + 24px)}
+.loot-heading {display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.loot-screen h1 {font-size:16px;color:#bedbd1;font-weight:500;line-height:1.5;margin:0}
+.loot-heading>span {font-size:9px;color:var(--muted)}
+.loot-screen blockquote {border:0;border-left:3px solid #657d73;background:none;padding:0 0 0 11px;margin:0 0 17px;font-size:13px;line-height:1.8;color:#c2dcd3}
+.loot-row {display:flex;align-items:center;gap:13px;min-height:74px;padding:16px 12px;border-bottom:1px solid #677d74;color:#c7ded4}
+.loot-row>div {min-width:0;flex:1}
+.loot-row b,.loot-row button {font-size:12px;font-weight:500;line-height:1.6;color:inherit}
+.loot-row button {padding:4px 0;min-height:32px;border:0;background:transparent;text-align:left;border-radius:0}
+.loot-row small {display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.loot-icon {display:flex;align-items:center;justify-content:center;flex-shrink:0;min-width:24px;font-size:19px;opacity:.75}
+.loot-icon svg {width:28px;height:28px;fill:currentColor}
+.loot-count {font-size:12px;color:#c2dcd3;white-space:nowrap}
+.loot-row.tier1 {color:#51be88}.loot-row.tier2 {color:#d8d640}.loot-row.tier3 {color:#ff286b}.loot-row.tier4 {color:#d976f3}.loot-row.tier5 {color:#75d7dd}
+.loot-capacity-hint {font-size:10px;line-height:1.8;color:var(--muted);margin:17px 12px}
+.loot-command-deck {position:fixed;left:var(--loot-left,16px);width:var(--loot-width,calc(100% - 32px));bottom:var(--loot-bottom,88px);z-index:21;display:grid;gap:8px;padding:10px 0 0;background:var(--bg);box-shadow:0 -10px 18px var(--bg)}
+.main .loot-command-deck>button,.main .loot-discard-confirm button {--loot-edge:#7c9388;position:relative;isolation:isolate;display:flex;align-items:center;gap:14px;min-height:48px;padding:12px 18px;text-align:left;background:var(--loot-edge);color:#c1ded4;border:0;border-radius:0;font-size:12px;clip-path:polygon(0 0,calc(100% - 13px) 0,100% 13px,100% 100%,13px 100%,0 calc(100% - 13px))}
+.main .loot-command-deck>button::before,.main .loot-discard-confirm button::before {content:'';position:absolute;inset:1px;z-index:-1;background:var(--bg);clip-path:polygon(0 0,calc(100% - 13px) 0,100% 13px,100% 100%,13px 100%,0 calc(100% - 13px))}
+.main .loot-command-deck>button[data-action=loot-discard-ask],.main .loot-discard-confirm button[data-action=loot-discard] {--loot-edge:#ff286b;color:#ff286b}
+.loot-command-deck>button svg {width:22px;height:22px;flex-shrink:0}
+.loot-discard-confirm {border:1px solid #ff286b66;padding:12px;background:var(--bg)}
+.loot-discard-confirm p {font-size:12px;line-height:1.7;margin:0 0 10px;color:#eac2cb}
+.loot-discard-confirm>div {display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.main .loot-discard-confirm button {font-size:11px;padding:10px;min-height:44px}
+.loot-command-deck button:focus-visible,.loot-row button:focus-visible {outline:2px solid #c1ded4;outline-offset:3px}
+.loot-active footer {display:none}
+@media(max-height:450px) {.loot-command-deck {gap:6px}.main .loot-command-deck>button {min-height:40px;padding:9px 14px}.loot-heading {margin-bottom:10px}}

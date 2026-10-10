@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {fresh,turn,rest,move,pvp,startFight,accept} from '../src/game.js';
 import {enterDungeon,leaveDungeon,stepDungeon} from '../src/dungeon.js';
 import {createFloor,index,WIDTH,HEIGHT} from '../src/dungeon-layout.js';
+import {lootAction} from '../src/loot.js';
 
 test('all 50 areas and 3 floors have connected paths to every object and sealed borders',()=>{
  for(let map=0;map<50;map++)for(let floor=1;floor<=3;floor++){
@@ -21,8 +22,8 @@ test('encounters resolve through combat, retreat restores position and kills cou
  while(s.combat)turn(s,'attack',()=>0.8);assert.equal(s.dungeon.cells[index(5,15)],'.');assert.equal(s.dungeon.defeated,1);assert.equal(s.progress['map0:enemy'],1);
 });
 test('boss opens exit, floor progression and completion reward cannot repeat',()=>{
- const s=fresh();enterDungeon(s);s.dungeon.x=13;s.dungeon.y=3;assert(stepDungeon(s,'up'));assert(s.combat.boss);s.combat.currentHp=1;turn(s,'attack',()=>0.8);assert(s.dungeon.bossDefeated);assert.equal(s.stacks.balm,6);assert(stepDungeon(s,'up'));assert.equal(s.dungeon.floor,2);
- for(let floor=2;floor<=3;floor++){s.dungeon.bossDefeated=true;s.dungeon.x=13;s.dungeon.y=2;const credits=s.credits;assert(stepDungeon(s,'up'));if(floor===3){assert.equal(s.credits,credits+110);assert.equal(s.dungeon,null);assert.equal(s.dungeonClears,1);assert.equal(s.stacks.nitron,2);assert(!stepDungeon(s,'up'));assert.equal(s.stacks.nitron,2);}}
+ const s=fresh();enterDungeon(s);s.dungeon.x=13;s.dungeon.y=3;assert(stepDungeon(s,'up'));assert(s.combat.boss);s.combat.currentHp=1;turn(s,'attack',()=>0.8);assert(s.dungeon.bossDefeated);assert(lootAction(s,{action:'loot-take',id:s.pendingLoot.id}));assert.equal(s.stacks.balm,6);assert(stepDungeon(s,'up'));assert.equal(s.dungeon.floor,2);
+ for(let floor=2;floor<=3;floor++){s.dungeon.bossDefeated=true;s.dungeon.x=13;s.dungeon.y=2;const credits=s.credits;assert(stepDungeon(s,'up'));if(floor===3){assert.equal(s.credits,credits+110);assert.equal(s.dungeon,null);assert.equal(s.dungeonClears,1);assert(lootAction(s,{action:'loot-take',id:s.pendingLoot.id}));assert.equal(s.stacks.nitron,2);assert(!stepDungeon(s,'up'));assert.equal(s.stacks.nitron,2);}}
 });
 test('defeat closes the expedition; depleted energy blocks encounters without moving',()=>{
  const s=fresh();enterDungeon(s);stepDungeon(s,'left',()=>0.8);s.energy=1;assert(!stepDungeon(s,'left'));assert.equal(s.dungeon.x,6);s.energy=5;stepDungeon(s,'left');s.hp=1;s.combat.attack=100;s.combat.currentHp=10000;turn(s,'attack',()=>0.8);assert.equal(s.dungeon,null);assert.equal(s.combat,null);assert(s.hp>0);assert(s.inventory.includes('gear0'));assert(rest(s));

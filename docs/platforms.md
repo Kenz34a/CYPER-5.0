@@ -115,3 +115,5 @@ v0.13 hỗ trợ Google qua trình duyệt hệ thống trên app. Cấu hình O
 v0.15 bổ sung màn chiến đấu cho web và app: hình quái, nhật ký riêng từng trận, sinh lực/lá chắn hai bên và cụm thuốc/vũ khí cố định. Tài nguyên và lượt đánh dùng cùng luật ở server/khách. Trên điện thoại xoay ngang, cụm điều khiển chuyển sang bên phải và có thể cuộn khi màn hình thấp.
 
 Trên web rộng từ 1.200 px, ba cột hoạt động cùng lúc và dùng chung tài khoản: túi đồ, màn chơi, trò chuyện. Menu ☰ mở các trang trong cột giữa; nút Túi đồ/Trò chuyện trên thanh dưới đưa focus tới cột tương ứng. Cửa sổ hẹp hơn dùng giao diện theo trang; app Android/iOS giữ giao diện di động cả khi xoay ngang.
+
+v0.16 đồng bộ trang chi tiết trang bị và màn chiến lợi phẩm cho web, Android và iOS. Khe module thu gọn để đọc chỉ số dễ hơn; nút lấy/hủy chiến lợi phẩm nằm ngay trên menu đáy. Bản Android dùng versionCode 5, iOS dùng build 5.

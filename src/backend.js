@@ -1,3 +1,4 @@
+import {lootAction} from './loot.js';
 import {createGoogleAuth} from './google-auth.js';
 import {tokenHash,passwordHash as hash,passwordMatches,hasPassword,sessionUser as user,sessionKey,issueSession} from './auth-session.js';
 import {isAdmin,banned,muted,adminView,adminAction,publicManagement} from './admin.js';
@@ -122,6 +123,7 @@ async function handle(req,res,pathname,tx){
  case 'enter-dungeon':ok=enterDungeon(s,b.id||'normal',{corporation:!!db.corporations.find(c=>c.id===u.corporation)});break;
  case 'leave-dungeon':ok=leaveDungeon(s);break;
  case 'dungeon-step':ok=stepDungeon(s,b.id);break;
+ case 'loot-take':case 'loot-discard':ok=lootAction(s,b);break;
  case 'upgrade':ok=upgrade(s,b.id);break;
  case 'print':ok=printItem(s,b.id);break;
  case 'calibrate':ok=calibrateItem(s,b.id,{boost:b.boost===true,protect:b.protect===true});break;

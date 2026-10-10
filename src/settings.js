@@ -1,4 +1,4 @@
-export const appVersion='0.15';
+export const appVersion='0.16';
 export const settingDefaults={language:'vi',uiSize:'auto',animateNPC:true,animateWork:true,hideUpdates:false,disableTutorial:false,neverAskNotifications:true,newPromosOnly:false,music:false,musicVolume:65,soundEffects:true,soundNotices:true,soundMentions:true,soundMail:true,translateChat:false,showOriginal:true,translateOwn:false,disableChatEffects:false,disableSkipBanner:false,hideDamageMeter:false,disableVictory:false,notifyGuild:true,notifyWorld:true,rejectGifts:false,privateBadges:true,hideHandler:false,hideDonations:false,apartmentWall:false,hideNPC:false};
 export const unsupportedSettings=new Set(['newPromosOnly','translateChat','showOriginal','translateOwn','disableSkipBanner','rejectGifts','apartmentWall']);
 export function settings(s){const value={...settingDefaults,...s.settings};if(typeof s.privacy?.badges==='boolean')value.privateBadges=!s.privacy.badges;return value;}

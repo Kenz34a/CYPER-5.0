@@ -1,7 +1,8 @@
+import {queueLoot} from './loot.js';
 import {equipmentSlots,enemyProfile,markBonus,absorbShield} from './gear-rules.js';
 import {stacks} from './inventory-state.js';
 import {areaAccess} from './rail.js';
-import {bagSize,bagCapacity,ownsGear,receiveGear,receiveStack,blueprintDrop} from './inventory-state.js';
+import {bagSize,bagCapacity,ownsGear} from './inventory-state.js';
 import {record,activity} from './journal.js';
 import {pveKills} from './achievements.js';
 import {gear,maps,enemies,bosses,quests} from './content.js';
@@ -60,4 +61,21 @@ export function questProgress(s,q){return Math.min(q.count,Math.max(0,(s.progres
 export function claim(s,id){const q=quests.find(q=>q.id===id);if(s.work||s.combat||!q||!s.active.includes(id)||questProgress(s,q)<q.count)return false;s.active=s.active.filter(x=>x!==id);s.completed.push(id);s.credits+=q.credits;gain(s,q.xp);note(s,`Hoàn thành ${q.name}.`);return true;}
 export function rest(s){if(s.work||s.dungeon||s.combat)return false;s.hp=stats(s).maxHp;s.energy=30;note(s,'Nghỉ tại trạm an toàn. HP và năng lượng hồi đầy.');return true;}
 
-export function awardVictory(s,f,random=Math.random){s.credits+=f.credits;gain(s,f.xp);s.kills++;s.lastVictory={id:String(s.kills)+':'+Date.now(),name:f.name,xp:f.xp,credits:f.credits,pvp:f.pvp};if(f.pvp)s.wins++;else{s.scrap=(s.scrap??6)+(f.boss?3:1);const key=`${s.map}:${f.boss?'boss':'enemy'}`;s.progress[key]=(s.progress[key]||0)+1;if(f.boss){receiveStack(s,'balm',3);note(s,'Chiến lợi phẩm: 3 thuốc giảm đau; túi đầy sẽ gửi vào hộp thư.');s.hashProcessors=(s.hashProcessors||0)+1;note(s,'Nhặt được 1 bộ xử lý Hash.');if(s.map==='map19')note(s,'Thu được Chìa khóa bí mật Neon.');}if(pveKills(s)%3===0){blueprintDrop(s,equipmentSlots[Math.floor(pveKills(s)/3)%equipmentSlots.length],Math.min(5,Math.floor(Number(s.map.slice(3))/8)));s.aiCores=(s.aiCores||0)+1;note(s,'Nhặt được 1 lõi AI.');}const pool=gear.filter(g=>g.level<=s.level+2);if(random()<0.45&&pool.length){const item=pool[Math.floor(random()*pool.length)];if(receiveGear(s,item.id)){note(s,`${s.itemInbox?.includes(item.id)?'Túi đầy, gửi vào hộp thư:':'Nhặt được'} ${item.name}.`);}}}note(s,`Hạ ${f.name}: +${f.xp} XP, +${f.credits}₡.`);}
+export function awardVictory(s,f,random=Math.random){
+ s.credits+=f.credits;gain(s,f.xp);s.kills++;
+ s.lastVictory={id:String(s.kills)+':'+Date.now(),name:f.name,xp:f.xp,credits:f.credits,pvp:f.pvp};
+ if(f.pvp)s.wins++;
+ else{
+  const drops=[];s.scrap=(s.scrap??6)+(f.boss?3:1);
+  const key=`${s.map}:${f.boss?'boss':'enemy'}`;s.progress[key]=(s.progress[key]||0)+1;
+  if(f.boss){drops.push({kind:'stack',id:'balm',count:3});s.hashProcessors=(s.hashProcessors||0)+1;note(s,'Nhặt được 1 bộ xử lý Hash.');if(s.map==='map19')note(s,'Thu được Chìa khóa bí mật Neon.');}
+  if(pveKills(s)%3===0){
+   const slot=equipmentSlots[Math.floor(pveKills(s)/3)%equipmentSlots.length],rarity=Math.min(5,Math.floor(Number(s.map.slice(3))/8));
+   drops.push({kind:'stack',id:`bp-${slot}-${rarity}`,count:1});s.aiCores=(s.aiCores||0)+1;note(s,'Nhặt được 1 lõi AI.');
+  }
+  const pool=gear.filter(g=>g.level<=s.level+2&&!ownsGear(s,g.id));
+  if(random()<0.45&&pool.length)drops.push({kind:'gear',id:pool[Math.floor(random()*pool.length)].id,count:1});
+  if(queueLoot(s,drops,{source:'Chiến lợi phẩm',description:`Sau khi hạ ${f.name}, bạn tìm thấy những vật phẩm còn nguyên vẹn.`}))note(s,'Có chiến lợi phẩm đang chờ nhận.');
+ }
+ note(s,`Hạ ${f.name}: +${f.xp} XP, +${f.credits}₡.`);
+}
