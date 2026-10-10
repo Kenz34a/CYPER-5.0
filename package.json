@@ -7,7 +7,8 @@
     "start": "node --env-file-if-exists=.env server.js",
     "test": "node --test",
     "db:import": "node --env-file-if-exists=.env scripts/database-transfer.js import",
-    "db:export": "node --env-file-if-exists=.env scripts/database-transfer.js export"
+    "db:export": "node --env-file-if-exists=.env scripts/database-transfer.js export",
+    "admin": "node --env-file-if-exists=.env scripts/admin-role.js"
   },
   "dependencies": {
     "pg": "8.23.1"

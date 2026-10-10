@@ -78,3 +78,7 @@ File được ghi vào `.data/backups/`, có tài khoản và mật khẩu băm;
 PostgreSQL lưu toàn bộ thế giới trong một hàng JSONB. Mỗi yêu cầu game đọc thế giới trong transaction và khóa hàng đó; phản hồi thành công chỉ gửi sau COMMIT. Cách này giữ giao dịch chợ, thưởng dungeon và phiên nhất quán qua restart hoặc giữa hai tiến trình. Thất bại lưu sẽ rollback và trả lỗi; không xác nhận thưởng chưa lưu.
 
 Đây là bước triển khai ban đầu, **chưa phải kiến trúc MMO tải lớn**. Các yêu cầu API nối hàng trên cùng một khóa, kích thước thế giới và số phiên tăng theo người chơi. Trước khi mở rộng lớn cần đo tải, tách bảng tài khoản/phiên/chat/chợ/dungeon, giới hạn theo tài khoản và bổ sung quản trị cộng đồng. Giới hạn thử đăng nhập hiện theo IP, ở bộ nhớ từng tiến trình; nhiều instance không dùng chung bộ đếm. PvP vẫn là đấu với bản sao phòng thủ, chưa phải đấu trực tiếp hai người.
+
+## Cấp quyền admin
+
+Xem [hướng dẫn quản trị](admin.md). Đăng ký tài khoản, dùng Render Shell chạy `npm run admin -- grant ten_tai_khoan` (hoặc chạy trên máy với `.env` riêng trỏ Neon), rồi đăng nhập lại. Với JSON phải dừng server trước khi thay đổi quyền.

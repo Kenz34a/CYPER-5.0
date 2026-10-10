@@ -9,6 +9,10 @@ npm start
 
 Chạy các lệnh trong thư mục có `package.json`. Server mặc định dùng cổng 3000; có thể đặt `PORT`. Chạy kiểm thử bằng `npm test`. Xem [hướng dẫn test trên máy và triển khai Neon + Render](docs/neon-render.md); `render.yaml` đã chuẩn bị Web Service, cần tự cấu hình secret `DATABASE_URL`.
 
+## Quản trị
+
+Có bảng quản trị người chơi, khóa/cấm chat, thu hồi tin rao, hỗ trợ tài nguyên, thông báo, bảo trì và nhật ký. Đăng ký tài khoản trước, dừng server JSON, chạy `npm run admin -- grant ten_tai_khoan`, rồi khởi động và đăng nhập lại. Xem [hướng dẫn admin](docs/admin.md) cho Neon/Render và giới hạn. Quyền không được cấp từ trình duyệt.
+
 ## Vòng chơi
 
 Nhận nhiệm vụ → khám phá và chiến đấu theo lượt → nhận thưởng → mua và trang bị → mở khu vực mới. Nghỉ ở trạm hồi đầy HP và năng lượng. Hạ boss, nâng cấp nhân vật và thử đấu trường mô phỏng. Tiến trình tự lưu vào localStorage của trình duyệt; có thể đổi tên hoặc bắt đầu lại trong Kho dữ liệu.
@@ -54,7 +58,7 @@ Thế giới, tên và văn bản trong game là nội dung riêng; không sử 
 
 Thanh dưới: Bản đồ (trung tâm thành phố), Túi đồ, Nhiệm vụ, Trò chuyện, Hồ sơ. Thẻ du hành mở bản đồ, khu thương mại, chợ người chơi, tập đoàn, căn hộ và dungeon. Các thẻ hiển thị điều kiện khóa; chỉ dịch vụ đủ điều kiện mới thực hiện được. Trung tâm và Nhiệm vụ có HUD cấp/XP, HP, năng lượng và dòng chat gần nhất.
 
-Chat toàn cầu cập nhật mỗi 5 giây, giữ 100 tin gần nhất trên server. Chỉ tài khoản đăng nhập được gửi; tối đa 256 ký tự và cách nhau ít nhất 2 giây. Tin nhắn được hiển thị dưới dạng văn bản, không thực thi HTML. Chế độ khách được đọc chat. Có kênh tập đoàn và thư riêng. Chưa có báo cáo tin nhắn hoặc công cụ quản trị.
+Chat toàn cầu cập nhật mỗi 5 giây, giữ 100 tin gần nhất trên server. Chỉ tài khoản đăng nhập được gửi; tối đa 256 ký tự và cách nhau ít nhất 2 giây. Tin nhắn được hiển thị dưới dạng văn bản, không thực thi HTML. Chế độ khách được đọc chat. Có kênh tập đoàn và thư riêng. Có công cụ quản trị xóa tin, cấm chat và khóa tài khoản; chưa có luồng báo cáo tin nhắn từ người chơi.
 
 Chợ người chơi giữ món đồ khi rao bán, lấy khỏi túi và giữ nguyên hiệu chuẩn/module. Người bán đặt giá 1–1.000.000 credits, tối đa 10 tin; không thu phí. Người mua phải đủ cấp, đủ credits và chưa có cùng mẫu trong túi hoặc kho. Mỗi mẫu chỉ có một bản sao trong tài khoản, bao gồm đồ đang rao. Không thể mua lại chính tin của mình; có thể thu hồi miễn phí. Giao dịch mua chuyển đồ và tiền một lần trên server, kể cả khi có hai người mua đồng thời. Giao dịch/cất đồ/rao bán bị khóa trong dungeon và giao tranh. Chợ có tối đa 1.000 tin mở cho demo này.
 

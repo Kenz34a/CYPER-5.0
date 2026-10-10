@@ -1,3 +1,4 @@
+import {isAdmin,banned,muted,adminView,adminAction,publicManagement} from './admin.js';
 import {expeditionAction,expeditionHandles,syncExpedition} from './expeditions.js';
 import {prepareDaily,rewardAction} from './rewards.js';
 import {dungeonEventAction} from './dungeon-events.js';
@@ -23,6 +24,7 @@ import {cityAction} from './city.js';
 export const storage=await createStorage();
 const tokenHash=token=>createHash('sha256').update(token).digest('hex');
 function hash(password,salt){return scryptSync(password,salt,64).toString('hex');}
+const sessionSafe=u=>({...safe(u),admin:isAdmin(u)});
 const safe=u=>({id:u.id,name:u.state.name,level:u.state.level,wins:u.state.wins,losses:u.state.losses,reputation:u.state.reputation||0,score:Math.max(0,u.state.wins*25-u.state.losses*10)});
 function user(req,db){const match=(req.headers.cookie||'').match(/(?:^|;\s*)cyper_session=([a-f0-9]+)/);const session=match&&db.sessions[tokenHash(match[1])];if(!session||session.expires<Date.now())return null;return db.users.find(u=>u.id===session.id);}
 async function body(req){if(req.parsedBody!==undefined)return req.parsedBody;let text='';for await(const chunk of req){text+=chunk;if(text.length>4096)throw new Error('Yêu cầu quá lớn.');}return JSON.parse(text||'{}');}
@@ -60,17 +62,35 @@ async function handle(req,res,pathname,tx){
  const b=await body(req);const username=String(b.username||'').trim().toLowerCase(),password=String(b.password||'');
  if(!/^[a-z0-9_]{3,24}$/.test(username)||password.length<8||password.length>128){send(res,400,{error:'Tên tài khoản 3–24 ký tự a-z, số, _. Mật khẩu 8–128 ký tự.'});return true;}
  let u=db.users.find(u=>u.username===username);
- if(pathname==='/api/register'){if(u){send(res,409,{error:'Tên tài khoản đã được sử dụng.'});return true;}const salt=randomBytes(16).toString('hex');u={id:randomBytes(12).toString('hex'),username,salt,password:hash(password,salt),state:fresh()};u.state.name=username;db.users.push(u);await persist();}
+ if(pathname==='/api/register'){if(publicManagement(db).maintenance){send(res,503,{error:'Game đang bảo trì; đăng ký tạm dừng.'});return true;}if(u){send(res,409,{error:'Tên tài khoản đã được sử dụng.'});return true;}const salt=randomBytes(16).toString('hex');u={id:randomBytes(12).toString('hex'),username,salt,password:hash(password,salt),state:fresh()};u.state.name=username;db.users.push(u);await persist();}
  else if(!u||!timingSafeEqual(Buffer.from(hash(password,u.salt),'hex'),Buffer.from(u.password,'hex'))){send(res,401,{error:'Tài khoản hoặc mật khẩu không đúng.'});return true;}
+ if(banned(u)){send(res,403,{error:'Tài khoản đang bị khóa.'});return true;}
  if(syncExpedition(db,u)|migrateRail(u.state)|prepareDaily(u.state)|settleInbox(u.state).changed)await persist();
- const own=Object.entries(db.sessions).filter(([,v])=>v.id===u.id).sort((a,b)=>a[1].expires-b[1].expires);for(const [key] of own.slice(0,Math.max(0,own.length-31)))delete db.sessions[key];const token=randomBytes(32).toString('hex');db.sessions[tokenHash(token)]={id:u.id,expires:Date.now()+7*86400000};await persist();res.setHeader('Set-Cookie',`cyper_session=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=604800${process.env.COOKIE_SECURE==='1'||process.env.NODE_ENV==='production'?'; Secure':''}`);send(res,200,{state:u.state,user:safe(u)});return true;
+ const own=Object.entries(db.sessions).filter(([,v])=>v.id===u.id).sort((a,b)=>a[1].expires-b[1].expires);for(const [key] of own.slice(0,Math.max(0,own.length-31)))delete db.sessions[key];const token=randomBytes(32).toString('hex');db.sessions[tokenHash(token)]={id:u.id,expires:Date.now()+7*86400000};await persist();res.setHeader('Set-Cookie',`cyper_session=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=604800${process.env.COOKIE_SECURE==='1'||process.env.NODE_ENV==='production'?'; Secure':''}`);send(res,200,{state:u.state,user:sessionSafe(u)});return true;
  }
- if(pathname==='/api/rank'&&req.method==='GET'){send(res,200,{players:db.users.map(safe).sort((a,b)=>b.score-a.score||b.level-a.level).slice(0,100)});return true;}
+ if(pathname==='/api/rank'&&req.method==='GET'){send(res,200,{players:db.users.filter(u=>!banned(u)).map(safe).sort((a,b)=>b.score-a.score||b.level-a.level).slice(0,100)});return true;}
  if(pathname.startsWith('/api/profile/')&&req.method==='GET'){const target=db.users.find(v=>v.id===pathname.slice('/api/profile/'.length));send(res,target?200:404,target?{assets:publicAssets(target.state)}:{error:'Không tìm thấy runner.'});return true;}
  const u=user(req,db);
- if(pathname==='/api/world'&&req.method==='GET'){send(res,200,worldView(db,u));return true;}
+ if(pathname==='/api/world'&&req.method==='GET'){send(res,200,{...worldView(db,u),management:publicManagement(db)});return true;}
  if(!u){send(res,401,{error:'Cần đăng nhập.'});return true;}
- if(pathname==='/api/me'&&req.method==='GET'){if(syncExpedition(db,u)|migrateRail(u.state)|prepareDaily(u.state)|settleInbox(u.state).changed)await persist();send(res,200,{state:u.state,user:safe(u)});return true;}
+ if(banned(u)){send(res,403,{error:'Tài khoản đang bị khóa.'});return true;}
+ if(pathname==='/api/admin'&&req.method==='GET'){
+  if(!isAdmin(u)){send(res,403,{error:'Chỉ admin được sử dụng.'});return true;}
+  const q=new URL(req.url,'http://localhost').searchParams;
+  send(res,200,adminView(db,{query:q.get('query')||'',page:Number(q.get('page')||0),section:q.get('section')||'players',mode:storage.mode}));return true;
+ }
+ if(pathname==='/api/admin/action'&&req.method==='POST'){
+  if(!isAdmin(u)){send(res,403,{error:'Chỉ admin được sử dụng.'});return true;}
+  if(!throttle(req)){send(res,429,{error:'Thử quá nhiều lần. Chờ một phút.'});return true;}
+  const b=await body(req);
+  if(typeof b.password!=='string'||b.password.length<8||b.password.length>128||!timingSafeEqual(Buffer.from(hash(b.password,u.salt),'hex'),Buffer.from(u.password,'hex'))){send(res,403,{error:'Mật khẩu admin không đúng.'});return true;}
+  const result=adminAction(db,u,b);
+  if(!result.ok){send(res,result.status,{error:result.error});return true;}
+  if(!result.duplicate)await persist();
+  send(res,200,{ok:true,duplicate:!!result.duplicate,state:u.state,user:sessionSafe(u)});return true;
+ }
+
+ if(pathname==='/api/me'&&req.method==='GET'){if(syncExpedition(db,u)|migrateRail(u.state)|prepareDaily(u.state)|settleInbox(u.state).changed)await persist();send(res,200,{state:u.state,user:sessionSafe(u)});return true;}
  if(pathname==='/api/logout'&&req.method==='POST'){const token=(req.headers.cookie||'').match(/cyper_session=([a-f0-9]+)/)?.[1];if(token)delete db.sessions[tokenHash(token)];await persist();res.setHeader('Set-Cookie','cyper_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');send(res,200,{ok:true});return true;}
  if(pathname==='/api/account/delete'&&req.method==='POST'){
  if(!throttle(req)){send(res,429,{error:'Thử quá nhiều lần. Chờ một phút.'});return true;}
@@ -83,6 +103,8 @@ async function handle(req,res,pathname,tx){
  res.setHeader('Set-Cookie','cyper_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');send(res,200,{ok:true});return true;
  }
  if(pathname==='/api/action'&&req.method==='POST'){
+ if(publicManagement(db).maintenance&&!isAdmin(u)){send(res,503,{error:'Game đang bảo trì. Vui lòng quay lại sau.'});return true;}
+ if(muted(u)&&['chat','mail-send'].includes(req.parsedBody.action)){send(res,403,{error:'Tài khoản đang bị cấm chat/gửi thư.'});return true;}
  const b=await body(req),s=u.state;if(b.action==='expedition-join'&&!throttle(req)){send(res,429,{error:'Thử gia nhập quá nhiều lần. Chờ một phút.'});return true;}const migrated=syncExpedition(db,u)|migrateRail(s)|prepareDaily(s);let ok=false;const maintenance=settleInbox(s,{collect:false});const before=s.combat&&{...s.combat};
  if(!workAllows(s,b.action)){if(migrated||maintenance.changed)await persist();send(res,400,{error:'Nhận thưởng hoặc hủy công việc trước khi thực hiện hành động này.',state:s});return true;}
  if(expeditionHandles(s,b.action))ok=expeditionAction(db,u,b,{useItem:inventoryAction});else switch(b.action){case 'move':ok=move(s,b.id);break;case 'fight':ok=startFight(s,'enemy',false,b.id||'plain');break;case 'boss':ok=startFight(s,'boss');break;case 'attack':case 'skill':case 'special':case 'destructive':case 'heal':case 'escape':ok=turn(s,b.action);break;case 'rest':ok=rest(s);break;case 'buy':ok=buy(s,b.id,!!b.black,shopDiscount(db));break;case 'equip':ok=equip(s,b.id);break;case 'sell':ok=sell(s,b.id);break;case 'accept':ok=accept(s,b.id);break;case 'claim':ok=claim(s,b.id);break;
@@ -103,7 +125,7 @@ async function handle(req,res,pathname,tx){
  }
  if(!ok){if(migrated||maintenance.changed)await persist();send(res,400,{error:'Chưa đủ điều kiện thực hiện hành động này.',state:s});return true;}
  if(before?.opponent&&s.combat===null&&b.action!=='escape'){const opponent=db.users.find(v=>v.id===before.opponent);if(opponent){note(opponent.state,`${s.name} vừa kết thúc trận đấu bất đồng bộ với bản sao phòng thủ của bạn.`);}}
- settleInbox(s);await persist();send(res,200,{state:s,user:safe(u)});return true;
+ settleInbox(s);await persist();send(res,200,{state:s,user:sessionSafe(u)});return true;
  }
  send(res,404,{error:'Không tìm thấy API.'});
  return true;

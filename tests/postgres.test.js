@@ -32,6 +32,10 @@ test('PostgreSQL: two servers share accounts/sessions, atomic rewards, rollback,
     const child = spawn(process.execPath, ['scripts/database-transfer.js', command, file], {cwd: new URL('..', import.meta.url), env, stdio: 'ignore'});
     return (await once(child, 'exit'))[0];
   }
+  async function role(command, username) {
+    const child = spawn(process.execPath, ['scripts/admin-role.js', command, username], {cwd: new URL('..', import.meta.url), env, stdio: 'ignore'});
+    return (await once(child, 'exit'))[0];
+  }
   let storage;
   try {
     storage = await createStorage({databaseUrl, production: true});
@@ -72,6 +76,22 @@ test('PostgreSQL: two servers share accounts/sessions, atomic rewards, rollback,
     assert.equal((await req(1, '/api/logout', {}, cookie)).status, 200);
     assert.equal((await req(0, '/api/me', null, cookie)).status, 401);
     assert.equal((await req(0, '/api/rank')).data.players.length, 1);
+    const playerLogin = await req(0, '/api/login', {username: 'pg_runner', password});
+    assert.equal((await req(1, '/api/admin', null, playerLogin.cookie)).status, 403);
+    assert.equal(await role('grant', 'pg_runner'), 0);
+    assert.equal((await req(1, '/api/me', null, playerLogin.cookie)).status, 401);
+    const admin = await req(1, '/api/login', {username: 'pg_runner', password});
+    assert.equal(admin.data.user.admin, true);
+    const target = await req(0, '/api/register', {username: 'pg_target', password});
+    const grant = {action: 'grant', id: target.data.user.id, resource: 'credits', amount: 100,
+      password, confirm: true, reason: 'PostgreSQL admin verification', requestId: 'postgres-admin-grant-01', issuedAt: Date.now()};
+    const support = await Promise.all([req(0, '/api/admin/action', grant, admin.cookie), req(1, '/api/admin/action', grant, admin.cookie)]);
+    assert(support.every(v => v.status === 200)); assert.equal(support.filter(v => v.data.duplicate).length, 1);
+    assert.equal((await req(0, '/api/me', null, target.cookie)).data.state.credits, 280);
+    assert.equal((await req(1, '/api/admin?section=audit', null, admin.cookie)).data.audit.filter(v => v.action === 'grant').length, 1);
+    await stop(0); await start(0);
+    assert.equal((await req(0, '/api/me', null, admin.cookie)).data.user.admin, true);
+    assert.equal((await req(0, '/api/admin?section=audit', null, admin.cookie)).data.audit.filter(v => v.action === 'grant').length, 1);
     await assert.rejects(readFile(path.join(directory, 'players.json')), {code: 'ENOENT'});
   } finally {
     await stop(0); await stop(1);
