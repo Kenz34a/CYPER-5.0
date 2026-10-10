@@ -9,6 +9,7 @@ import {settingsAction} from './settings.js';
 import {removeAccountData} from './account-data.js';
 import {migrateRail,railAction} from './rail.js';
 import {workAction} from './work.js';
+import {afkBoostState} from './afk-effects.js';
 import {workAllows} from './work-rules.js';
 import {settleInbox} from './inventory-state.js';
 import {inventoryAction} from './inventory.js';
@@ -124,6 +125,7 @@ async function handle(req,res,pathname,tx){
  case 'leave-dungeon':ok=leaveDungeon(s);break;
  case 'dungeon-step':ok=stepDungeon(s,b.id);break;
  case 'dungeon-move':ok=moveDungeon(s,b.id);break;
+ case 'work-start':ok=workAction(s,b,Date.now(),{boosts:afkBoostState(db)});break;
  case 'loot-take':case 'loot-discard':ok=lootAction(s,b);break;
  case 'upgrade':ok=upgrade(s,b.id);break;
  case 'print':ok=printItem(s,b.id);break;

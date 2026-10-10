@@ -5,6 +5,7 @@ import {randomBytes} from 'node:crypto';
 import {gear} from './content.js';
 import {note} from './game.js';
 import {activity} from './journal.js';
+import {afkWorldAction,afkWorldView} from './afk-world.js';
 
 export const funds=[
  {id:'global',name:'Quỹ tiệc toàn cầu',target:10000,hour:0,discount:5},
@@ -21,7 +22,7 @@ function fundView(db,now){const data=donations(db,now),hour=new Date(now+7*36000
 export function shopDiscount(db,now=Date.now()){return fundView(db,now).filter(f=>f.active).reduce((n,f)=>n+f.discount,0)/100;}
 export function worldView(db,viewer,now=Date.now()){
  const decorate=m=>{const author=db.users.find(u=>u.id===m.author);return {...m,name:author?.state.name||'Runner',level:author?.state.level||1,corporationName:db.corporations.find(c=>c.id===author?.corporation)?.name||'',chatSkin:author?publicAssets(author.state).chatSkin:null};};
- return {expeditions:expeditionList(db,viewer,now),party:expeditionParty(db,viewer),day:today(now),timezone:'Asia/Ho_Chi_Minh',funds:fundView(db,now),discount:shopDiscount(db,now),kills:db.users.reduce((n,u)=>n+Object.entries(u.state.progress).filter(([k])=>/^map\d+:(enemy|boss)$/.test(k)).reduce((a,[,v])=>a+v,0),0),
+ return {afk:afkWorldView(db,now),expeditions:expeditionList(db,viewer,now),party:expeditionParty(db,viewer),day:today(now),timezone:'Asia/Ho_Chi_Minh',funds:fundView(db,now),discount:shopDiscount(db,now),kills:db.users.reduce((n,u)=>n+Object.entries(u.state.progress).filter(([k])=>/^map\d+:(enemy|boss)$/.test(k)).reduce((a,[,v])=>a+v,0),0),
  messages:db.messages.filter(m=>!m.channel||m.channel==='global').map(decorate),
  guildMessages:viewer?.corporation?db.messages.filter(m=>m.channel==='guild'&&m.corporation===viewer.corporation).map(decorate):[],
  mail:viewer?db.mail.filter(m=>m.recipient===viewer.id||m.sender===viewer.id).slice(-200).map(m=>({...m,senderName:db.users.find(u=>u.id===m.sender)?.state.name||'Runner',recipientName:db.users.find(u=>u.id===m.recipient)?.state.name||'Runner'})):[],
@@ -52,6 +53,6 @@ export function worldAction(db,u,b,now=Date.now()){
  case 'corp-create':{const name=typeof b.text==='string'?b.text.trim():'';if(!idle(s)||u.corporation||s.credits<500||name.length<3||name.length>32||db.corporations.length>=200||db.corporations.some(c=>c.name.toLocaleLowerCase('vi')===name.toLocaleLowerCase('vi')))return false;const c={id:uid(),name,leader:u.id};db.corporations.push(c);u.corporation=c.id;s.credits-=500;note(s,`Thành lập tập đoàn ${name}.`);return true;}
  case 'corp-join':{const c=db.corporations.find(c=>c.id===b.id);if(!idle(s)||u.corporation||!c||db.users.filter(v=>v.corporation===c.id).length>=20)return false;u.corporation=c.id;note(s,`Gia nhập ${c.name}.`);return true;}
  case 'corp-leave':{const c=db.corporations.find(c=>c.id===u.corporation);if(!idle(s)||!c)return false;delete u.corporation;const next=db.users.find(v=>v.corporation===c.id);if(!next)db.corporations=db.corporations.filter(v=>v.id!==c.id);else if(c.leader===u.id)c.leader=next.id;note(s,`Rời tập đoàn ${c.name}.`);return true;}
- default:return false;
+ default:return afkWorldAction(db,u,b,now);
  }
 }

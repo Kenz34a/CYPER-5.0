@@ -1,0 +1,33 @@
+import {jobs,workPlan} from './work.js';
+import {workPanel} from './work-view.js';
+import {afkOffers,afkEventText} from './afk-effects.js';
+import {supplies,materials} from './inventory-state.js';
+export const afkDuration=seconds=>[Math.floor(seconds/3600),Math.floor(seconds%3600/60),seconds%60].map(v=>String(v).padStart(2,'0')).join(':');
+const number=v=>v.toLocaleString('vi');
+export function afkBoostPanel({s,world,online,esc,button}){
+ const boost=world?.afk||{},active=id=>id==='speed'?(boost.speed||0)>=80:id==='reward'?(boost.reward||1)>1:id==='xp'?(boost.xp||0)>0:false;
+ return `<section class="afk-boosts"><div class="section-label">BUFF TOÀN SERVER <span>${boost.waiting||0} ĐANG CHỜ</span></div>${afkOffers.map(v=>{
+  const value=v.id==='speed'?`${boost.speed||0}%`:v.id==='reward'?`×${boost.reward||1}`:v.id==='xp'?`+${boost.xp||0}%`:'15 phút';
+  const expiry=boost[`${v.id}ExpiresAt`];
+  return `<article class="afk-boost ${active(v.id)?'is-active':''}"><span class="afk-boost-symbol" aria-hidden="true">${{skip:'»',speed:'◷',reward:'◇',xp:'↑'}[v.id]}</span><div><b>${v.name} <em>${value}</em></b><p>${v.description}</p>${expiry?`<small>Hết hiệu lực lúc ${new Date(expiry).toLocaleTimeString('vi',{hour:'2-digit',minute:'2-digit'})}</small>`:''}</div>${button(active(v.id)?'Đã kích hoạt':`${v.cost} Unit`,'afk-offer',v.id,!online||!!s.combat||!!s.dungeon||active(v.id)||(s.units||0)<v.cost||v.id==='skip'&&!boost.waiting)}</article>`;
+ }).join('')}<p class="hint">Số dư ${s.units||0} Unit · Unit chỉ có từ nạp. ${online?'Có bước xác nhận trước khi trừ Unit.':'Đăng nhập để dùng dịch vụ toàn server.'} Các buff áp dụng khi bắt đầu lượt mới; phần thưởng đã chốt giữ nguyên khi buff hết hạn.</p><details class="afk-support"><summary>Unit & hỗ trợ game</summary><p>Chơi và chờ AFK miễn phí. Bạn có thể dùng Unit đã nạp để bỏ qua cá nhân hoặc hỗ trợ mọi người bằng bỏ qua và buff toàn server. Cyberwear dùng credits của game.</p><p>Hiện tại admin xác nhận giao dịch nạp và cấp Unit. Chưa có cổng thanh toán tự động; trang này không thu tiền và không tạo đăng ký định kỳ.</p></details></section>`;
+}
+export function afkConfirmView({pending,s,esc,button}){
+ const offer=afkOffers.find(v=>v.id===pending.id);
+ return `<div class="modal-overlay"><section class="afk-confirm" role="dialog" aria-modal="true" aria-labelledby="afk-confirm-title"><small>UNIT / TOÀN SERVER</small><h2 id="afk-confirm-title">${esc(offer.name)}</h2><p>${offer.description}</p><div class="afk-confirm-price"><b>${offer.cost} Unit</b><span>Số dư ${s.units||0} Unit</span></div><p>Áp dụng cho mọi tài khoản trên server. Bạn có thể tiếp tục chờ miễn phí.</p><div class="actions">${button('Quay lại','afk-offer-cancel')}${button(pending.retry?'Thử lại cùng giao dịch':'Xác nhận dùng '+offer.cost+' Unit','afk-offer-confirm',offer.id,(s.units||0)<offer.cost)}</div></section></div>`;
+}
+export function areaAFKActions({s,esc,button}){
+ return `<section class="area-afk"><div class="section-label">HÀNH ĐỘNG AFK</div>${jobs.filter(v=>v.area).map(j=>{
+  const plan=workPlan(s,j.id);
+  return `<article class="work-card"><span class="work-icon" aria-hidden="true">${j.icon}</span><div><h2>${j.name.toUpperCase()}</h2><p>${j.description}</p><small>${afkDuration(j.seconds)} / lượt · ${j.aiCores?'Lõi AI ×1':`${j.energy} EN · Thu thập LV ${plan.areaLevel}`}</small>${plan.missing.map(v=>`<p class="travel-lock">${esc(v)}</p>`).join('')}<div class="work-start">${button('Chọn số lượt','work-prepare',j.id,!!s.work||!!s.combat||!!s.dungeon)}</div></div></article>`;
+ }).join('')}</section>`;
+}
+export function afkPlannerView({s,id,count,world,online,esc,button}){
+ const p=workPlan(s,id,count,{boosts:online?world?.afk||{}:{}});
+ if(!p)return '<p class="hint">Chọn một công việc trước.</p>';
+ const back=button('‹ Trở lại '+(jobs.find(v=>v.id===id).area?'khu vực':'khu thương mại'),'afk-back');
+ if(s.work)return `<section class="afk-planner">${back}${workPanel(s,button,esc)}${afkBoostPanel({s,world,online,esc,button})}</section>`;
+ const items=[...(p.reward.credits?[`${number(p.reward.credits)} credits`]:[]),...(p.reward.xp?[`${number(p.reward.xp)} XP nghề`]:[]),...(p.reward.characterXP?[`${number(p.reward.characterXP)} XP nhân vật`]:[]),...Object.entries(p.reward.fields).map(([id,n])=>`${id==='scrap'?'Linh kiện công nghệ':id} ×${number(n)}`),...Object.entries(p.reward.stacks).map(([id,n])=>`${[...supplies,...materials].find(v=>v.id===id)?.name||id} ×${number(n)}`)];
+ return `<section class="afk-planner">${back}<div class="afk-title"><span>${p.area&&jobs.find(v=>v.id===id).area?esc(p.area):'TRUNG TÂM CÔNG VIỆC'}</span><h1>${esc(p.name)}</h1></div><div class="afk-total-time"><strong>${afkDuration(p.seconds)}</strong><small>Tổng thời gian · ${count} lượt${p.boosts.speed?` · Đã giảm ${p.boosts.speed}%`:''}</small></div><div class="afk-preview"><div><h2>Yêu cầu</h2>${p.inputs.map(v=>`<p class="${v.have<v.need?'travel-lock':''}">${v.name} ×${number(v.need)} <small>/ có ${number(v.have)}</small></p>`).join('')}<small>Trừ một lần khi bắt đầu.</small></div><div><h2>Nhận được</h2>${items.slice(0,3).map(v=>`<p>${esc(v)}</p>`).join('')}${items.length>3?`<details class="afk-reward-details" data-ui-panel="afk-rewards"><summary>Vật tư · ${items.length-3} loại</summary>${items.slice(3).map(v=>`<p>${esc(v)}</p>`).join('')}</details>`:''}<small>Nhận khi hoàn tất. Túi đầy chuyển vật tư vào hộp thư.</small></div></div><div class="afk-count-controls"><label for="afk-count">Số lượt <small>Đủ tài nguyên cho ${p.maxCount} lượt</small></label><div class="afk-count-row">${button('Tối thiểu','afk-count-set','1')}<input id="afk-count" type="number" min="1" max="1000" step="1" value="${count}" aria-label="Số lượt AFK">${button('Tối đa','afk-count-set',String(Math.max(1,p.maxCount)))}</div><input id="afk-range" aria-label="Chọn số lượt AFK" type="range" min="1" max="${Math.max(2,p.maxCount,count)}" step="1" value="${count}"><div class="afk-count-steps">${[-1000,-100,-10,10,100,1000].map(n=>button(n>0?'+'+n:String(n),'afk-count-step',String(n))).join('')}</div></div>${p.missing.map(v=>`<p class="travel-lock" role="status">${esc(v)}</p>`).join('')}<div class="afk-start">${button('Bắt đầu · '+count+' lượt','work-start',id,!p.can)}</div><p class="hint">Mỗi nhân vật có một công việc. Trong lúc chờ, bạn có thể trò chuyện hoặc quản lý trang bị; hủy không hoàn lại tài nguyên.</p>${afkBoostPanel({s,world,online,esc,button})}</section>`;
+}
+export function afkEventsView(world,esc){return (world?.afk?.events||[]).slice(-5).map(v=>`<article class="afk-news"><small>SỰ KIỆN TOÀN SERVER · ${new Date(v.time).toLocaleTimeString('vi',{hour:'2-digit',minute:'2-digit'})}</small><p>${esc(afkEventText(v))}</p></article>`).join('');}

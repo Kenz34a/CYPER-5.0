@@ -27,6 +27,10 @@ v0.16 dùng nền than và chữ xanh nhạt thống nhất ở web/app, đưa c
 
 Đồ từ quái PvE, rương và phần thưởng kết thúc phó bản chờ trong danh sách chiến lợi phẩm. Chọn **Lấy tất cả** để nhận, hoặc **Hủy vật phẩm** và xác nhận để bỏ phần chưa nhận. XP, credits, linh kiện, lõi AI và mảnh khóa vẫn được cộng theo luật hiện có. Rương có thêm ba vật liệu đạn dược. Nút lấy/hủy cố định trên menu đáy ở web và app; có thể xem chi tiết đồ trước khi lấy. Túi đầy chuyển đồ đã lấy vào hộp thư trong 7 ngày. Danh sách chưa nhận lưu cùng nhân vật, không hết hạn tự động; các lần rơi tiếp theo được gộp. Server kiểm tra mã danh sách, cấp đồ một lần và bỏ qua ID/số lượng do client tự gửi.
 
+## AFK theo lượt và buff toàn server
+
+v0.18 thêm màn chuẩn bị AFK theo số lượt: xem tổng thời gian, tài nguyên và thưởng; bot dùng lõi AI, thu thập có cấp nghề. Unit hỗ trợ bỏ qua cá nhân, giảm 15 phút cho toàn server và buff cộng đồng giảm thời gian/tăng thưởng/XP. Mọi khoản dùng Unit có xác nhận, server kiểm tra và chống trừ lặp. Thẻ đang mặc có khung cắt góc, màu độ hiếm, mạch điện, khe module và cấp trang bị. Xem [cách dùng và bảng phí AFK](docs/afk.md).
+
 ## Màn chiến đấu
 
 Màn chiến đấu v0.15 hiển thị hình quái dạng vector, máu/lá chắn của hai bên, nhật ký riêng từng trận và số đạn thật. Ba khe vật phẩm nhanh dùng cùng cấu hình trong Túi đồ. Cụm điều khiển cố định trong màn chơi; khi điện thoại xoay ngang, điều khiển nằm bên phải. Thuốc vẫn dùng một lượt và quái phản công theo luật hiện có.

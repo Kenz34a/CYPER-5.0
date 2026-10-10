@@ -119,3 +119,6 @@ Trên web rộng từ 1.200 px, ba cột hoạt động cùng lúc và dùng chu
 v0.16 đồng bộ trang chi tiết trang bị và màn chiến lợi phẩm cho web, Android và iOS. Khe module thu gọn để đọc chỉ số dễ hơn; nút lấy/hủy chiến lợi phẩm nằm ngay trên menu đáy. Bản Android dùng versionCode 5, iOS dùng build 5.
 
 v0.16.1 đóng gói font CYPER Sans (SIL OFL 1.1) cho web/offline/app, tăng cỡ chữ nhỏ và tương phản. Android dùng versionCode 6; iOS dùng build 6.
+
+
+v0.18 đồng bộ AFK theo số lượt, bot/thu thập, buff Unit toàn server và thẻ trang bị cho web/app. Android dùng versionCode 8; iOS dùng build 8. API và giao dịch chạy trên server đã chọn, chơi khách tiếp tục chạy cục bộ.

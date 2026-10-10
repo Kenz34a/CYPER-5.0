@@ -1,0 +1,331 @@
+.afk-planner{max-width:720px;
+margin:0 auto;
+display:grid;
+gap:18px}
+.afk-title{margin-top:8px}
+.afk-title>span{font-size:12px;
+color:var(--muted);
+letter-spacing:.08em}
+.afk-title h1{font-size:clamp(23px,3vw,32px);
+line-height:1.25;
+margin:6px 0 0;
+color:var(--acid)}
+.afk-total-time{text-align:center;
+padding:8px 0 12px}
+.afk-total-time strong{display:block;
+font-size:clamp(42px,7vw,64px);
+font-weight:600;
+line-height:1.2;
+font-variant-numeric:tabular-nums;
+color:var(--green)}
+.afk-total-time small{display:block;
+color:var(--muted);
+margin-top:6px}
+.afk-preview{display:grid;
+grid-template-columns:1fr 1.3fr;
+border:1px solid #515c58;
+background:#202323;
+gap:24px;
+padding:18px}
+.afk-preview h2{font-size:15px;
+margin:0 0 12px;
+color:var(--green)}
+.afk-preview p{margin:7px 0;
+font-size:14px;
+line-height:1.5}
+.afk-preview small{color:var(--muted);
+font-size:12px}
+.afk-count-controls{display:grid;
+gap:14px}
+.afk-count-controls label{display:flex;
+justify-content:space-between;
+gap:10px}
+.afk-count-controls label small{color:var(--muted)}
+.afk-count-row{display:grid;
+grid-template-columns:1fr 100px 1fr;
+gap:14px;
+align-items:center}
+.afk-count-row button{padding:10px}
+.afk-count-row input{text-align:center;
+min-width:0;
+width:100%;
+font-size:18px;
+font-weight:600;
+padding:8px;
+border:1px solid #61706a;
+border-radius:3px;
+background:#262b28;
+color:var(--text)}
+.afk-count-controls input[type=range]{width:100%;
+accent-color:var(--green);
+height:28px}
+.afk-count-steps{display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:8px}
+.afk-count-steps button{padding:9px 3px;
+font-size:13px;
+min-height:40px}
+.afk-start button{width:100%;
+min-height:48px;
+font-weight:650;
+color:#181b14;
+background:var(--acid);
+border-color:var(--acid)}
+.afk-start button:disabled{background:#333b31;
+color:#b8c3b0;
+border-color:#46513e}
+.afk-boosts{display:grid;
+gap:10px;
+margin-top:18px}
+.afk-boosts>.section-label{margin:0 0 3px}
+.afk-boost{display:grid;
+grid-template-columns:32px minmax(0,1fr) auto;
+gap:12px;
+padding:14px;
+border:1px solid #55635d;
+border-radius:3px;
+background:#202421;
+align-items:center}
+.afk-boost.is-active{border-color:#a8b943;
+background:linear-gradient(110deg,#30351c,#202421)}
+.afk-boost-symbol{font-size:24px;
+color:var(--green)}
+.afk-boost b{font-size:14px;
+font-weight:600}
+.afk-boost em{font-style:normal;
+color:var(--acid);
+margin-left:5px}
+.afk-boost p{font-size:12px;
+line-height:1.65;
+color:var(--muted);
+margin:4px 0}
+.afk-boost small{font-size:11px;
+color:var(--green)}
+.afk-boost button{padding:10px;
+min-height:42px;
+font-size:12px;
+background:var(--acid);
+border-color:var(--acid);
+color:#181b14;
+font-weight:650;
+white-space:normal}
+.afk-boost button:disabled{background:#2b3229;
+border-color:#4f5b40;
+color:#bac5ae;
+opacity:1}
+.afk-support{border-top:1px solid #45524b;
+padding-top:12px;
+font-size:13px;
+color:var(--muted)}
+.afk-support p{line-height:1.7}
+.afk-confirm-price{display:flex;
+justify-content:space-between;
+gap:12px;
+align-items:center;
+padding:16px 0;
+border-block:1px solid #4a594f}
+.afk-confirm-price b{font-size:28px;
+color:var(--acid)}
+.afk-confirm .actions button:last-child{background:var(--acid);
+color:#181b14;
+font-weight:650}
+.afk-confirm p{line-height:1.7}
+.afk-news{padding:12px;
+border:1px solid #8d9845;
+background:#25291c;
+margin:0 0 12px}
+.afk-news small{font-size:10px;
+color:var(--acid)}
+.afk-news p{font-size:13px;
+line-height:1.65;
+margin:5px 0}
+.area-afk{margin:18px 0;
+display:grid;
+gap:12px}
+.area-afk .section-label{margin:0}
+.area-afk .work-card{margin:0}
+.area-afk .work-icon{font-size:36px}
+.afk-planner>.hint{margin:0}
+.afk-planner .work-progress{margin:0}
+
+/* Narrow colored equipment frames, with the level and fitted sockets visible. */
+.loadout{display:grid;
+grid-template-columns:minmax(0,1fr);
+gap:16px;
+max-width:660px;
+margin:0 auto}
+.equipment-tile.gear-card{--tier:#d3dfd8;
+padding:0;
+border:0;
+background:none;
+border-radius:0;
+overflow:visible;
+min-width:0}
+.equipment-tile.tier1{--tier:#67c58c}
+.equipment-tile.tier2{--tier:#dce649}
+.equipment-tile.tier3{--tier:#ff679c}
+.equipment-tile.tier4{--tier:#e362da}
+.equipment-tile.tier5{--tier:#70d6e8}
+.equipment-tile .gear-label{display:flex;
+justify-content:space-between;
+align-items:end;
+font-size:11px;
+line-height:1.3;
+color:var(--tier);
+padding:0;
+border:0;
+height:21px;
+gap:10px}
+.equipment-tile .gear-label>span:first-child{color:#152119;
+background:var(--tier);
+padding:4px 14px 3px 10px;
+clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,0 100%);
+font-weight:700}
+.equipment-tile .gear-label>span:last-child{padding:0 2px 4px;
+font-weight:600;
+text-align:right}
+.equipment-tile .gear-body{position:relative;
+margin:0;
+border:1px solid var(--tier);
+background-color:#1e2220;
+background-image:linear-gradient(90deg,#1e2220e8,#1e2220a3),url('/src/circuit.svg');
+background-size:cover;
+background-position:right;
+clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+border-radius:0}
+.equipment-tile.tier0 .gear-body,.equipment-tile.tier1 .gear-body{background-image:none}
+.equipment-tile .gear-open{display:grid;
+grid-template-columns:48px minmax(0,1fr);
+align-items:center;
+gap:15px;
+position:relative;
+width:100%;
+text-align:left;
+padding:14px 18px 27px;
+background:transparent;
+border:0;
+border-radius:0;
+min-height:100px;
+white-space:normal}
+.equipment-tile .gear-icon{color:var(--tier);
+margin:0;
+width:48px;
+height:auto}
+.equipment-tile .gear-icon svg{width:45px;
+height:45px;
+max-width:100%;
+fill:currentColor}
+.equipment-tile .gear-icon small{display:none}
+.equipment-tile .gear-info{min-width:0;
+display:grid;
+gap:6px;
+padding:0}
+.equipment-tile .gear-info strong{font-size:16px;
+font-weight:600;
+color:var(--tier);
+line-height:1.4;
+overflow-wrap:anywhere}
+.equipment-tile .gear-numbers{font-size:12px;
+line-height:1.6;
+color:#c0d0c7;
+white-space:normal}
+.equipment-tile .gear-sub{font-size:10px;
+color:#a8bdb0;
+line-height:1.5;
+white-space:normal}
+.equipment-tile .gear-grade{position:absolute;
+right:0;
+bottom:0;
+min-width:38px;
+padding:3px 9px 3px 16px;
+color:#152119;
+background:var(--tier);
+font-size:13px;
+font-weight:700;
+line-height:1.3;
+clip-path:polygon(10px 0,100% 0,100% 100%,0 100%);
+border:0;
+height:auto}
+.equipment-tile .gear-sockets{position:absolute;
+right:46px;
+bottom:7px;
+display:flex;
+gap:5px;
+align-items:center}
+.gear-sockets i{width:7px;
+height:7px;
+display:block;
+border:1px solid var(--tier);
+border-radius:50%;
+background:transparent}
+.gear-sockets i.filled{background:var(--tier)}
+.equipment-tile .gear-actions{border:1px solid #435147;
+border-top:0;
+padding:8px;
+gap:8px}
+.equipment-tile .gear-actions[hidden]{display:none}
+.loadout .empty-slot{border-radius:0;
+border-color:#46514b;
+background:#1d221f;
+min-height:65px}
+.quick-slots button{border-radius:0;
+clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.quick-slots small{color:var(--green)}
+
+@media(min-width:1180px){.workspace-inventory .equipment-tile .gear-open{grid-template-columns:32px minmax(0,1fr);
+padding:10px 10px 26px;
+gap:10px}
+.workspace-inventory .equipment-tile .gear-icon{width:32px}
+.workspace-inventory .equipment-tile .gear-info strong{font-size:13px}
+.workspace-inventory .equipment-tile .gear-numbers{font-size:11px}
+.workspace-inventory .equipment-tile .gear-sub{font-size:10px}
+}
+
+@media(max-width:600px){.afk-preview{gap:16px;
+padding:14px;
+grid-template-columns:1fr 1.2fr}
+.afk-count-row{gap:8px}
+.afk-count-steps{gap:5px}
+.afk-boost{grid-template-columns:24px minmax(0,1fr);
+padding:12px;
+gap:10px}
+.afk-boost button{grid-column:2;
+justify-self:start;
+min-width:104px}
+.afk-count-controls label{font-size:13px}
+.afk-count-controls label small{font-size:11px}
+.equipment-tile .gear-open{padding:12px 12px 26px;
+gap:12px;
+grid-template-columns:36px minmax(0,1fr)}
+.equipment-tile .gear-icon{width:36px}
+.equipment-tile .gear-info strong{font-size:14px}
+.equipment-tile .gear-numbers{font-size:11px}
+.afk-planner{gap:14px}
+.afk-title h1{font-size:23px}
+.afk-confirm-price{flex-wrap:wrap}
+}
+
+
+.afk-confirm{max-height:calc(100dvh - 32px);
+overflow:auto;
+width:min(540px,calc(100vw - 28px))}
+
+
+.modal-overlay>.afk-confirm{max-height:calc(100dvh - 44px);
+overflow-y:auto;
+overscroll-behavior:contain;
+background:#202623;
+border-color:#7a8e80;
+border-radius:4px;
+box-sizing:border-box}
+.afk-confirm h2{color:var(--acid)}
+.afk-planner>[data-action="afk-back"]{justify-self:start;background:transparent;border:0;border-radius:0;padding:4px 0;min-height:32px;color:var(--green);font-weight:500}
+.afk-count-row button,.afk-count-steps button{background:transparent;border-color:#61756b;color:var(--green);border-radius:0}
+.afk-reward-details{font-size:13px;
+margin:8px 0}
+.afk-reward-details summary{color:var(--green);
+cursor:pointer;
+line-height:1.6}
+.afk-reward-details p{padding-left:9px;
+border-left:1px solid #58644e}
+

@@ -40,3 +40,11 @@ Backend hỗ trợ file JSON để test trên máy hoặc PostgreSQL/Neon để 
 Chạm/click ô đích để tự tìm đường qua các ô đi được. Nhân vật dừng tại giao tranh hoặc khi mở chiến lợi phẩm; phím WASD và mũi tên vẫn dùng được. Server kiểm tra từng bước, tường, tầng/lượt và năng lượng trước khi bắt đầu trận đấu.
 
 Mỗi tầng cần hạ hết địch thường và boss mới mở rương/cửa tầng. Rương khóa vẫn đi qua được; UI hiển thị số quái còn lại. Trong phó bản phối hợp, quái chết được đồng bộ cho cả đội, rương là chiến lợi phẩm riêng. Sang tầng mới giữ phiên phối hợp và khóa lại theo quái của tầng mới.
+
+### AFK và trang bị (v0.18.0)
+
+Theo ảnh tham chiếu, thêm màn chọn số lượt, thời gian lớn, xem yêu cầu/thưởng trước khi bắt đầu và bot dùng lõi AI. Bot 2 lượt có thời gian gốc 30 phút, còn 6 phút khi giảm 80%. Thu thập có nghề và điều kiện cấp khu vực. Các công việc đào tạo cũ cũng hỗ trợ nhiều lượt. Phần thưởng dùng tài nguyên thực của CYPER; chưa có mọi vật phẩm/sự kiện hoặc xác suất rơi như bản gốc.
+
+Unit hỗ trợ cả bỏ qua cá nhân và toàn server theo lựa chọn của người dùng. Thêm buff giảm 40% cộng dồn tối đa 80%, thưởng ×4 và XP +80%, cùng thông báo chat. Đây là cơ chế riêng đã ghi [chi phí và phạm vi](afk.md); không sao chép tuyên bố Donation «chỉ mỹ phẩm» của game gốc vì CYPER có bỏ qua cá nhân và hiệu chuẩn dùng Unit. Chưa có thanh toán tự động.
+
+Thẻ trang bị hiển thị khung góc theo độ hiếm, loại trang bị, dấu, nền mạch, chỉ số, số khe module thực và cấp ở góc phải. Giữ font tiếng Việt rõ hơn thay vì dùng font nét mảnh trong ảnh.
