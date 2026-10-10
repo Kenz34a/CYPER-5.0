@@ -1,5 +1,7 @@
 // Shared explicit allowlist: never include backend, saves, credentials or native source.
 export const publicAssets = [
+  "/fonts/cyper-sans.woff2",
+  "/fonts/OFL.txt",
   "/src/ui.css",
   "/src/ui-shell.js",
   "/src/admin-view.js",

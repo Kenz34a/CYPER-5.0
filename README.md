@@ -21,6 +21,8 @@ v0.14 dùng ba cột khi cửa sổ web rộng từ 1.200 px: túi đồ bên tr
 
 ## Chi tiết trang bị và chiến lợi phẩm
 
+v0.16.1 cải thiện chữ: font CYPER Sans hỗ trợ tiếng Việt đóng gói ngoại tuyến, chữ nội dung 14 px, nhãn nhỏ 11–13 px và tương phản cao hơn.
+
 v0.16 dùng nền than và chữ xanh nhạt thống nhất ở web/app, đưa chi tiết trang bị về một cột: màu theo độ hiếm, hình trang bị mờ, chất lượng, hiệu chuẩn +0–+5 và chỉ số trước/sau nâng cấp. Ba khe module hiển thị trạng thái trống, đang lắp hoặc khóa; mở phần chọn khi cần lắp/thay. Khe 2 mở ở +2, khe 3 ở +4. Giữ nguyên chi phí và tác dụng module.
 
 Đồ từ quái PvE, rương và phần thưởng kết thúc phó bản chờ trong danh sách chiến lợi phẩm. Chọn **Lấy tất cả** để nhận, hoặc **Hủy vật phẩm** và xác nhận để bỏ phần chưa nhận. XP, credits, linh kiện, lõi AI và mảnh khóa vẫn được cộng theo luật hiện có. Rương có thêm ba vật liệu đạn dược. Nút lấy/hủy cố định trên menu đáy ở web và app; có thể xem chi tiết đồ trước khi lấy. Túi đầy chuyển đồ đã lấy vào hộp thư trong 7 ngày. Danh sách chưa nhận lưu cùng nhân vật, không hết hạn tự động; các lần rơi tiếp theo được gộp. Server kiểm tra mã danh sách, cấp đồ một lần và bỏ qua ID/số lượng do client tự gửi.

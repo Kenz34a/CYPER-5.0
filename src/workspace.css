@@ -6,11 +6,11 @@
     --panel: #202425;
     --panel-raised: #292e2e;
     --line: #3b4946;
-    --muted: #91aaa2;
+    --muted: #b2c3bd;
     --green: #bee1d6;
     --cyan: #a9d5cd;
     --acid: #dce649;
-    --text: #d0e2dc;
+    --text: #e2ede8;
     --workspace-side: clamp(310px, 28vw, 520px);
     --nav-height: 58px;
     height: 100%;
@@ -23,115 +23,115 @@
   .desktop-workspace .workspace-comms { grid-column: 3; grid-row: 1; border-left: 1px solid var(--line); }
   .desktop-workspace .main { grid-column: 2; grid-row: 1; margin: 0; width: 100%; height: 100%; overflow-y: auto; overscroll-behavior-y: contain; padding-bottom: calc(var(--nav-height) + 12px); scrollbar-gutter: stable; }
   .desktop-workspace main, .desktop-workspace .profile-layout main, .desktop-workspace .settings-layout main { max-width: 640px; margin: 0 auto; padding: 16px 22px 30px; }
-  .desktop-workspace header { display: flex; padding: 0 18px; height: 38px; gap: 10px; background: var(--bg); border-color: var(--line); font-size: 10px; }
-  .desktop-workspace header .wallet { margin-left: auto; font-size: 11px; }
+  .desktop-workspace header { display: flex; padding: 0 18px; height: 38px; gap: 10px; background: var(--bg); border-color: var(--line); font-size: 12px; }
+  .desktop-workspace header .wallet { margin-left: auto; font-size: 13px; }
   .desktop-workspace .mobile-menu { display: block; }
   .desktop-workspace .mobile-menu summary { display: grid; place-items: center; width: 25px; height: 30px; list-style: none; cursor: pointer; }
   .desktop-workspace .mobile-menu summary > svg { width: 20px; height: 20px; }
   .desktop-workspace .mobile-menu > div { position: fixed; top: 42px; left: calc(var(--workspace-side) + 12px); width: min(420px, calc(100vw - 2 * var(--workspace-side) - 24px)); max-height: calc(100dvh - 120px); overflow-y: auto; z-index: 50; background: #202a28; border: 1px solid #728a80; padding: 16px; border-radius: 4px; box-shadow: 0 15px 40px #0009; }
   .desktop-workspace .mobile-menu .nav-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
   .desktop-workspace .mobile-menu .nav-group > p { grid-column: 1 / -1; }
-  .desktop-workspace .nav-group .nav { color: var(--text); font-size: 11px; }
+  .desktop-workspace .nav-group .nav { color: var(--text); font-size: 13px; }
   .desktop-workspace .nav-group .nav.active { color: var(--acid); background: #dce6490e; }
   .desktop-workspace .runner-hud { margin: 6px 18px 0; padding: 8px 10px; border-radius: 3px; background: transparent; gap: 12px; }
   .desktop-workspace .runner-identity { min-width: 130px; max-width: 42%; gap: 8px; }
   .desktop-workspace .runner-level { width: 32px; height: 36px; border: 1px solid #99c0b1; border-radius: 1px; background: none; }
   .desktop-workspace .runner-level b { font-size: 17px; }
-  .desktop-workspace .runner-level small { font-size: 7px; }
-  .desktop-workspace .runner-identity > div > b { font-size: 11px; }
-  .desktop-workspace .runner-identity > div > small { font-size: 8px; }
+  .desktop-workspace .runner-level small { font-size: 11px; }
+  .desktop-workspace .runner-identity > div > b { font-size: 13px; }
+  .desktop-workspace .runner-identity > div > small { font-size: 11px; }
   .desktop-workspace .runner-vitals { gap: 10px; grid-template-columns: minmax(80px, 2fr) minmax(50px, 1fr); }
-  .desktop-workspace .runner-vitals label, .desktop-workspace .runner-vitals label b { font-size: 9px; }
+  .desktop-workspace .runner-vitals label, .desktop-workspace .runner-vitals label b { font-size: 12px; }
   .desktop-workspace .bar, .desktop-workspace .runner-xp { border-radius: 0; background: #394542; }
   .desktop-workspace .bar i { border-radius: 0; }
-  .desktop-workspace .chat-ticker { margin: 7px 20px 0; width: calc(100% - 40px); min-height: 18px; color: var(--cyan); font-size: 10px; background: none; border: 0; }
+  .desktop-workspace .chat-ticker { margin: 7px 20px 0; width: calc(100% - 40px); min-height: 18px; color: var(--cyan); font-size: 12px; background: none; border: 0; }
   .desktop-workspace button { border-radius: 3px; background: #25302c; border-color: #536e61; color: var(--green); }
   .desktop-workspace input, .desktop-workspace select, .desktop-workspace textarea { background: #1c2322; color: var(--text); border-color: #4b6057; border-radius: 3px; }
   .desktop-workspace .hero, .desktop-workspace .card, .desktop-workspace .account-security { background: var(--panel); border-radius: 4px; }
   .desktop-workspace .hero h1 span { color: var(--acid); }
   .desktop-workspace .notice, .desktop-workspace .banner, .desktop-workspace .client-notice { background: #22332a; border-color: #527b60; color: #c0e3cb; border-radius: 3px; }
   .desktop-workspace .server-banner { background: #2c2d20; color: var(--acid); border-color: #747932; }
-  .desktop-workspace .section-label { padding: 9px 12px; margin: 16px 0 10px; border: 1px solid var(--line); font-size: 10px; letter-spacing: .04em; }
+  .desktop-workspace .section-label { padding: 9px 12px; margin: 16px 0 10px; border: 1px solid var(--line); font-size: 12px; letter-spacing: .04em; }
   .desktop-workspace .merchant, .desktop-workspace .commercial-banner, .desktop-workspace .district-banner, .desktop-workspace .rail-banner { height: 260px; border-radius: 3px; border-color: var(--line); margin-bottom: 12px; }
   .desktop-workspace .city-center.service-banner.city { height: 260px; }
   .desktop-workspace .city-overlay { padding: 18px; background: linear-gradient(180deg, #050b08c9, transparent 80%); }
   .desktop-workspace .city-overlay h1, .desktop-workspace .merchant-title h1, .desktop-workspace .commercial-banner h1, .desktop-workspace .district-banner h1, .desktop-workspace .rail-banner h1 { color: var(--acid); font-size: 28px; text-shadow: 0 0 14px #ced91a40; }
-  .desktop-workspace .city-overlay p { font-size: 11px; color: #c8ddd3; }
+  .desktop-workspace .city-overlay p { font-size: 13px; color: #c8ddd3; }
   .desktop-workspace .city-quick-actions { left: 18px; bottom: 16px; }
-  .desktop-workspace .city-quick-actions button { background: #15281de8; color: var(--acid); border-color: #a2ab37; min-height: 32px; font-size: 10px; }
+  .desktop-workspace .city-quick-actions button { background: #15281de8; color: var(--acid); border-color: #a2ab37; min-height: 32px; font-size: 12px; }
   .desktop-workspace .hub-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin-bottom: 20px; }
-  .desktop-workspace .hub-actions button { border-radius: 1px; background: #151c1d; border: 1px solid #83a199; color: var(--green); min-height: 54px; font-size: 10px; padding: 8px; gap: 8px; box-shadow: inset 0 0 16px #09201c; }
+  .desktop-workspace .hub-actions button { border-radius: 1px; background: #151c1d; border: 1px solid #83a199; color: var(--green); min-height: 54px; font-size: 12px; padding: 8px; gap: 8px; box-shadow: inset 0 0 16px #09201c; }
   .desktop-workspace .hub-actions button.highlight { color: var(--acid); border-color: #b4bc31; background: #252819; box-shadow: inset 0 0 16px #9ba32b20, 0 0 8px #c6d53414; }
   .desktop-workspace .hub-actions button:last-child { grid-column: 1 / -1; }
   .desktop-workspace .hub-actions button > span { width: 22px; }
   .desktop-workspace .hub-actions button svg { width: 22px; height: 22px; }
   .desktop-workspace .city-travel-list { grid-template-columns: 1fr; gap: 10px; }
   .desktop-workspace .city-travel { padding: 14px; border-radius: 3px; background: #212827; border-color: #5b766b; gap: 13px; }
-  .desktop-workspace .city-travel b { font-size: 12px; color: var(--green); }
-  .desktop-workspace .city-travel p { font-size: 11px; line-height: 1.6; }
+  .desktop-workspace .city-travel b { font-size: 14px; color: var(--green); }
+  .desktop-workspace .city-travel p { font-size: 13px; line-height: 1.6; }
   .desktop-workspace .city-travel small { border-color: #718b81; color: var(--cyan); }
   .desktop-workspace .workspace-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 44px; flex: none; padding: 0 16px; border-bottom: 1px solid var(--line); }
-  .desktop-workspace .workspace-heading > span { display: flex; align-items: center; gap: 9px; font-size: 11px; color: var(--green); }
+  .desktop-workspace .workspace-heading > span { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--green); }
   .desktop-workspace .workspace-heading svg { width: 18px; height: 18px; }
-  .desktop-workspace .workspace-heading small { font-size: 8px; letter-spacing: .06em; color: var(--muted); }
+  .desktop-workspace .workspace-heading small { font-size: 11px; letter-spacing: .06em; color: var(--muted); }
   .desktop-workspace .workspace-inventory-body { min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; padding: 12px 16px 24px; scrollbar-gutter: stable; }
   .desktop-workspace .inventory-tabs, .desktop-workspace .inventory-subtabs, .desktop-workspace .comms-tabs, .desktop-workspace .profile-tabs, .desktop-workspace .subtabs { border-radius: 2px; border-color: var(--line); background: transparent; padding: 0; }
-  .desktop-workspace .inventory-tabs button, .desktop-workspace .inventory-subtabs button, .desktop-workspace .comms-tabs button, .desktop-workspace .profile-tabs button, .desktop-workspace .subtabs button { border: 0; border-radius: 0; background: transparent; color: var(--muted); font-size: 10px; min-height: 36px; }
+  .desktop-workspace .inventory-tabs button, .desktop-workspace .inventory-subtabs button, .desktop-workspace .comms-tabs button, .desktop-workspace .profile-tabs button, .desktop-workspace .subtabs button { border: 0; border-radius: 0; background: transparent; color: var(--muted); font-size: 12px; min-height: 36px; }
   .desktop-workspace .inventory-tabs button.selected, .desktop-workspace .inventory-subtabs button:disabled, .desktop-workspace .comms-tabs button.selected, .desktop-workspace .profile-tabs button.selected, .desktop-workspace .subtabs button.selected { background: #2a3631; color: var(--green); box-shadow: inset 0 -2px #a6cdbc; }
   .desktop-workspace .bag-filters { display: flex; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 6px; gap: 5px; }
   .desktop-workspace .bag-filters button { width: 32px; min-width: 32px; height: 36px; min-height: 36px; padding: 4px 0; font-size: 18px; border: 1px solid #668277; background: transparent; color: var(--muted); }
   .desktop-workspace .bag-filters button.selected { color: var(--green); background: #293b32; }
   .desktop-workspace .bag-search { gap: 8px; margin-top: 6px; }
-  .desktop-workspace .bag-search input { font-size: 11px; padding: 9px; }
-  .desktop-workspace .bag-search select { font-size: 10px; padding: 9px 5px; max-width: 105px; }
+  .desktop-workspace .bag-search input { font-size: 13px; padding: 9px; }
+  .desktop-workspace .bag-search select { font-size: 12px; padding: 9px 5px; max-width: 105px; }
   .desktop-workspace .bag-capacity { margin: 13px 0 5px; color: var(--green); }
-  .desktop-workspace .bag-capacity small { font-size: 9px; }
+  .desktop-workspace .bag-capacity small { font-size: 12px; }
   .desktop-workspace .bag-row { border-bottom: 1px solid #5e766c; padding: 16px 0; gap: 8px; min-height: 74px; }
   .desktop-workspace .bag-row > div { min-width: 0; }
   .desktop-workspace .bag-row input[type="checkbox"] { width: 14px; min-width: 14px; max-width: 14px; height: 14px; min-height: 14px; padding: 0; margin: 0; flex: none; }
-  .desktop-workspace .bag-row b { font-size: 11px; line-height: 1.6; }
-  .desktop-workspace .bag-row small { font-size: 9px; line-height: 1.5; }
-  .desktop-workspace .bag-row > span:last-of-type { font-size: 11px; }
+  .desktop-workspace .bag-row b { font-size: 13px; line-height: 1.6; }
+  .desktop-workspace .bag-row small { font-size: 12px; line-height: 1.5; }
+  .desktop-workspace .bag-row > span:last-of-type { font-size: 13px; }
   .desktop-workspace .bag-row .bag-item-icon { min-width: 22px; font-size: 17px; }
-  .desktop-workspace .bag-row button:not(.bag-gear-link) { font-size: 9px; min-height: 30px; padding: 5px 7px; background: transparent; color: var(--green); }
+  .desktop-workspace .bag-row button:not(.bag-gear-link) { font-size: 12px; min-height: 30px; padding: 5px 7px; background: transparent; color: var(--green); }
   .desktop-workspace .bag-row .bag-gear-link { text-align: left; color: inherit; background: transparent; border: 0; padding: 0; }
   .desktop-workspace .bag-bulk { flex-wrap: wrap; gap: 6px; background: #243029; border-radius: 3px; }
-  .desktop-workspace .bag-bulk button { font-size: 9px; padding: 6px 8px; min-height: 30px; }
+  .desktop-workspace .bag-bulk button { font-size: 12px; padding: 6px 8px; min-height: 30px; }
   .desktop-workspace .gear-card, .desktop-workspace .empty-slot { background-color: #202726; border-radius: 3px; }
-  .desktop-workspace .gear-card h3 { font-size: 13px; }
+  .desktop-workspace .gear-card h3 { font-size: 14px; }
   .desktop-workspace .quick-slots { gap: 6px; }
-  .desktop-workspace .quick-slots button { min-height: 42px; padding: 6px; font-size: 9px; }
+  .desktop-workspace .quick-slots button { min-height: 42px; padding: 6px; font-size: 12px; }
   .desktop-workspace .workspace-comms > .comms-screen { display: flex; flex-direction: column; width: 100%; height: 100%; min-height: 0; max-width: none; margin: 0; padding: 12px 16px 10px; }
   .desktop-workspace .workspace-comms .comms-tabs { flex: none; margin-bottom: 12px; }
   .desktop-workspace .workspace-comms .comms-tabs button { min-height: 38px; }
   .desktop-workspace .workspace-comms .chat-channel-bar { margin-bottom: 12px; padding-bottom: 8px; border-width: 1px; }
   .desktop-workspace .workspace-comms .chat-channel-bar > button { font-size: 16px; color: var(--acid); background: transparent; border: 0; }
-  .desktop-workspace .workspace-comms .chat-channel-bar select { font-size: 10px; }
+  .desktop-workspace .workspace-comms .chat-channel-bar select { font-size: 12px; }
   .desktop-workspace .workspace-comms .chat-feed, .desktop-workspace .workspace-comms .mail-list, .desktop-workspace .workspace-comms .notifications-list { flex: 1; min-height: 0; max-height: none; overflow-y: auto; overscroll-behavior-y: contain; padding-right: 8px; scrollbar-gutter: stable; }
   .desktop-workspace .workspace-comms .message-card { margin-bottom: 14px; }
-  .desktop-workspace .workspace-comms .message-name { background: #bfe1d6; color: #172823; padding: 6px 9px; border-radius: 0; font-size: 12px; }
-  .desktop-workspace .workspace-comms .message-name b { color: #172823; font-size: 12px; }
+  .desktop-workspace .workspace-comms .message-name { background: #bfe1d6; color: #172823; padding: 6px 9px; border-radius: 0; font-size: 14px; }
+  .desktop-workspace .workspace-comms .message-name b { color: #172823; font-size: 14px; }
   .desktop-workspace .workspace-comms .message-content { border: 1px solid #9cbaad; border-radius: 0; background: #1c2322; padding: 11px 10px; }
-  .desktop-workspace .workspace-comms .message-content p { font-size: 12px; line-height: 1.7; color: #c5ddd2; }
-  .desktop-workspace .workspace-comms .message-content blockquote { background: #293531; border-radius: 2px; font-size: 11px; }
-  .desktop-workspace .workspace-comms .message-meta { font-size: 8px; color: var(--muted); }
+  .desktop-workspace .workspace-comms .message-content p { font-size: 14px; line-height: 1.7; color: #c5ddd2; }
+  .desktop-workspace .workspace-comms .message-content blockquote { background: #293531; border-radius: 2px; font-size: 13px; }
+  .desktop-workspace .workspace-comms .message-meta { font-size: 11px; color: var(--muted); }
   .desktop-workspace .workspace-comms .chat-compose { flex: none; margin-top: 12px; grid-template-columns: minmax(0, 1fr) 60px; gap: 9px; }
   .desktop-workspace .workspace-comms .chat-input-wrap { background: #1c2322; border: 1px solid #85a798; border-radius: 2px; min-height: 58px; }
-  .desktop-workspace .workspace-comms .chat-input-wrap textarea { padding: 10px 4px 18px; font-size: 12px; background: transparent; }
+  .desktop-workspace .workspace-comms .chat-input-wrap textarea { padding: 10px 4px 18px; font-size: 14px; background: transparent; }
   .desktop-workspace .workspace-comms .chat-input-wrap > button { padding: 6px; min-height: 36px; background: transparent; color: var(--green); }
-  .desktop-workspace .workspace-comms .chat-send { color: var(--acid); background: #272d1b; border: 1px solid #a9b339; border-radius: 2px; font-size: 11px; }
-  .desktop-workspace .workspace-comms .chat-rule { font-size: 8px; }
-  .desktop-workspace .workspace-comms > .comms-screen > .hint { font-size: 10px; margin: 6px 0; }
+  .desktop-workspace .workspace-comms .chat-send { color: var(--acid); background: #272d1b; border: 1px solid #a9b339; border-radius: 2px; font-size: 13px; }
+  .desktop-workspace .workspace-comms .chat-rule { font-size: 11px; }
+  .desktop-workspace .workspace-comms > .comms-screen > .hint { font-size: 12px; margin: 6px 0; }
   .desktop-workspace .workspace-comms .mail-compose { flex: none; margin-top: 12px; }
   .desktop-workspace .workspace-comms .mail-compose textarea { min-height: 75px; max-height: 160px; }
   .desktop-workspace .workspace-comms .section-label { flex: none; margin: 4px 0 12px; }
   .desktop-workspace .workspace-comms .reply-preview { flex: none; margin-top: 8px; background: #293731; }
   .desktop-workspace .bottom-nav { display: flex; position: fixed; left: var(--workspace-side); right: var(--workspace-side); bottom: 0; height: var(--nav-height); min-height: var(--nav-height); padding: 5px 12px; background: #202525f7; border-color: #50645b; z-index: 30; gap: 5px; }
-  .desktop-workspace .bottom-nav button { flex: 1; display: grid; align-content: center; justify-items: center; gap: 3px; position: relative; background: transparent; border: 0; border-radius: 3px; color: #7e9c90; font-size: 9px; padding: 3px; }
+  .desktop-workspace .bottom-nav button { flex: 1; display: grid; align-content: center; justify-items: center; gap: 3px; position: relative; background: transparent; border: 0; border-radius: 3px; color: #7e9c90; font-size: 12px; padding: 3px; }
   .desktop-workspace .bottom-nav button > span, .desktop-workspace .bottom-nav button svg { width: 21px; height: 21px; }
   .desktop-workspace .bottom-nav button.active { color: var(--green); background: #bce1d608; }
   .desktop-workspace .bottom-nav button i { right: calc(50% - 16px); top: 3px; background: var(--acid); }
-  .desktop-workspace footer { padding: 12px 22px; color: var(--muted); font-size: 8px; }
+  .desktop-workspace footer { padding: 12px 22px; color: var(--muted); font-size: 11px; }
   .desktop-workspace .settings-top { background: var(--bg); padding: 12px 0; }
   .desktop-workspace .settings-layout > header { display: flex; }
   .desktop-workspace .google-signin { color: #1f1f1f; background: #fff; border-color: #747775; }

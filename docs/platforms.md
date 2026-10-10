@@ -117,3 +117,5 @@ v0.15 bổ sung màn chiến đấu cho web và app: hình quái, nhật ký ri�
 Trên web rộng từ 1.200 px, ba cột hoạt động cùng lúc và dùng chung tài khoản: túi đồ, màn chơi, trò chuyện. Menu ☰ mở các trang trong cột giữa; nút Túi đồ/Trò chuyện trên thanh dưới đưa focus tới cột tương ứng. Cửa sổ hẹp hơn dùng giao diện theo trang; app Android/iOS giữ giao diện di động cả khi xoay ngang.
 
 v0.16 đồng bộ trang chi tiết trang bị và màn chiến lợi phẩm cho web, Android và iOS. Khe module thu gọn để đọc chỉ số dễ hơn; nút lấy/hủy chiến lợi phẩm nằm ngay trên menu đáy. Bản Android dùng versionCode 5, iOS dùng build 5.
+
+v0.16.1 đóng gói font CYPER Sans (SIL OFL 1.1) cho web/offline/app, tăng cỡ chữ nhỏ và tương phản. Android dùng versionCode 6; iOS dùng build 6.
