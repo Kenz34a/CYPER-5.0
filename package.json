@@ -8,12 +8,26 @@
     "test": "node --test",
     "db:import": "node --env-file-if-exists=.env scripts/database-transfer.js import",
     "db:export": "node --env-file-if-exists=.env scripts/database-transfer.js export",
-    "admin": "node --env-file-if-exists=.env scripts/admin-role.js"
+    "admin": "node --env-file-if-exists=.env scripts/admin-role.js",
+    "mobile:build": "node --env-file-if-exists=.env.mobile scripts/build-mobile.js",
+    "mobile:sync": "npm run mobile:build && cap sync",
+    "android:open": "cap open android",
+    "android:debug": "npm run mobile:build && cap sync android && cd android && ./gradlew assembleDebug",
+    "ios:open": "cap open ios"
   },
   "dependencies": {
     "pg": "8.23.1"
   },
   "engines": {
     "node": "24.x"
+  },
+  "devDependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/cli": "8.5.3",
+    "@capacitor/core": "8.5.3",
+    "@capacitor/ios": "8.5.3",
+    "@capacitor/network": "8.0.1",
+    "esbuild": "0.28.2"
   }
 }

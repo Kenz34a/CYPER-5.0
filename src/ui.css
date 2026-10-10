@@ -9,7 +9,7 @@
   --cyan: #a3d6df;
   --acid: #e5cc7a;
   --text: #e5edf4;
-  --nav-height: calc(64px + env(safe-area-inset-bottom, 0px));
+  --nav-height: calc(64px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
 }
 body { background: var(--bg); color: var(--text); font: 14px/1.55 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 button, input, select, textarea { font: inherit; }
@@ -327,14 +327,14 @@ th { font-size: 10px; background: #192633; }
   aside { display: none; }
   #app { display: block; }
   .main { margin: 0; width: 100%; padding-bottom: var(--nav-height); }
-  header { height: 50px; padding: 0 16px; gap: 10px; }
+  header { height: calc(50px + var(--safe-area-inset-top, env(safe-area-inset-top, 0px))); padding: var(--safe-area-inset-top, env(safe-area-inset-top, 0px)) 16px 0; gap: 10px; }
   header > span:first-of-type { font-size: 11px; letter-spacing: 0; }
   .wallet { margin-left: auto; font-size: 12px; gap: 8px; }
   .wallet small { font-size: 9px; padding-left: 8px; }
   .mobile-menu summary { list-style: none; width: 28px; height: 32px; display: grid; place-items: center; color: #b4cad5; }
   .mobile-menu { display: block; }
   .mobile-menu summary > svg { width: 22px; height: 22px; }
-  .mobile-menu > div { position: fixed; top: 56px; left: 12px; right: 12px; width: auto; max-height: calc(100svh - var(--nav-height) - 76px); overflow-y: auto; overscroll-behavior: contain; display: block; padding: 12px; border: 1px solid #3d5669; border-radius: 14px; background: #101b28; z-index: 40; box-shadow: 0 20px 60px #0009; }
+  .mobile-menu > div { position: fixed; top: calc(56px + var(--safe-area-inset-top, env(safe-area-inset-top, 0px))); left: 12px; right: 12px; width: auto; max-height: calc(100svh - var(--nav-height) - 76px - var(--safe-area-inset-top, env(safe-area-inset-top, 0px))); overflow-y: auto; overscroll-behavior: contain; display: block; padding: 12px; border: 1px solid #3d5669; border-radius: 14px; background: #101b28; z-index: 40; box-shadow: 0 20px 60px #0009; }
   .mobile-menu .nav-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin-bottom: 14px; }
   .mobile-menu .nav-group > p { grid-column: 1 / -1; margin: 0 8px 4px; }
   .mobile-menu .nav-group .nav { min-height: 42px; padding: 8px; font-size: 11px; gap: 8px; }
@@ -354,7 +354,7 @@ th { font-size: 10px; background: #192633; }
   .hud-settings { padding: 3px; }
   .hud-settings svg { width: 17px; height: 17px; }
   .chat-ticker { margin: 8px 16px 0; width: calc(100% - 32px); font-size: 9px; }
-  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: var(--nav-height); min-height: var(--nav-height); padding: 7px 8px calc(7px + env(safe-area-inset-bottom, 0px)); background: #101a25f7; border-top: 1px solid #304251; backdrop-filter: blur(16px); z-index: 30; gap: 2px; }
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: var(--nav-height); min-height: var(--nav-height); padding: 7px 8px calc(7px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))); background: #101a25f7; border-top: 1px solid #304251; backdrop-filter: blur(16px); z-index: 30; gap: 2px; }
   .bottom-nav button { flex: 1; display: grid; justify-items: center; align-content: center; position: relative; background: transparent; border: 0; color: #8a9faf; font: 500 9px system-ui, sans-serif; min-height: 44px; border-radius: 9px; padding: 5px 2px; gap: 3px; }
   .bottom-nav button > span { width: 21px; height: 21px; }
   .bottom-nav button > span svg { width: 21px; height: 21px; }
@@ -480,3 +480,14 @@ th { font-size: 10px; background: #192633; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+.platform-panel { border: 1px solid var(--line); background: var(--panel); border-radius: 12px; padding: 16px; margin: 18px 0; }
+.platform-panel .section-label { margin-top: 0; }
+.platform-panel p { color: var(--muted); font: 12px/1.7 system-ui, sans-serif; }
+.platform-panel form { display: flex; align-items: end; flex-wrap: wrap; gap: 10px; }
+.platform-panel label { flex: 1 1 220px; font: 12px system-ui, sans-serif; color: var(--text); }
+.platform-panel input { display: block; margin-top: 8px; width: 100%; min-width: 0; }
+.connection-state { color: var(--acid); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 9px; letter-spacing: 0; }
+.connection-state[hidden] { display: none; }
+@media (max-width: 400px) { header:has(.connection-state:not([hidden])) .header-location { display: none; } }
+@media (orientation: landscape) { .main { padding-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px)); padding-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px)); } }

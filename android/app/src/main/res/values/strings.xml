@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CYPER ZERO</string>
+    <string name="title_activity_main">CYPER ZERO</string>
+    <string name="package_name">com.kenz34a.cyperzero</string>
+    <string name="custom_url_scheme">com.kenz34a.cyperzero</string>
+</resources>

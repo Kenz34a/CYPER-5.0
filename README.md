@@ -9,6 +9,12 @@ npm start
 
 Chạy các lệnh trong thư mục có `package.json`. Server mặc định dùng cổng 3000; có thể đặt `PORT`. Chạy kiểm thử bằng `npm test`. Xem [hướng dẫn test trên máy và triển khai Neon + Render](docs/neon-render.md); `render.yaml` đã chuẩn bị Web Service, cần tự cấu hình secret `DATABASE_URL`.
 
+## Web, Android và iOS
+
+v0.12 có bản web cài được (PWA), dự án Android và dự án iOS dùng Capacitor 8. App có sẵn giao diện, chơi khách được khi mất mạng; đăng nhập cùng tài khoản trên cùng server để tiếp tục nhân vật online giữa các thiết bị. Chưa có Render vẫn chơi khách ngay, sau đó nhập URL server trong Cài đặt. Xem [cách mở game, tạo APK và chạy iOS bằng Xcode](docs/platforms.md).
+
+`npm run mobile:sync` chuẩn bị cả hai app. `npm run android:debug` tạo APK thử (cần JDK 21/Android SDK 36). `npm run ios:open` mở dự án trên Mac có Xcode 26+; chưa có IPA đã ký. GitHub Actions **Build apps** hỗ trợ tạo APK debug và bản iOS simulator theo yêu cầu.
+
 ## Quản trị
 
 Có bảng quản trị người chơi, khóa/cấm chat, thu hồi tin rao, hỗ trợ tài nguyên, thông báo, bảo trì và nhật ký. Đăng ký tài khoản trước, dừng server JSON, chạy `npm run admin -- grant ten_tai_khoan`, rồi khởi động và đăng nhập lại. Xem [hướng dẫn admin](docs/admin.md) cho Neon/Render và giới hạn. Quyền không được cấp từ trình duyệt.

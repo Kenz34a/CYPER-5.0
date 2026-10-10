@@ -1,0 +1,22 @@
+{
+  "appId": "com.kenz34a.cyperzero",
+  "appName": "CYPER ZERO",
+  "webDir": "dist",
+  "backgroundColor": "#0c121a",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": false
+    },
+    "SystemBars": {
+      "style": "DARK",
+      "insetsHandling": "css",
+      "initialViewportFitValueHint": "cover"
+    }
+  }
+}

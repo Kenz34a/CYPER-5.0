@@ -1,0 +1,17 @@
+{
+  "id": "/",
+  "name": "CYPER ZERO — Thành phố tro",
+  "short_name": "CYPER ZERO",
+  "description": "RPG văn bản cyberpunk: phó bản, trang bị, nhiệm vụ và cộng đồng.",
+  "lang": "vi",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0c121a",
+  "theme_color": "#0c121a",
+  "icons": [
+    {"src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
