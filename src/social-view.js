@@ -1,9 +1,9 @@
 import {gear,rarities} from './content.js';
-import {stacks,supplies,materials,blueprints} from './inventory-state.js';
+import {stacks,stackItem} from './inventory-state.js';
 import {cosmetics} from './city.js';
 import {publicAssetsView} from './assets.js';
 import {careerProgressView,detailedStatsView} from './profile-details-view.js';
-const labels={friend:'Kết bạn',partner:'Kết đôi'},catalog=[...supplies,...materials,...blueprints];
+const labels={friend:'Kết bạn',partner:'Kết đôi'};
 export function publicProfileView({data,section='stats',online,s,world,esc,button}){
  const p=data.profile,a=data.assets;if(!p)return publicAssetsView(a,esc);
  const relation=p.relation,available=!!online&&relation?.available,blocked=relation?.blocked,pending=kind=>relation?.requests?.some(v=>v.kind===kind),corp=p.corporation;
@@ -20,7 +20,7 @@ export function socialModalView({pending,s,world,esc,button}){
  const kind=pending.kind,available=gear.filter(g=>s.inventory.includes(g.id)&&!Object.values(s.equipped).includes(g.id)),option=(id,name)=>`<option value="${esc(id)}">${esc(name)}</option>`,select=available.map(g=>option(g.id,g.name)).join('');
  const titles={gift:'Tặng quà',cosmetic:'Tặng cyberwear',trade:'Gửi đề nghị trao đổi',report:'Báo cáo người chơi',friend:'Gửi lời mời kết bạn',partner:'Đề nghị kết hôn',unfriend:'Hủy kết bạn',separate:'Kết thúc kết đôi',block:'Chặn người chơi',unblock:'Bỏ chặn người chơi','trade-accept':'Xác nhận trao đổi'};
  let fields='',description='';
- if(kind==='gift'){fields=`<label>Quà tặng<select name="item">${['credits','scrap','hashProcessors','aiCores'].map((id,i)=>option('field:'+id,['Credits','Linh kiện','Bộ xử lý Hash','Lõi AI'][i]+` · có ${s[id]??(id==='scrap'?6:0)}`)).join('')}${Object.entries(stacks(s)).filter(([,n])=>n>0).map(([id,n])=>option('stack:'+id,(catalog.find(v=>v.id===id)?.name||id)+' ×'+n)).join('')}${available.map(g=>option('gear:'+g.id,g.name)).join('')}</select></label><label>Số lượng<input name="amount" type="number" min="1" max="1000000" value="1" required></label>`;description='Trang bị tặng một món mỗi lần. Túi người nhận đầy sẽ chuyển vào hộp thư. Không chuyển Unit.';}
+ if(kind==='gift'){fields=`<label>Quà tặng<select name="item">${['credits','scrap','hashProcessors','aiCores'].map((id,i)=>option('field:'+id,['Credits','Linh kiện','Bộ xử lý Hash','Lõi AI'][i]+` · có ${s[id]??(id==='scrap'?6:0)}`)).join('')}${Object.entries(stacks(s)).filter(([,n])=>n>0).map(([id,n])=>option('stack:'+id,(stackItem(id)?.name||id)+' ×'+n)).join('')}${available.map(g=>option('gear:'+g.id,g.name)).join('')}</select></label><label>Số lượng<input name="amount" type="number" min="1" max="1000000" value="1" required></label>`;description='Trang bị tặng một món mỗi lần. Túi người nhận đầy sẽ chuyển vào hộp thư. Không chuyển Unit.';}
  if(kind==='cosmetic'){fields=`<label>Cyberwear<select name="item">${cosmetics.map(c=>option(c.id,c.name+' · '+c.price+' credits')).join('')}</select></label>`;description=`Bạn thanh toán bằng credits; người nhận được trang trí để tự chọn trong hồ sơ. Số dư: ${s.credits.toLocaleString('vi')} credits.`;}
  if(kind==='trade'){fields=`<label>Trang bị bạn đưa<select name="gear" required>${select}</select></label><label>Trang bị muốn nhận (tùy chọn)<select name="wanted"><option value="">Chỉ nhận credits</option>${(pending.profile?.equipment||[]).map(g=>option(g.id,g.name)).join('')}</select></label><label>Credits người nhận trả<input name="price" type="number" min="0" max="1000000" value="100" required></label>`;description='Giữ trang bị của bạn trong 24 giờ chờ người nhận đồng ý. Hủy/hết hạn trả đồ kèm nâng cấp. Nếu chọn món đang mặc, người nhận cần thay món đó trước khi trao đổi.';}
  if(kind==='report'){fields='<label>Loại báo cáo<select name="category"><option value="abuse">Quấy rối / lăng mạ</option><option value="spam">Spam</option><option value="cheating">Gian lận</option><option value="other">Khác</option></select></label><label>Mô tả<textarea name="reason" minlength="5" maxlength="500" rows="3" required></textarea></label>';description='Admin sẽ xem xét báo cáo. Báo cáo không tự khóa người chơi. Tối đa 5 báo cáo trong 24 giờ.';}

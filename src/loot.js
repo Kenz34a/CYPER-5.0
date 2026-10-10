@@ -1,11 +1,10 @@
 import {gear} from './content.js';
-import {blueprints,materials,supplies,ownsGear,receiveGear,receiveStack} from './inventory-state.js';
+import {ownsGear,receiveGear,receiveStack,stackItem} from './inventory-state.js';
 import {record} from './journal.js';
 
-const stackItems=new Set([...blueprints,...materials,...supplies].map(v=>v.id));
 // Only the game creates drops. Clients send the batch ID, never item IDs or quantities.
 export function queueLoot(s,entries,{source='Chiến lợi phẩm',description='Bạn tìm thấy những vật phẩm còn sử dụng được.'}={}){
- const valid=entries.filter(v=>v.kind==='gear'?gear.some(g=>g.id===v.id)&&!ownsGear(s,v.id):v.kind==='stack'&&stackItems.has(v.id)&&Number.isSafeInteger(v.count)&&v.count>0);
+ const valid=entries.filter(v=>v.kind==='gear'?gear.some(g=>g.id===v.id)&&!ownsGear(s,v.id):v.kind==='stack'&&!!stackItem(v.id)&&Number.isSafeInteger(v.count)&&v.count>0);
  if(!valid.length)return false;
  const items=[...(s.pendingLoot?.items||[])].map(v=>({...v}));
  for(const entry of valid){const old=items.find(v=>v.id===entry.id&&v.kind===entry.kind);if(old){if(old.kind==='stack')old.count+=entry.count;}else items.push({kind:entry.kind,id:entry.id,count:entry.kind==='gear'?1:entry.count});}

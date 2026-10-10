@@ -1,4 +1,5 @@
 import {queueLoot} from './loot.js';
+import {moduleDrop} from './modules.js';
 import {equipmentSlots} from './gear-rules.js';
 import {dungeonModes,modePlan,loreFor} from './dungeon-events.js';
 import {awardDungeonFragment} from './rail.js';
@@ -42,6 +43,7 @@ function openChest(s,d,tile,random){
   const slot=equipmentSlots[(d.chests+(d.floor-1)*3)%equipmentSlots.length],drops=[{kind:'stack',id:`bp-${slot}-0`,count:1},{kind:'stack',id:'ammo-material',count:3}];
   const m=maps.find(m=>m.id===d.map),credits=20+m.level*5;s.credits+=credits;s.scrap=(s.scrap??6)+2;note(s,`Mở rương: +${credits} ₡, +2 linh kiện.`);
   const pool=gear.filter(g=>g.level<=s.level+1&&!ownsGear(s,g.id));if(random()<0.35&&pool.length)drops.push({kind:'gear',id:pool[Math.floor(random()*pool.length)].id,count:1});
+  drops.push({kind:'stack',id:moduleDrop(m.level,Math.min(5,Math.floor(Number(d.map.slice(3))/8)),random),count:1});
   queueLoot(s,drops,{source:'Rương tiếp tế',description:'Bạn tìm thấy một thùng hàng trong hành lang. Bên trong vẫn còn vật tư dùng được.'});
 }
 

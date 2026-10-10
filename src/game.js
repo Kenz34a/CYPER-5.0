@@ -1,4 +1,5 @@
 import {queueLoot} from './loot.js';
+import {moduleDrop} from './modules.js';
 import {equipmentSlots,enemyProfile,markBonus,absorbShield} from './gear-rules.js';
 import {stacks} from './inventory-state.js';
 import {areaAccess} from './rail.js';
@@ -13,7 +14,7 @@ export function stats(s){
  const weapon=itemStats(s,s.equipped.weapon),armor=itemStats(s,s.equipped.armor),implant=itemStats(s,s.equipped.implant),special=itemStats(s,s.equipped.special),destructive=itemStats(s,s.equipped.destructive);
  const fitted=equipmentSlots.map(k=>itemStats(s,s.equipped[k])),sum=k=>fitted.reduce((n,g)=>n+(g[k]||0),0),extraArmor=['helmet','legs','boots'].reduce((n,k)=>n+itemStats(s,s.equipped[k]).power,0);
  const buffs=(s.buffs||[]).filter(b=>b.expiresAt>Date.now()),mult=k=>1+buffs.filter(b=>b.kind===k).reduce((n,b)=>n+b.value,0),attack=8+s.level*2+weapon.power+Math.floor(implant.power/2)+sum('damage');
- return {maxHp:90+s.level*10+sum('health'),attack:Math.floor(attack*mult('attack')),specialAttack:s.equipped.special?Math.floor((8+s.level*2+special.power+sum('damage'))*mult('attack')):0,destructiveAttack:s.equipped.destructive?Math.floor((8+s.level*2+destructive.power+sum('damage'))*mult('attack')):0,defense:Math.floor((2+s.level+armor.power+extraArmor+sum('armor'))*mult('defense')),crit:Math.min(.5,.15+sum('crit')),maxShield:Math.floor(sum('shield')*mult('shield')),stun:Math.min(.5,sum('stun')),regen:sum('regen'),escape:Math.min(1,.75+sum('escape')),maxEnergy:30};
+ return {maxHp:90+s.level*10+sum('health'),attack:Math.floor(attack*mult('attack')),specialAttack:s.equipped.special?Math.floor((8+s.level*2+special.power+sum('damage'))*mult('attack')):0,destructiveAttack:s.equipped.destructive?Math.floor((8+s.level*2+destructive.power+sum('damage'))*mult('attack')):0,defense:Math.floor((2+s.level+armor.power+extraArmor+sum('armor'))*mult('defense')),crit:Math.min(.5,.15+sum('crit')),critDamage:Math.min(2,1.5+sum('critDamage')),maxShield:Math.floor(sum('shield')*mult('shield')),stun:Math.min(.5,sum('stun')),regen:sum('regen'),escape:Math.min(1,.75+sum('escape')),maxEnergy:30};
 }
 export function note(s,t){record(s,t);if(s.combat){(s.combat.log??=[]).unshift(t);s.combat.log=s.combat.log.slice(0,16);}}
 export function gain(s,xp){s.xp+=xp;while(s.xp>=s.level*60){s.xp-=s.level*60;s.level++;s.hp=stats(s).maxHp;s.energy=30;note(s,`Lên cấp ${s.level}! Sinh lực và năng lượng hồi đầy.`);}}
@@ -38,7 +39,7 @@ export function turn(s,action,random=Math.random,{rewards=true}={}){
   if(ammo&&(!s.equipped[action]||!(stacks(s)[ammo]>0)))return false;
   if(action==='skill')s.energy-=3;if(ammo){s.stacks??={...stacks(s)};s.stacks[ammo]--;}
   const crit=random()<st.crit,power=action==='special'?st.specialAttack:action==='destructive'?st.destructiveAttack:st.attack;
-  const damage=Math.max(1,Math.floor(power*(action==='skill'?1.8:1)*(crit?1.5:1)*bonus.attack)-f.defense),hit=absorbShield(damage,f.currentShield,action==='special'?1.2:action==='destructive'?.5:1);
+  const damage=Math.max(1,Math.floor(power*(action==='skill'?1.8:1)*(crit?st.critDamage:1)*bonus.attack)-f.defense),hit=absorbShield(damage,f.currentShield,action==='special'?1.2:action==='destructive'?.5:1);
   f.currentShield=hit.shield;f.currentHp-=hit.healthDamage;
   stunned=st.stun>0&&random()<st.stun*(1-(f.stunEvade||0));
   s.lastHit={damage,shieldDamage:hit.shieldDamage,healthDamage:hit.healthDamage,critical:crit,name:f.name,maxHp:f.hp,time:Date.now()};
@@ -75,6 +76,7 @@ export function awardVictory(s,f,random=Math.random){
   }
   const pool=gear.filter(g=>g.level<=s.level+2&&!ownsGear(s,g.id));
   if(random()<0.45&&pool.length)drops.push({kind:'gear',id:pool[Math.floor(random()*pool.length)].id,count:1});
+  if(f.boss||random()<.15)drops.push({kind:'stack',id:moduleDrop(f.level,Math.min(5,Math.floor(Number(s.map.slice(3))/8)),random),count:1});
   if(queueLoot(s,drops,{source:'Chiến lợi phẩm',description:`Sau khi hạ ${f.name}, bạn tìm thấy những vật phẩm còn nguyên vẹn.`}))note(s,'Có chiến lợi phẩm đang chờ nhận.');
  }
  note(s,`Hạ ${f.name}: +${f.xp} XP, +${f.credits}₡.`);

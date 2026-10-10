@@ -1,5 +1,6 @@
 import {rarities} from './content.js';
 import {calibration,itemStats,modules,slots,upgradeCost} from './equipment.js';
+import {moduleItem} from './modules.js';
 import {gearMark} from './gear-rules.js';
 import {hasRoom,stacks} from './inventory-state.js';
 import {shopPrice} from './game.js';
@@ -19,7 +20,7 @@ export function equipmentDetailView({s,g,esc,button,icon,slotName,online,world})
   [primary,'power',false],['MÁU','health',false],['SÁT THƯƠNG MODULE','damage',false],
   ['GIÁP MODULE','armor',false],['TỈ LỆ CHÍ MẠNG','crit',true],['LÁ CHẮN','shield',false],
   ['HỒI MÁU / LƯỢT','regen',false],['TỈ LỆ CHOÁNG','stun',true],
-  ['CƠ HỘI RÚT LUI','escape',true],['Ô TÚI BỔ SUNG','pocket',false]
+  ['SÁT THƯƠNG CHÍ MẠNG MODULE','critDamage',true],['CƠ HỘI RÚT LUI','escape',true],['Ô TÚI BỔ SUNG','pocket',false]
  ].filter(([,key])=>v[key]||next[key]);
  const value=(stats,key,percent)=>number(percent?Math.round(stats[key]*100):stats[key])+(percent?'%':'');
  const upgradeReason=pending?'Quay lại danh sách và lấy trang bị để nâng cấp hoặc lắp module.':!owned?'Mua trang bị để nâng cấp và lắp module.':underLevel?`Cần đạt cấp ${g.level} để nâng cấp và lắp module.`:active?'Hoàn tất giao tranh hoặc công việc trước khi nâng cấp.':maxed?'Đã đạt mức hiệu chuẩn tối đa +5.':s.credits<cost?`Còn thiếu ${number(cost-s.credits)} ₡ để nâng cấp.`:`Mỗi lần nâng cấp cộng 2 sức mạnh. Khe 2 mở ở +2, khe 3 mở ở +4.`;
@@ -41,11 +42,13 @@ export function equipmentDetailView({s,g,esc,button,icon,slotName,online,world})
   <div class="module-panel">
    <div class="section-label">NÂNG CẤP KHE <span>${available} / 3 ĐÃ MỞ</span></div>
    ${Array.from({length:3},(_,i)=>{
-    const m=modules.find(mod=>mod.id===c.modules[i]),locked=i>=available;
-    return `<article class="module-slot ${locked?'locked':m?'module-filled':'module-empty'}" aria-label="Khe module ${i+1}${locked?' đã khóa':''}">
+    const m=moduleItem(c.modules[i]),locked=i>=available;
+    const choices=[...Object.entries(stacks(s)).filter(([,n])=>n>0).map(([id])=>moduleItem(id)).filter(v=>v&&!v.legacy),...modules.map(v=>moduleItem(v.id))];
+    return `<article class="module-slot ${locked?'locked':m?'module-filled tier'+m.rarity:'module-empty'}" aria-label="Khe module ${i+1}${locked?' đã khóa':''}">
      <div class="module-tag">KHE ${i+1}</div>
-     <div class="module-body"><span class="module-icon" aria-hidden="true">${icon('implant')}</span><div><h3>${locked?'ĐÃ KHÓA':m?esc(m.name):'TRỐNG'}</h3><p>${locked?`Mở khi hiệu chuẩn +${i*2}`:m?m.label:'Sẵn sàng lắp module'}</p></div>${m?'<span class="module-status">ĐÃ LẮP</span>':''}</div>
-     ${locked?'':`<details class="module-editor" data-ui-panel="module-${g.id}-${i}"><summary>${m?'Thay module':'Lắp module'} <span>+</span></summary><form class="module-form" data-slot="${i}"><label for="gear-module-${i}">Chọn module</label><div><select id="gear-module-${i}" name="module" aria-label="Module khe ${i+1}">${modules.map(mod=>`<option value="${mod.id}" ${mod.id===m?.id?'selected':''}>${esc(mod.name)} · ${mod.label} · ${stacks(s)['mod-'+mod.id]>0?`có ${number(stacks(s)['mod-'+mod.id])} trong túi`:number(mod.price)+' ₡'}</option>`).join('')}</select><button ${!owned||underLevel||active?'disabled':''}>${m?'Thay':'Lắp'}</button></div></form>${m?'<p class="module-warning">Thay trực tiếp sẽ mất module cũ. Tháo trước để giữ lại.</p>':'<p class="hint">Dùng module trong túi trước; nếu chưa có sẽ mua bằng credits.</p>'}</details>${m?`<div class="module-remove-row">${button('Tháo và giữ module','module-remove',g.id+':'+i,!owned||active||!!s.dungeon||!hasRoom(s,'mod-'+m.id))}</div>`:''}`}
+     <div class="module-body"><span class="module-icon" aria-hidden="true">${icon('implant')}</span><div><h3>${locked?'ĐÃ KHÓA':m?esc(m.name):'TRỐNG'}</h3><p>${locked?`Mở khi hiệu chuẩn +${i*2}`:m?esc(m.label):'Sẵn sàng lắp module'}</p></div>${m?`<span class="module-status">LV ${m.level}</span>`:''}</div>
+     ${m?`<span class="module-grade">${esc(rarities[m.rarity])} · Chất lượng ${m.quality}%</span><div class="module-inspect">${button('Xem module','module-detail',m.id)}</div>`:''}
+     ${locked?'':`<details class="module-editor" data-ui-panel="module-${g.id}-${i}"><summary>${m?'Thay module':'Lắp module'} <span>+</span></summary><form class="module-form" data-slot="${i}"><label for="gear-module-${i}">Chọn module</label><div><select id="gear-module-${i}" name="module" aria-label="Module khe ${i+1}">${choices.map(mod=>`<option value="${mod.fittedId}" ${mod.fittedId===m?.fittedId?'selected':''} ${mod.level>g.level||mod.level>s.level?'disabled':''}>${esc(mod.name)} · LV ${mod.level} · ${mod.label} · ${stacks(s)[mod.id]>0?`×${number(stacks(s)[mod.id])}`:number(mod.price)+' ₡'}</option>`).join('')}</select><button ${!owned||underLevel||active?'disabled':''}>${m?'Thay':'Lắp'}</button></div></form>${m?'<p class="module-warning">Thay trực tiếp sẽ mất module cũ. Tháo trước để giữ lại.</p>':'<p class="hint">Dùng module trong túi; module cơ bản có thể mua bằng credits. Cấp module không vượt cấp trang bị.</p>'}</details>${m?`<div class="module-remove-row">${button('Tháo và giữ module','module-remove',g.id+':'+i,!owned||active||!!s.dungeon||!hasRoom(s,m.id))}</div>`:''}`}
     </article>`;
    }).join('')}
    <p class="equipment-module-hint">Module chỉ cộng chỉ số khi đang dùng trang bị. Tháo module cần chỗ trống trong túi và phải ở ngoài phó bản.</p>

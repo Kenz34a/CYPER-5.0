@@ -2,6 +2,7 @@ import {equipmentSlots} from './gear-rules.js';
 import {executeCraft} from './crafting.js';
 export {craftPool} from './crafting.js';
 import {gear} from './content.js';
+import {moduleItem} from './modules.js';
 import {stats,turn,note,sell} from './game.js';
 import {activity} from './journal.js';
 import {ammunition,supplies,blueprints,stacks,bagSize,bagCapacity,hasRoom,ownsGear,addStack,settleInbox,clearInboxEntry} from './inventory-state.js';
@@ -20,7 +21,7 @@ export function inventoryAction(s,b,combatOptions={}){
   const ids=b.action==='scrap-gear'?[b.id]:b.ids;
   if(!Array.isArray(ids)||!ids.length||ids.length>200||new Set(ids).size!==ids.length||!ids.every(id=>gear.some(g=>g.id===id)&&s.inventory.includes(id)&&!Object.values(s.equipped).includes(id)))return false;
   const draft=structuredClone(s);let total=0;
-  for(const id of ids){const g=gear.find(v=>v.id===id);draft.inventory=draft.inventory.filter(v=>v!==id);total+=1+g.rarity;for(const module of draft.calibration?.[id]?.modules||[])if(module&&!addStack(draft,'mod-'+module))return false;if(draft.calibration)delete draft.calibration[id];}
+  for(const id of ids){const g=gear.find(v=>v.id===id);draft.inventory=draft.inventory.filter(v=>v!==id);total+=1+g.rarity;for(const module of draft.calibration?.[id]?.modules||[])if(module){const item=moduleItem(module);if(!item||!addStack(draft,item.id))return false;}if(draft.calibration)delete draft.calibration[id];}
   draft.scrap=(draft.scrap??6)+total;for(const id of ids)activity(draft,'recycled');Object.assign(s,draft);note(s,`Tái chế ${ids.length} trang bị: +${total} linh kiện. Module được trả vào túi.`);return true;
  }
  if(b.action==='bulk-sell'){if(!Array.isArray(b.ids)||!b.ids.length||b.ids.length>60||new Set(b.ids).size!==b.ids.length||!b.ids.every(id=>gear.some(g=>g.id===id)&&s.inventory.includes(id)&&!Object.values(s.equipped).includes(id)))return false;for(const id of b.ids)sell(s,id);note(s,`Đã bán ${b.ids.length} trang bị.`);return true;}

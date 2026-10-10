@@ -1,6 +1,7 @@
 import {gear,rarities} from './content.js';
-import {materials,supplies,blueprints,stacks,bagSize,bagCapacity,ownsGear,addStack} from './inventory-state.js';
+import {materials,supplies,blueprints,stacks,bagSize,bagCapacity,ownsGear,addStack,stackItem} from './inventory-state.js';
 import {activity,record} from './journal.js';
+import {moduleItem,moduleTypes,makeModule} from './modules.js';
 const names={credits:'Credits',scrap:'Linh kiện',hashProcessors:'Bộ xử lý Hash',aiCores:'Lõi AI',aiClusters:'Cụm lõi AI','ammo-material':'Vật liệu đạn dược'};
 export const craftPool=(s,b)=>gear.filter(g=>g.slot===b.slot&&g.rarity===b.rarity&&g.level<=s.level&&!ownsGear(s,g.id));
 export const craftSkill=(s,id)=>s.craftingSkills?.[id]??{rank:1,xp:0,total:0};
@@ -17,14 +18,17 @@ export const recipes=[
  ...blueprints.map(b=>({id:b.id,name:`${b.name} · ${rarities[b.rarity]}`,icon:'▰',category:'material',rarity:b.rarity,fields:{credits:b.cost,scrap:b.scrap},stackIn:{[b.id]:1},blueprint:b,skill:'material',level:1,xp:40}))
 ].sort((a,b)=>(priority[a.id]??100)-(priority[b.id]??100));
 const fieldAmount=(s,id)=>id==='scrap'?s.scrap??6:s[id]||0;
-const itemName=id=>names[id]||supplies.find(v=>v.id===id)?.name||blueprints.find(v=>v.id===id)?.name||materials.find(v=>v.id===id)?.name||id;
+const itemName=id=>names[id]||stackItem(id)?.name||id;
+function moduleRecipe(id){if(typeof id!=='string'||!id.startsWith('craft:'))return null;const item=moduleItem(id.slice(6));if(!item||item.legacy)return null;return {id,name:item.name+' · LV '+item.level,icon:'▣',category:'module',rarity:item.rarity,fields:{credits:Math.ceil((60+item.level*6)*(1+item.rarity*.5)),scrap:2+item.rarity,...(item.rarity>=2?{hashProcessors:item.rarity-1}:{})},stackOut:{[item.id]:1},skill:'material',level:Math.max(item.level,1+item.rarity*5),characterLevel:item.level,xp:25+item.rarity*10,module:item};}
+export function craftRecipes(s){const level=Math.max(1,Math.min(1000,s.level,craftSkill(s,'material').rank));return [...recipes,...moduleTypes.flatMap(t=>Array.from({length:6},(_,r)=>moduleRecipe('craft:'+makeModule(t.id,r,level).id)))];}
 export function craftPlan(s,id){
- const r=recipes.find(v=>v.id===id);if(!r)return null;
+ const r=recipes.find(v=>v.id===id)||moduleRecipe(id);if(!r)return null;
  const inputs=[...Object.entries(r.fields||{}).map(([key,need])=>({kind:'field',id:key,name:itemName(key),need,have:fieldAmount(s,key)})),...Object.entries(r.stackIn||{}).map(([key,need])=>({kind:'stack',id:key,name:itemName(key),need,have:stacks(s)[key]||0}))];
  const pool=r.blueprint?craftPool(s,r.blueprint):[],g=pool[0],skill=r.skill?craftSkill(s,r.skill):null;
  const outputs=[...Object.entries(r.fieldOut||{}),...Object.entries(r.stackOut||{})].map(([key,count])=>({name:itemName(key),count}));if(r.blueprint)outputs.push({name:g?.name||'Trang bị đúng loại và độ hiếm',count:1});
  const missing=inputs.filter(v=>v.have<v.need).map(v=>`Còn thiếu ${(v.need-v.have).toLocaleString('vi')} ${v.name}`);
  if(skill&&skill.rank<r.level)missing.push(`Cần cấp nghề ${r.skill==='ammo'?'Đạn dược':r.skill==='medical'?'Y học':'Vật liệu'} ${r.level} (hiện tại ${skill.rank})`);
+ if(r.characterLevel>s.level)missing.push(`Cần cấp nhân vật ${r.characterLevel} (hiện tại ${s.level})`);
  if(r.blueprint&&!g)missing.push('Chưa có mẫu trang bị đúng cấp và chưa sở hữu.');
  let times=Math.min(...inputs.map(v=>Math.floor(v.have/v.need)),r.blueprint?pool.length:1000000);
  if(r.blueprint){let fit=0;for(let i=1;i<=Math.min(times,bagCapacity(s));i++){if(bagSize(s)+i-((stacks(s)[id]||0)===i?1:0)>bagCapacity(s))break;fit=i;}times=fit;}

@@ -20,7 +20,7 @@ export function profileStatRows(s){
   {name:'Vũ khí đặc biệt',value:number(st.specialAttack),description:'Sức mạnh vũ khí đặc biệt; hiệu suất 120% khi đánh lá chắn.'},
   {name:'Vũ khí hủy diệt',value:number(st.destructiveAttack),description:'Sức mạnh vũ khí hủy diệt; hiệu suất 50% khi đánh lá chắn.'},
   {name:'Tỉ lệ chí mạng',value:percent(st.crit),limit:'Tối đa 50%',description:'Xác suất gây đòn chí mạng.'},
-  {name:'Sát thương chí mạng',value:'150%',description:'Đòn chí mạng nhân sát thương với 1,5 trước khi trừ giáp địch.'},
+  {name:'Sát thương chí mạng',value:percent(st.critDamage),limit:'Tối đa 200%',description:'Hệ số chí mạng gồm cơ bản 150% và module khuếch đại, tính trước giáp địch.'},
   {name:'Tỉ lệ gây choáng',value:percent(st.stun),limit:'Tối đa 50%',description:'Địch bị choáng bỏ lượt phản công. Địch phản xạ có thể giảm hiệu quả.'},
   {name:'Rút lui',value:percent(st.escape),limit:'Tối đa 100%',description:'Xác suất rút lui trong dungeon khó; không phải tỉ lệ né đòn.'},
   {name:'Lá chắn',value:number(st.maxShield),description:'Hấp thụ sát thương trước sinh lực.'},

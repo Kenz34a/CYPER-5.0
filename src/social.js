@@ -2,7 +2,7 @@
 import {randomUUID} from 'node:crypto';
 import {gear} from './content.js';
 import {cosmetics} from './city.js';
-import {stacks,receiveGear,receiveStack,ownsGear,supplies,materials,blueprints} from './inventory-state.js';
+import {stacks,receiveGear,receiveStack,ownsGear,stackItem} from './inventory-state.js';
 import {record} from './journal.js';
 import {playerProfileData} from './profile-data.js';
 const idle=s=>!s.combat&&!s.dungeon;
@@ -63,7 +63,7 @@ export function socialAction(db,u,b,now=Date.now()){
     if(b.amount!==1||!ownGear(s,id)||ownsGear(r,id))return false;
     const calibration=s.calibration?.[id]||{level:0,modules:[]};takeGear(s,id);putGear(r,id,calibration);
    }else return false;
-   const name=kind==='field'?({credits:'credits',scrap:'linh kiện',hashProcessors:'bộ xử lý Hash',aiCores:'lõi AI'})[id]:kind==='gear'?gear.find(v=>v.id===id).name:[...supplies,...materials,...blueprints].find(v=>v.id===id).name;record(r,`${s.name} tặng bạn ${b.amount} × ${name}.`);
+   const name=kind==='field'?({credits:'credits',scrap:'linh kiện',hashProcessors:'bộ xử lý Hash',aiCores:'lõi AI'})[id]:kind==='gear'?gear.find(v=>v.id===id).name:stackItem(id).name;record(r,`${s.name} tặng bạn ${b.amount} × ${name}.`);
   }
   const state=social(u);state.receipts=(state.receipts||[]).filter(v=>v.expiresAt>now);state.receipts.push({id:b.requestId,fingerprint,expiresAt:b.issuedAt+300000});record(s,`Đã gửi quà cho ${r.name}.`);return true;
  }

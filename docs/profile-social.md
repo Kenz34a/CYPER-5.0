@@ -2,7 +2,7 @@
 
 Mở **Hồ sơ** để xem nhân vật của mình. Biểu đồ năm trục dùng cấp nghề thật: kỹ thuật in, khai thác, thu thập, chế tạo đạn và y học. Mỗi trục tính theo giới hạn của nghề: in cấp 50, bốn nghề còn lại cấp 100. Thanh XP bên dưới cho biết tiến độ lên cấp tiếp theo; MAX là đã tới giới hạn. Công việc khai thác credits mới cho thêm 20 XP nghề mỗi lượt; các công việc đã bắt đầu trước cập nhật giữ phần thưởng đã lưu.
 
-Bảng chỉ số lấy trực tiếp từ trang bị, module và buff đang dùng. Tỉ lệ chí mạng/choáng tối đa 50%; sát thương chí mạng 150%. Rút lui là xác suất thoát khỏi dungeon khó, không phải né đòn. Dấu trang bị cho biết lợi thế và điểm yếu với phe địch. Các giá trị theo luật CYPER, không sử dụng con số trong ảnh tham chiếu.
+Bảng chỉ số lấy trực tiếp từ trang bị, module và buff đang dùng. Tỉ lệ chí mạng/choáng tối đa 50%; sát thương chí mạng cơ bản 150%, cộng module tối đa 200%. Rút lui là xác suất thoát khỏi dungeon khó, không phải né đòn. Dấu trang bị cho biết lợi thế và điểm yếu với phe địch. Các giá trị theo luật CYPER, không sử dụng con số trong ảnh tham chiếu.
 
 Nhấn tên runner trong chat, bảng xếp hạng hoặc **Uy tín → Hồ sơ** để xem hồ sơ công khai. Ba tab hiển thị thống kê, trang bị đang mặc và tài sản. **Hồ sơ → Tài sản** có tùy chọn ẩn riêng chỉ số, nghề và trang bị, bên cạnh kệ/thú cưng/huy hiệu/skin. Ví, nguyên liệu, túi đồ, thư và dữ liệu tài khoản không nằm trong API hồ sơ công khai.
 

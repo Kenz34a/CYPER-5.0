@@ -35,6 +35,10 @@ v0.18 thêm màn chuẩn bị AFK theo số lượt: xem tổng thời gian, tà
 
 v0.19 thêm biểu đồ cấp nghề năm trục, thanh XP và bảng chỉ số thực. Nhấn tên runner để mở hồ sơ công khai; có thư, quà, trao đổi trực tiếp, quà trang trí, kết bạn, kết đôi, báo cáo và chặn. Lời mời/trao đổi cần người nhận đồng ý; admin có mục xử lý báo cáo. Xem [hướng dẫn hồ sơ, quyền riêng tư và liên hệ](docs/profile-social.md).
 
+## Module có phẩm chất
+
+v0.20 thêm sáu phẩm chất module, cấp và chất lượng riêng, nhiều chỉ số, sát thương chí mạng, rơi đồ từ quái/boss/rương và công thức chế tạo. Khảm, tháo, tặng và trao đổi giữ đúng cấp/phẩm chất; module cũ giữ nguyên tác dụng. Xem [hướng dẫn module](docs/modules.md).
+
 ## Màn chiến đấu
 
 Màn chiến đấu v0.15 hiển thị hình quái dạng vector, máu/lá chắn của hai bên, nhật ký riêng từng trận và số đạn thật. Ba khe vật phẩm nhanh dùng cùng cấu hình trong Túi đồ. Cụm điều khiển cố định trong màn chơi; khi điện thoại xoay ngang, điều khiển nằm bên phải. Thuốc vẫn dùng một lượt và quái phản công theo luật hiện có.
