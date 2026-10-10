@@ -31,6 +31,10 @@ v0.16 dùng nền than và chữ xanh nhạt thống nhất ở web/app, đưa c
 
 v0.18 thêm màn chuẩn bị AFK theo số lượt: xem tổng thời gian, tài nguyên và thưởng; bot dùng lõi AI, thu thập có cấp nghề. Unit hỗ trợ bỏ qua cá nhân, giảm 15 phút cho toàn server và buff cộng đồng giảm thời gian/tăng thưởng/XP. Mọi khoản dùng Unit có xác nhận, server kiểm tra và chống trừ lặp. Thẻ đang mặc có khung cắt góc, màu độ hiếm, mạch điện, khe module và cấp trang bị. Xem [cách dùng và bảng phí AFK](docs/afk.md).
 
+## Hồ sơ và liên hệ
+
+v0.19 thêm biểu đồ cấp nghề năm trục, thanh XP và bảng chỉ số thực. Nhấn tên runner để mở hồ sơ công khai; có thư, quà, trao đổi trực tiếp, quà trang trí, kết bạn, kết đôi, báo cáo và chặn. Lời mời/trao đổi cần người nhận đồng ý; admin có mục xử lý báo cáo. Xem [hướng dẫn hồ sơ, quyền riêng tư và liên hệ](docs/profile-social.md).
+
 ## Màn chiến đấu
 
 Màn chiến đấu v0.15 hiển thị hình quái dạng vector, máu/lá chắn của hai bên, nhật ký riêng từng trận và số đạn thật. Ba khe vật phẩm nhanh dùng cùng cấu hình trong Túi đồ. Cụm điều khiển cố định trong màn chơi; khi điện thoại xoay ngang, điều khiển nằm bên phải. Thuốc vẫn dùng một lượt và quái phản công theo luật hiện có.
@@ -111,7 +115,7 @@ Lõi AI: mỗi ba địch/boss PvE hạ được cho 1 lõi; mỗi boss còn cho
 
 Hồ sơ có tab Hồ sơ, Tài sản, Cập nhật và Hướng dẫn; đăng nhập/đăng ký nằm trong Hồ sơ. Cấp trang bị là trung bình cấp các món đang dùng. Huy hiệu mở bằng tiến trình thật: hai bản in, mười địch PvE, một boss, một trận PvP thắng, một dungeon hoàn thành, hoặc cấp 20. Có sáu khe ghim, không cho ghim trùng; danh hiệu chỉ chọn từ huy hiệu đã mở. Ngày tạo lấy từ bản lưu thực tế; bản cũ thiếu ngày sẽ được ghi rõ.
 
-Biểu đồ hoạt động sáu trục, thang 0–100: in (5 điểm/bản), chiến đấu (1 điểm/PvE và 3 điểm/thắng PvP), chế tạo (5 điểm/hiệu chuẩn thành công, lõi hoặc vật phẩm chế tạo), giao thương (4 điểm/giao dịch mua/bán), khám phá (2,5 điểm/khu lục tìm và 10 điểm/dungeon hoàn thành), y học (5 điểm/lần điều trị). Không cộng chỉ số chiến đấu. Bộ đếm hoạt động mới không suy đoán các lần làm trong bản cũ.
+Biểu đồ năm nghề lấy cấp/XP thật của kỹ thuật in, khai thác, thu thập, chế tạo đạn và y học; bên dưới có bảng chỉ số từ trang bị, module và buff. [Hồ sơ và liên hệ](docs/profile-social.md) mô tả giới hạn nghề và các thao tác với người chơi.
 
 ## Kênh liên lạc và uy tín
 
@@ -140,7 +144,7 @@ Tài sản có ba kệ trưng bày, mở lần lượt ở cấp 100/200/300 v�
 
 Có ba thú cưng trang trí: Drone Mắt Quỹ Đạo (LV1, 120 credits), Mèo máy Pixel (LV10, 500 credits) và Sứa ánh sáng (LV20, 1.500 credits). Mua một lần, chọn một thú cưng đi cùng hoặc cho nghỉ; không cộng sức mạnh chiến đấu. Skin chat chọn từ cyberwear đã mua.
 
-Tùy chọn riêng tư độc lập cho kệ, thú cưng, huy hiệu và skin chat. Mặc định công khai kệ/thú cưng, ẩn huy hiệu/skin. API `GET /api/profile/:id` chỉ trả về những tài sản được cho phép, không trả ví, nguyên liệu, túi đồ hoặc dữ liệu tài khoản. Skin chỉ được trả về trong chat khi cho phép; thay đổi quyền riêng tư áp dụng cả tin cũ ở lần tải tiếp theo. Xem tài sản công khai từ trang Uy tín hoặc nút xem trong hồ sơ của mình. Chế độ khách có bản xem trước tại chỗ; chỉ tài khoản server có hồ sơ chia sẻ cho người khác.
+Tùy chọn riêng tư độc lập cho kệ, thú cưng, huy hiệu, skin, chỉ số, nghề và trang bị. Mặc định công khai kệ/thú cưng/chỉ số/nghề/trang bị, ẩn huy hiệu/skin. API `GET /api/profile/:id` chỉ trả dữ liệu được chia sẻ; không trả ví, nguyên liệu, túi đồ, thư hoặc thông tin đăng nhập.
 
 
 ## Hộp thư tự nhận và catalog chế tạo

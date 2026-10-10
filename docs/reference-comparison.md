@@ -27,7 +27,7 @@ Các hướng dẫn còn lại chỉ ra những hệ thống lớn cần thiết
 - [Pets](https://github.com/DexterHuang/CyberCodeOnline/blob/473ed6f1ce96cccf077fa0729a29a9f1320cc6cf/contribution/mobile/en/tutorial/pets.md): nhận nuôi, thức ăn, vệ sinh, hạnh phúc, sức khỏe và hồi sinh. Ba thú cưng CYPER hiện là trang trí.
 - [Furniture](https://github.com/DexterHuang/CyberCodeOnline/blob/473ed6f1ce96cccf077fa0729a29a9f1320cc6cf/contribution/mobile/en/tutorial/furniture.md): căn hộ nhiều hạng, nội thất, nghề thu vật liệu cấp 300+, kích hoạt bằng đạn. CYPER hiện chỉ có nhà/kho/nghỉ và kệ trưng bày.
 - [Handlers](https://github.com/DexterHuang/CyberCodeOnline/blob/473ed6f1ce96cccf077fa0729a29a9f1320cc6cf/contribution/mobile/en/tutorial/handlers.md): quan hệ hướng dẫn người mới và kiểm tra điều kiện thưởng. Chưa có hệ thống này hoặc chống tài khoản phụ.
-- [Reclamation depot](https://github.com/DexterHuang/CyberCodeOnline/blob/473ed6f1ce96cccf077fa0729a29a9f1320cc6cf/contribution/mobile/en/tutorial/reclamation-depot.md), community raffle, giới thiệu, kết hôn, gửi quà, dịch chat và báo cáo vi phạm từ người chơi. Bảng admin đã có khóa/cấm chat, xóa tin, thu hồi tin rao, hỗ trợ tài nguyên, bảo trì và nhật ký; xem [quản trị](admin.md).
+- [Reclamation depot](https://github.com/DexterHuang/CyberCodeOnline/blob/473ed6f1ce96cccf077fa0729a29a9f1320cc6cf/contribution/mobile/en/tutorial/reclamation-depot.md), community raffle, giới thiệu và dịch chat. CYPER v0.19 có kết đôi, quà, trao đổi trực tiếp và báo cáo vi phạm; xem [hồ sơ/liên hệ](profile-social.md). Bảng admin đã có khóa/cấm chat, xóa tin, thu hồi tin rao, hỗ trợ tài nguyên, bảo trì và nhật ký; xem [quản trị](admin.md).
 
 Backend hỗ trợ file JSON để test trên máy hoặc PostgreSQL/Neon để chạy trên Render, với phiên đăng nhập bền vững và giao dịch giữ dữ liệu nhất quán giữa các tiến trình. Chơi phối hợp đã thực hiện thật trên server. Database vẫn lưu cả thế giới trong một hàng JSONB; để vận hành MMO lớn cần đo tải, tách các bảng, chống spam, giám sát và nhiều nội dung viết riêng. Xem [hướng dẫn Neon + Render](neon-render.md). Bản đối chiếu này không tuyên bố CYPER giống CyberCode Online 100%.
 
@@ -48,3 +48,7 @@ Theo ảnh tham chiếu, thêm màn chọn số lượt, thời gian lớn, xem 
 Unit hỗ trợ cả bỏ qua cá nhân và toàn server theo lựa chọn của người dùng. Thêm buff giảm 40% cộng dồn tối đa 80%, thưởng ×4 và XP +80%, cùng thông báo chat. Đây là cơ chế riêng đã ghi [chi phí và phạm vi](afk.md); không sao chép tuyên bố Donation «chỉ mỹ phẩm» của game gốc vì CYPER có bỏ qua cá nhân và hiệu chuẩn dùng Unit. Chưa có thanh toán tự động.
 
 Thẻ trang bị hiển thị khung góc theo độ hiếm, loại trang bị, dấu, nền mạch, chỉ số, số khe module thực và cấp ở góc phải. Giữ font tiếng Việt rõ hơn thay vì dùng font nét mảnh trong ảnh.
+
+### Hồ sơ và tương tác (v0.19.0)
+
+Biểu đồ năm nghề, XP và bảng chỉ số theo ảnh mới; ba tab hồ sơ công khai và thông tin tập đoàn. Các nút thư, quà, trao đổi, cyberwear, bạn bè, uy tín, kết hôn, báo cáo, chặn đều dùng dữ liệu server. Kết bạn/kết đôi cần đồng ý; trao đổi giữ đồ chờ xác nhận và hoàn trả khi hết hạn. Bảng admin có báo cáo riêng. Cấp nghề và cân bằng chiến đấu dùng luật CYPER, không chép giá trị mẫu.

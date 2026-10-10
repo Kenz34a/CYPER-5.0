@@ -1,0 +1,12 @@
+import {careerRows,profileStatRows} from './profile-data.js';
+export function careerRadar(skills,esc=v=>v){
+ const point=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/5;return [180+Math.cos(a)*r,175+Math.sin(a)*r];},points=r=>skills.map((_,i)=>point(i,r).join(',')).join(' ');
+ return `<svg class="career-radar" viewBox="0 0 360 350" role="img" aria-label="${esc('Cấp nghề: '+skills.map(v=>v.name+' '+v.rank+'/'+v.cap).join(', '))}">${[.2,.4,.6,.8,1].map(n=>`<polygon class="radar-ring" points="${points(n*112)}"/>`).join('')}${skills.map((v,i)=>{const [x,y]=point(i,112);return `<line x1="180" y1="175" x2="${x}" y2="${y}"/>`;}).join('')}<polygon class="radar-value" points="${skills.map((v,i)=>point(i,112*Math.min(1,v.rank/v.cap)).join(',')).join(' ')}"/>${skills.map((v,i)=>{const [x,y]=point(i,145);const words=v.name.split(' ');return `<text x="${x}" y="${y}" text-anchor="middle">${words.length>1?`<tspan x="${x}" dy="-4">${esc(words.slice(0,-1).join(' '))}</tspan><tspan x="${x}" dy="15">${esc(words.at(-1))}</tspan>`:esc(v.name)}</text>`;}).join('')}</svg>`;
+}
+export function careerProgressView({skills,level,esc}){
+ if(!skills)return '<p class="profile-private">Cấp nghề được đặt riêng tư.</p>';
+ const rows=[{name:'Cấp nhân vật',...level},...skills];
+ return `<section class="career-panel"><div class="profile-panel-label">NGHỀ NGHIỆP</div>${careerRadar(skills,esc)}<p class="career-note">Mỗi trục thể hiện cấp nghề theo giới hạn của nghề đó.</p><div class="career-progress">${rows.map(v=>`<article><div><b>${v.rank} ${esc(v.name.toUpperCase())}</b><small>${v.capped?'ĐÃ ĐẠT GIỚI HẠN':v.xp.toLocaleString('vi')+' / '+v.target.toLocaleString('vi')+' XP'}</small></div><div class="career-track"><i style="width:${v.capped?100:v.percent}%"></i></div><span>${v.capped?'MAX':v.percent+'%'}${v.cap?` · tối đa LV ${v.cap}`:''}</span></article>`).join('')}</div></section>`;
+}
+export function detailedStatsView(rows,esc){return `<section class="detailed-stats"><div class="profile-panel-label">CHỈ SỐ</div>${rows?rows.map(v=>`<article><div><b>${esc(v.name)}</b><strong>${esc(v.value)}</strong>${v.limit?`<small>${esc(v.limit)}</small>`:''}</div><p>${esc(v.description)}</p></article>`).join(''):'<p class="profile-private">Chỉ số chiến đấu được đặt riêng tư.</p>'}</section>`;}
+export function ownProfileDetails(s,esc){return careerProgressView({skills:careerRows(s),level:{rank:s.level,xp:s.xp,target:s.level*60,percent:Math.min(100,Math.floor(s.xp/(s.level*60)*100))},esc})+detailedStatsView(profileStatRows(s),esc);}

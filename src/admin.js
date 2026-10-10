@@ -21,11 +21,14 @@ const player = (u, now) => ({id: u.id, username: u.username, name: u.state.name,
 export function adminView(db, {query = '', page = 0, section = 'players', mode = 'json', now = Date.now()} = {}) {
   const search = query.trim().toLocaleLowerCase('vi').slice(0, 80);
   const users = db.users.filter(u => [u.username, u.state.name, u.id].some(v => String(v).toLocaleLowerCase('vi').includes(search)));
-  const pages = Math.max(1, Math.ceil(users.length / 20));
+  const reports=(db.playerReports||[]).filter(v=>[v.reason,v.id,db.users.find(u=>u.id===v.author)?.state.name,db.users.find(u=>u.id===v.target)?.state.name].some(x=>String(x||'').toLocaleLowerCase('vi').includes(search))).sort((a,b)=>Number(b.status==='open')-Number(a.status==='open')||b.time-a.time);
+  const matches=section==='reports'?reports.length:users.length;
+  const pages = Math.max(1, Math.ceil(matches / 20));
   page = Math.min(Math.max(0, Number.isSafeInteger(page) ? page : 0), pages - 1);
   const m = management(db);
-  return {section, query: search, page, pages, matches: users.length, now,
+  return {section, query: search, page, pages, matches, now,
     stats: {players: db.users.length, banned: db.users.filter(u => banned(u, now)).length,
+      reports: (db.playerReports||[]).filter(v=>v.status==='open').length,
       sessions: Object.values(db.sessions || {}).filter(s => s.expires > now).length,
       listings: db.market.length, rooms: (db.expeditions || []).length, content: contentCount, mode},
     maintenance: m.maintenance, announcement: m.announcement,
@@ -37,6 +40,7 @@ export function adminView(db, {query = '', page = 0, section = 'players', mode =
     listings: section === 'market' ? db.market.slice(-100).reverse().map(v => ({id: v.id,
       name: gear.find(g => g.id === v.gear)?.name || v.gear, seller: v.seller,
       sellerName: db.users.find(u => u.id === v.seller)?.state.name || 'Runner', price: v.price})) : [],
+    reports: section === 'reports' ? reports.slice(page*20,page*20+20).map(v=>({...v,reporterName:db.users.find(u=>u.id===v.author)?.state.name||'Runner',targetName:db.users.find(u=>u.id===v.target)?.state.name||'Runner'})) : [],
     audit: section === 'audit' ? m.audit.slice(-100).reverse() : []};
 }
 
@@ -109,6 +113,10 @@ export function adminAction(db, actor, b, now = Date.now()) {
       db.management ||= {maintenance: false, announcement: null, audit: []};
       db.management.announcement = b.text.trim() ? {text: b.text.trim(), time: now} : null;
       details = {text: b.text.trim()}; break;
+    }
+    case 'report-resolve':case 'report-dismiss': {
+      const report=(db.playerReports||[]).find(v=>v.id===b.id&&v.status==='open');if(!report)return {status:400,error:'Báo cáo đã xử lý hoặc không tồn tại.'};
+      report.status=b.action==='report-resolve'?'resolved':'dismissed';report.reviewedAt=now;report.reviewedBy=actor.id;report.reviewNote=reason;targetId=report.target;details={report:report.id,status:report.status};break;
     }
     case 'maintenance': {
       if (typeof b.enabled !== 'boolean') return {status: 400, error: 'Trạng thái bảo trì không hợp lệ.'};

@@ -122,3 +122,5 @@ v0.16.1 đóng gói font CYPER Sans (SIL OFL 1.1) cho web/offline/app, tăng c�
 
 
 v0.18 đồng bộ AFK theo số lượt, bot/thu thập, buff Unit toàn server và thẻ trang bị cho web/app. Android dùng versionCode 8; iOS dùng build 8. API và giao dịch chạy trên server đã chọn, chơi khách tiếp tục chạy cục bộ.
+
+v0.19 đồng bộ hồ sơ nghề, bảng chỉ số và liên hệ giữa runner cho web/app. Android dùng versionCode 9; iOS dùng build 9. Quà, trao đổi và lời mời cần tài khoản trên cùng server.

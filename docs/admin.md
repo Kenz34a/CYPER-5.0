@@ -50,7 +50,7 @@ Mã chống gửi trùng có thời hạn năm phút: cùng mã/nội dung chỉ
 
 Thông báo hiển thị cho mọi người qua polling khoảng năm giây, luôn là văn bản được escape. Bảo trì chặn đăng ký và hành động game của tài khoản thường; admin vẫn thao tác. Người chơi vẫn đăng nhập, xem dữ liệu và đăng xuất. Thời gian công việc, hạn vật phẩm và mốc ngày vẫn trôi; khách cục bộ vẫn chơi.
 
-Khóa giữ nhân vật/tài sản/lịch sử cũ; không tự giải tán tập đoàn/phòng dungeon hoặc hủy tin rao. Thu hồi tin ở mục Chợ khi cần. Audit có giới hạn lưu, chưa có kho nhật ký dài hạn hoặc báo cáo vi phạm từ người chơi.
+Khóa giữ nhân vật/tài sản/lịch sử cũ; không tự giải tán tập đoàn/phòng dungeon hoặc hủy tin rao. Thu hồi tin ở mục Chợ khi cần. Audit có giới hạn lưu, chưa có kho nhật ký dài hạn. v0.19 có báo cáo vi phạm từ người chơi.
 
 Kiểm thử dùng tài khoản và dữ liệu tạm, không cấp quyền cho người chơi thật. `npm test` kiểm tra phân quyền, CLI, chống gửi trùng, bảo trì, cấm chat/khóa, thu hồi phiên, audit qua restart và XSS.
 
@@ -61,3 +61,7 @@ Unit là tiền tệ nạp: tài khoản mới có 0 Unit, không nhận qua gam
 Sau khi kiểm tra giao dịch thực tế, admin mở **Người chơi → Hỗ trợ → Unit · nạp đã xác nhận**, nhập số lượng và mã giao dịch trong lý do, rồi xác nhận bằng mật khẩu admin. Audit ghi `source: confirmed-topup`, người xác nhận, lý do và số dư trước/sau. Nạp Unit vẫn được phép khi runner đang chờ công việc để họ có thể bỏ qua hàng chờ. Cùng mã yêu cầu chỉ cộng một lần trong thời hạn chống gửi trùng hiện có.
 
 Bỏ qua công việc tính **1 Unit / phút còn lại, làm tròn lên**, tối thiểu 1 Unit khi chưa xong. Giao diện hiển thị phí và có bước xác nhận. Server dùng thời gian và số dư thật, ràng buộc yêu cầu với đúng công việc, thu không quá phí đã hiển thị, hoàn thành và phát thưởng một lần trong cùng transaction. Công việc đã xong nhận miễn phí bằng **Nhận thưởng**; Unit không được hoàn lại sau khi bỏ qua.
+
+## Báo cáo người chơi
+
+Mục **Báo cáo** tìm theo tên/mã/nội dung, 20 mục/trang, ưu tiên báo cáo đang chờ. Xem lý do rồi chọn **Đã xử lý** hoặc **Đóng báo cáo**, xác nhận bằng lý do và mật khẩu admin. Hai thao tác này chỉ đổi trạng thái; khóa/cấm chat là thao tác riêng và có audit. Xem [giới hạn và quyền riêng tư](profile-social.md).

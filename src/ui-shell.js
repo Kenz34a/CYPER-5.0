@@ -20,7 +20,7 @@ const shapes = {
 const aliases = {
   black:'shop', market:'shop', bazaar:'shop', medical:'shop',
   station:'tech', printer:'tech', cores:'tech', cosmetics:'tech', terminal:'tech', admin:'settings',
-  boss:'combat', arena:'combat', corporation:'group', headquarters:'group', npc:'account', reputation:'rank',
+  boss:'combat', arena:'combat', corporation:'group', headquarters:'group', npc:'account', social:'group', reputation:'rank',
   exchange:'bank', housing:'hub', commercial:'hub', coast:'map', pets:'rewards', tavern:'chat',
   lore:'missions', codex:'missions', alley:'map',
 };
@@ -33,7 +33,7 @@ const groups = [
   ['Trang bị & dịch vụ', ['inventory','shop','black','station','printer','medical','cores','terminal','commercial','bank','exchange']],
   ['Thành phố', ['bazaar','market','alley','pets','tavern','coast','housing','cosmetics','npc']],
   ['Cộng đồng', ['chat','corporation','headquarters','rank','reputation','rewards']],
-  ['Hồ sơ & dữ liệu', ['account','lore','codex','settings','admin']],
+  ['Hồ sơ & dữ liệu', ['account','social','lore','codex','settings','admin']],
 ];
 export function navigation({tabs,tab,admin,activeCount,label}) {
   return groups.map(([name,ids]) => `<section class="nav-group"><p>${name}</p>${ids.map(id => {

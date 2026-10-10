@@ -1,6 +1,6 @@
-export const appVersion='0.18.0';
+export const appVersion='0.19.0';
 export const settingDefaults={language:'vi',uiSize:'auto',animateNPC:true,animateWork:true,hideUpdates:false,disableTutorial:false,neverAskNotifications:true,newPromosOnly:false,music:false,musicVolume:65,soundEffects:true,soundNotices:true,soundMentions:true,soundMail:true,translateChat:false,showOriginal:true,translateOwn:false,disableChatEffects:false,disableSkipBanner:false,hideDamageMeter:false,disableVictory:false,notifyGuild:true,notifyWorld:true,rejectGifts:false,privateBadges:true,hideHandler:false,hideDonations:false,apartmentWall:false,hideNPC:false};
-export const unsupportedSettings=new Set(['newPromosOnly','translateChat','showOriginal','translateOwn','disableSkipBanner','rejectGifts','apartmentWall']);
+export const unsupportedSettings=new Set(['newPromosOnly','translateChat','showOriginal','translateOwn','disableSkipBanner','apartmentWall']);
 export function settings(s){const value={...settingDefaults,...s.settings};if(typeof s.privacy?.badges==='boolean')value.privateBadges=!s.privacy.badges;return value;}
 export function settingsAction(s,b){
  if(b.action==='tutorial-dismiss'){s.tutorialDismissed=true;return true;}

@@ -8,6 +8,7 @@ import {dungeonEventAction} from './dungeon-events.js';
 import {settingsAction} from './settings.js';
 import {removeAccountData} from './account-data.js';
 import {migrateRail,railAction} from './rail.js';
+import {settleSocial,publicPlayerProfile} from './social.js';
 import {workAction} from './work.js';
 import {afkBoostState} from './afk-effects.js';
 import {workAllows} from './work-rules.js';
@@ -57,7 +58,7 @@ async function handle(req,res,pathname,tx){
  const persist=async()=>{tx.data=db;tx.dirty=true;};
  let cleaned=false;
  for(const [key,session] of Object.entries(db.sessions))if(!session||session.expires<=Date.now()||!db.users.some(u=>u.id===session.id)){delete db.sessions[key];cleaned=true;}
- if(cleaned)await persist();
+ if(settleSocial(db)||cleaned)await persist();
  if(!['GET','POST'].includes(req.method)){send(res,405,{error:'Phương thức không hỗ trợ.'});return true;}
  if(req.method==='POST'&&req.headers.origin&&new URL(req.headers.origin).host!==req.headers.host){send(res,403,{error:'Nguồn yêu cầu không hợp lệ.'});return true;}
  if(pathname==='/api/register'||pathname==='/api/login'){
@@ -72,7 +73,7 @@ async function handle(req,res,pathname,tx){
  const sessionCookie=issueSession(db,u);await persist();res.setHeader('Set-Cookie',sessionCookie);send(res,200,{state:u.state,user:sessionSafe(u)});return true;
  }
  if(pathname==='/api/rank'&&req.method==='GET'){send(res,200,{players:db.users.filter(u=>!banned(u)).map(safe).sort((a,b)=>b.score-a.score||b.level-a.level).slice(0,100)});return true;}
- if(pathname.startsWith('/api/profile/')&&req.method==='GET'){const target=db.users.find(v=>v.id===pathname.slice('/api/profile/'.length));send(res,target?200:404,target?{assets:publicAssets(target.state)}:{error:'Không tìm thấy runner.'});return true;}
+ if(pathname.startsWith('/api/profile/')&&req.method==='GET'){const target=db.users.find(v=>v.id===pathname.slice('/api/profile/'.length));send(res,target?200:404,target?{assets:publicAssets(target.state),profile:publicPlayerProfile(db,target,user(req,db))}:{error:'Không tìm thấy runner.'});return true;}
  const u=user(req,db);
  if(pathname==='/api/world'&&req.method==='GET'){send(res,200,{...worldView(db,u),management:publicManagement(db)});return true;}
  if(!u){send(res,401,{error:'Cần đăng nhập.'});return true;}

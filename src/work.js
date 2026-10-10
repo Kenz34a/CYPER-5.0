@@ -9,7 +9,7 @@ export const jobs=[
  {id:'medical',name:'Hack cơ sở dữ liệu y tế',icon:'⚕',description:'Giải mã dữ liệu trong mạng mô phỏng để nâng nghề y học và chế tạo bot cứu thương.',tag:'Đào tạo y tế',seconds:60,energy:2,xp:30,skill:'medical'},
  {id:'ammo',name:'Nâng cấp đạn dược',icon:'ϟ',description:'Thử nghiệm cấu trúc pin để tìm cách chế tạo hiệu quả hơn. Nghề cấp 10 mở công thức Nitron.',tag:'Luyện đạn',seconds:60,energy:2,xp:30,skill:'ammo'},
  {id:'recycle',name:'Tái chế phế liệu',icon:'♲',description:'Tháo phế liệu công nghệ để cải thiện kỹ thuật in. Tiêu thụ một linh kiện mỗi lượt.',tag:'Đào tạo in ấn',seconds:30,energy:2,scrap:1,xp:50,skill:'printing'},
- {id:'mine',name:'Khai thác credits',icon:'◈',description:'Cho bộ xử lý giải khối dữ liệu trong thế giới game để kiếm credits.',tag:'Thu nhập',seconds:120,energy:3},
+ {id:'mine',name:'Khai thác credits',icon:'◈',description:'Cho bộ xử lý giải khối dữ liệu trong thế giới game để kiếm credits.',tag:'Thu nhập',seconds:120,energy:3,xp:20,skill:'mining'},
  {id:'bot',name:'Triển khai bot',icon:'⬡',description:'Bot thám hiểm khu vực để kiếm XP, credits và vật tư. Mỗi lượt dùng một lõi AI.',tag:'Nâng XP khi AFK',seconds:900,energy:0,aiCores:1,area:true},
  {id:'gather',name:'Thu thập',icon:'♲',description:'Thu thập linh kiện và vật liệu đạn dược. Cấp nghề thu thập phải đạt cấp khu vực.',tag:'Thu thập tài nguyên khi AFK',seconds:300,energy:2,skill:'gathering',area:true}
 ];
