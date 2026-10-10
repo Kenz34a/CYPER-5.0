@@ -13,7 +13,7 @@ export const publicManagement = db => ({maintenance: management(db).maintenance,
   announcement: management(db).announcement});
 const player = (u, now) => ({id: u.id, username: u.username, name: u.state.name,
   admin: isAdmin(u), level: u.state.level, credits: u.state.credits,
-  units: u.state.units ?? 3, scrap: u.state.scrap ?? 6, map: u.state.map,
+  units: u.state.units ?? 0, scrap: u.state.scrap ?? 6, map: u.state.map,
   createdAt: u.state.createdAt || null, banned: banned(u, now),
   banUntil: u.moderation?.ban?.until ?? null, muteUntil: u.moderation?.muteUntil || 0,
   busy: !!(u.state.combat || u.state.dungeon || u.state.work)});
@@ -85,12 +85,12 @@ export function adminAction(db, actor, b, now = Date.now()) {
     case 'grant': {
       if (!['credits', 'units', 'scrap'].includes(b.resource) || !Number.isSafeInteger(b.amount) || b.amount < 1 || b.amount > 1000000)
         return {status: 400, error: 'Chọn credits/Unit/linh kiện và số lượng 1–1.000.000.'};
-      if (target.state.combat || target.state.dungeon || target.state.work) return {status: 400, error: 'Runner cần kết thúc giao tranh, dungeon hoặc công việc trước.'};
-      const before = target.state[b.resource] ?? (b.resource === 'units' ? 3 : b.resource === 'scrap' ? 6 : 0);
+      if (target.state.combat || target.state.dungeon || target.state.work && b.resource !== 'units') return {status: 400, error: 'Runner cần kết thúc giao tranh/dungeon; chỉ nạp Unit khi đang chờ công việc.'};
+      const before = target.state[b.resource] ?? (b.resource === 'scrap' ? 6 : 0);
       if (!Number.isSafeInteger(before + b.amount)) return {status: 400, error: 'Số dư vượt giới hạn.'};
       target.state[b.resource] = before + b.amount;
-      note(target.state, `Admin hỗ trợ +${b.amount} ${b.resource}.`);
-      details = {resource: b.resource, amount: b.amount, before, after: before + b.amount}; break;
+      note(target.state, b.resource === 'units' ? `Admin đã xác nhận nạp +${b.amount} Unit.` : `Admin hỗ trợ +${b.amount} ${b.resource}.`);
+      details = {resource: b.resource, amount: b.amount, before, after: before + b.amount, ...(b.resource === 'units' ? {source: 'confirmed-topup'} : {})}; break;
     }
     case 'delete-message': {
       const message = db.messages.find(v => v.id === b.id);

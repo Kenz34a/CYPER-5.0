@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 import {once} from 'node:events';
-import {mkdtemp,rm} from 'node:fs/promises';
+import {mkdtemp,rm,readFile,writeFile} from 'node:fs/promises';
 
 test('server creates, persists and consumes chest drops once, ignoring forged item payloads',async()=>{
  const directory=await mkdtemp('/tmp/cyper-loot-server-'),port=49000+Math.floor(Math.random()*1000),base=`http://127.0.0.1:${port}`;let server,cookie;
@@ -12,7 +12,10 @@ test('server creates, persists and consumes chest drops once, ignoring forged it
  const act=payload=>req('/api/action',payload);
  try{
   await start();assert.equal((await req('/api/register',{username:'loot_runner',password:'loot-test-password'})).status,200);
-  await act({action:'enter-dungeon'});const chest=await act({action:'dungeon-step',id:'left'});assert.equal(chest.status,200);
+  await act({action:'enter-dungeon'});assert.equal((await act({action:'dungeon-step',id:'left'})).data.state.pendingLoot,undefined);
+  // A cleared-floor fixture isolates collection/persistence from combat.
+  await stop();const fixture=JSON.parse(await readFile(directory+'/players.json','utf8'));fixture.users[0].state.dungeon.cells=fixture.users[0].state.dungeon.cells.map(c=>['M','B'].includes(c)?'.':c);await writeFile(directory+'/players.json',JSON.stringify(fixture));await start();
+  await act({action:'dungeon-step',id:'right'});const chest=await act({action:'dungeon-step',id:'left'});assert.equal(chest.status,200);
   const loot=chest.data.state.pendingLoot;assert(loot.items.some(v=>v.id==='ammo-material'&&v.count===3));assert.equal(chest.data.state.stacks?.['ammo-material'],undefined);
   await stop();await start();assert.deepEqual((await req('/api/me')).data.state.pendingLoot,loot);
   assert.equal((await act({action:'loot-take',id:'forged-batch'})).status,400);

@@ -34,7 +34,7 @@ Thu hồi quyền bằng `npm run admin -- revoke ten_tai_khoan`. Thay đổi qu
 | Người chơi | Tìm tài khoản/bí danh/ID, 20 người/trang; xem cấp, tài nguyên, khu vực, trạng thái bận/khóa/cấm chat. |
 | Khóa | 1–8760 giờ hoặc 0 để khóa vô thời hạn, thu hồi toàn bộ phiên và chặn đăng nhập; có gỡ khóa, tự hết hiệu lực khi hết hạn. Bỏ khỏi bảng xếp hạng khi đang bị khóa. |
 | Cấm chat | 1–720 giờ; chặn chat toàn cầu/tập đoàn và gửi thư, vẫn cho chơi; có gỡ cấm. |
-| Hỗ trợ | Cộng 1–1.000.000 credits/Unit/linh kiện; runner cần kết thúc combat/dungeon/công việc. Ghi số dư trước/sau và báo trong nhật ký nhân vật. |
+| Hỗ trợ | Cộng 1–1.000.000 credits/linh kiện hoặc xác nhận nạp Unit; runner cần kết thúc combat/dungeon. Credits/linh kiện cần kết thúc công việc; Unit có thể nạp khi đang chờ. Ghi số dư trước/sau và báo trong nhật ký nhân vật. |
 | Chat | 100 tin toàn cầu/tập đoàn gần nhất; xóa tin và bỏ đoạn trích liên quan. Không đọc thư riêng. |
 | Chợ | 100 tin rao mới nhất; thu hồi về người bán, giữ hiệu chuẩn/module. Túi đầy chuyển hộp thư không hết hạn. Người bán cần kết thúc combat/dungeon. |
 | Server | Kiểu lưu trữ, số hồ sơ, phiên còn hạn, tin rao, phòng dungeon; thông báo tối đa 500 ký tự (trống để gỡ); bật/tắt bảo trì. Số phiên không phải số người đang online. |
@@ -53,3 +53,11 @@ Thông báo hiển thị cho mọi người qua polling khoảng năm giây, lu�
 Khóa giữ nhân vật/tài sản/lịch sử cũ; không tự giải tán tập đoàn/phòng dungeon hoặc hủy tin rao. Thu hồi tin ở mục Chợ khi cần. Audit có giới hạn lưu, chưa có kho nhật ký dài hạn hoặc báo cáo vi phạm từ người chơi.
 
 Kiểm thử dùng tài khoản và dữ liệu tạm, không cấp quyền cho người chơi thật. `npm test` kiểm tra phân quyền, CLI, chống gửi trùng, bảo trì, cấm chat/khóa, thu hồi phiên, audit qua restart và XSS.
+
+## Unit và nạp thủ công
+
+Unit là tiền tệ nạp: tài khoản mới có 0 Unit, không nhận qua gameplay hoặc đổi từ credits. Số dư đã có được giữ nguyên khi nâng phiên bản. Cổng thanh toán tự động chưa được tích hợp; không có API cho người chơi tự cộng Unit.
+
+Sau khi kiểm tra giao dịch thực tế, admin mở **Người chơi → Hỗ trợ → Unit · nạp đã xác nhận**, nhập số lượng và mã giao dịch trong lý do, rồi xác nhận bằng mật khẩu admin. Audit ghi `source: confirmed-topup`, người xác nhận, lý do và số dư trước/sau. Nạp Unit vẫn được phép khi runner đang chờ công việc để họ có thể bỏ qua hàng chờ. Cùng mã yêu cầu chỉ cộng một lần trong thời hạn chống gửi trùng hiện có.
+
+Bỏ qua công việc tính **1 Unit / phút còn lại, làm tròn lên**, tối thiểu 1 Unit khi chưa xong. Giao diện hiển thị phí và có bước xác nhận. Server dùng thời gian và số dư thật, ràng buộc yêu cầu với đúng công việc, thu không quá phí đã hiển thị, hoàn thành và phát thưởng một lần trong cùng transaction. Công việc đã xong nhận miễn phí bằng **Nhận thưởng**; Unit không được hoàn lại sau khi bỏ qua.

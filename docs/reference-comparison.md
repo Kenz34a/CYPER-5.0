@@ -34,3 +34,9 @@ Backend hỗ trợ file JSON để test trên máy hoặc PostgreSQL/Neon để 
 ## Kiểm chứng
 
 `npm test` bao gồm kiểm tra bảo toàn bản lưu cũ, tài nguyên/đạn, overflow khiên, module/tái chế, mốc ngày Việt Nam, buff/token và dungeon phối hợp. Kiểm thử API tạo nhiều tài khoản trong thư mục dữ liệu tạm, gửi đòn đánh đồng thời, kiểm tra thưởng một lần, restart giữa trận, mật khẩu phòng và việc giữ bí mật backend. Kiểm tra trình duyệt riêng dùng Chromium ở 360/390/1366 px và hai phiên người chơi; không sửa dữ liệu tài khoản thật.
+
+### Di chuyển và mở khóa tầng (v0.17.0)
+
+Chạm/click ô đích để tự tìm đường qua các ô đi được. Nhân vật dừng tại giao tranh hoặc khi mở chiến lợi phẩm; phím WASD và mũi tên vẫn dùng được. Server kiểm tra từng bước, tường, tầng/lượt và năng lượng trước khi bắt đầu trận đấu.
+
+Mỗi tầng cần hạ hết địch thường và boss mới mở rương/cửa tầng. Rương khóa vẫn đi qua được; UI hiển thị số quái còn lại. Trong phó bản phối hợp, quái chết được đồng bộ cho cả đội, rương là chiến lợi phẩm riêng. Sang tầng mới giữ phiên phối hợp và khóa lại theo quái của tầng mới.

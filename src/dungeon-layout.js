@@ -1,5 +1,6 @@
 export const WIDTH=15,HEIGHT=17;
 export const index=(x,y)=>y*WIDTH+x;
+export const remainingMonsters=d=>d?.cells.filter(c=>c==='M'||c==='B').length||0;
 export function createFloor(map,run,floor,mode='normal'){
  let seed=(Number(map.replace('map',''))+1)*7919+run*104729+floor*997;
  const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};

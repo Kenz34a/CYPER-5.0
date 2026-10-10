@@ -8,7 +8,8 @@ import {inventoryAction} from '../src/inventory.js';
 import {executeCraft} from '../src/crafting.js';
 import {enemyProfile,absorbShield,playerMark,markBonus,equipmentSlots} from '../src/gear-rules.js';
 import {prepareDaily,rewardAction,dailyStatus,checkInStatus,vietnamDay} from '../src/rewards.js';
-import {enterDungeon,stepDungeon} from '../src/dungeon.js';
+import {enterDungeon,stepDungeon,dungeonTarget} from '../src/dungeon.js';
+import {remainingMonsters} from '../src/dungeon-layout.js';
 import {dungeonEventAction} from '../src/dungeon-events.js';
 import {expeditionAction,syncExpedition,expeditionList,expeditionParty} from '../src/expeditions.js';
 import {removeAccountData} from '../src/account-data.js';
@@ -67,7 +68,7 @@ test('shared dungeon HP and contribution rewards are authoritative, spectators g
  const db=party(),{a,b,c}=enterShared(db);encounter(db,a);encounter(db,b);assert(expeditionAction(db,a,{action:'attack'},{random:roll}));assert.equal(b.state.combat.currentHp,a.state.combat.currentHp);assert(expeditionAction(db,b,{action:'attack'},{random:roll}));
  assert.equal(a.state.combat,null);assert.equal(b.state.combat,null);assert.equal(a.state.kills,1);assert.equal(b.state.kills,1);assert.equal(c.state.kills,0);assert.equal(a.state.dungeon.cells[230],'.');assert.equal(c.state.dungeon.cells[230],'.');
  const before=structuredClone(b.state);assert(!expeditionAction(db,b,{action:'attack'},{random:roll}));assert.deepEqual(b.state,before);
- c.state.dungeon.x=7;c.state.dungeon.y=15;assert(expeditionAction(db,c,{action:'dungeon-step',id:'left'},{random:roll}));assert.equal(c.state.dungeon.cells[231],'.');assert.equal(a.state.dungeon.cells[231],'C');assert.equal(expeditionParty(db,a).length,3);
+ c.state.dungeon.x=7;c.state.dungeon.y=15;assert(expeditionAction(db,c,{action:'dungeon-step',id:'left'},{random:roll}));assert.equal(c.state.dungeon.cells[231],'C');assert.equal(c.state.dungeon.chests,0);assert.equal(a.state.dungeon.cells[231],'C');assert.equal(expeditionParty(db,a).length,3);
  const resumed=JSON.parse(JSON.stringify(db));assert(syncExpedition(resumed,resumed.users[0])===false);assert.equal(resumed.expeditions[0].foes['1:230'].rewarded.length,2);
 });
 test('room password, membership, capacity, no rejoining, level eligibility and expiration cannot be bypassed',()=>{
@@ -79,4 +80,20 @@ test('room password, membership, capacity, no rejoining, level eligibility and e
 });
 test('account cleanup removes room identity and transfers ownership without altering other characters',()=>{
  const db=party(),{a,b}=enterShared(db);encounter(db,a);assert(expeditionAction(db,a,{action:'attack'},{random:roll}));const before=structuredClone(b.state),next=removeAccountData(db,a.id);assert.deepEqual(next.users.find(u=>u.id===b.id).state,before);assert.equal(next.expeditions[0].owner,b.id);assert(!next.expeditions[0].members.includes(a.id));assert.equal(next.expeditions[0].foes['1:230'].damage[a.id],undefined);
+});
+
+test('shared destination movement registers encounters; all team kills unlock personal chests and preserve rooms across floors',()=>{
+ const db=party(),{a,b,c,id}=enterShared(db);a.state.level=100;a.state.hp=stats(a.state).maxHp;
+ const target=dungeonTarget(a.state.dungeon,225+1);
+ assert(expeditionAction(db,a,{action:'dungeon-move',id:target},{random:roll}));assert.equal(a.state.dungeon.x,5);assert(a.state.combat);assert(db.expeditions[0].foes['1:230']);
+ assert(expeditionAction(db,a,{action:'attack'},{random:roll}));assert.equal(remainingMonsters(c.state.dungeon),3);
+ // Visit and kill remaining enemies with real shared combat actions.
+ for(const tile of [138,175,43]){
+  assert(expeditionAction(db,a,{action:'dungeon-move',id:dungeonTarget(a.state.dungeon,tile)},{random:roll}));
+  while(a.state.combat)assert(expeditionAction(db,a,{action:'attack'},{random:roll}));
+ }
+ assert.equal(remainingMonsters(a.state.dungeon),0);assert.equal(remainingMonsters(b.state.dungeon),0);assert.equal(remainingMonsters(c.state.dungeon),0);
+ assert(expeditionAction(db,c,{action:'dungeon-move',id:dungeonTarget(c.state.dungeon,231)},{random:roll}));assert.equal(c.state.dungeon.chests,1);assert.equal(a.state.dungeon.chests,0);
+ assert(expeditionAction(db,a,{action:'dungeon-move',id:dungeonTarget(a.state.dungeon,28)},{random:roll}));assert.equal(a.state.dungeon.floor,2);assert.equal(a.state.dungeon.instance,id);assert.equal(remainingMonsters(a.state.dungeon),4);
+ assert(expeditionAction(db,a,{action:'dungeon-move',id:dungeonTarget(a.state.dungeon,230)},{random:roll}));assert(a.state.combat);assert(db.expeditions[0].foes['2:230']);
 });

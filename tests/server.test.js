@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
-import {mkdtemp,rm,readFile} from 'node:fs/promises';
+import {mkdtemp,rm,readFile,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {once} from 'node:events';
@@ -13,6 +13,8 @@ test('accounts, authoritative combat, actual leaderboard, PvP and restart persis
  async function req(route,data,cookie){const r=await fetch(base+route,{method:data?'POST':'GET',headers:{...(data?{'Content-Type':'application/json'}:{}),...(cookie?{Cookie:cookie}:{})},...(data?{body:JSON.stringify(data)}:{})});return {status:r.status,cookie:r.headers.get('set-cookie')?.split(';')[0],data:await r.json()};}
  try{await start();assert.equal((await fetch(base+'/.data/players.json')).status,404);assert.equal((await fetch(base+'/.git/config')).status,404);assert.equal((await req('/api/me')).status,401);
  const password='test-password-123';const first=await req('/api/register',{username:'runner_one',password}),second=await req('/api/register',{username:'runner_two',password});assert.equal(first.status,200);assert.equal(second.status,200);const cookie=first.cookie;
+ // Existing purchased balance fixture; top-up authorization is covered separately.
+ await stop();const paid=JSON.parse(await readFile(path.join(directory,'players.json'),'utf8'));paid.users[0].state.units=3;await writeFile(path.join(directory,'players.json'),JSON.stringify(paid));await start();
  assert.equal((await req('/api/login',{username:'runner_one',password:'incorrect-password'})).status,401);assert.equal((await req('/api/register',{username:'runner_one',password})).status,409);
  assert.equal((await req('/api/action',{action:'cheat',credits:999999},cookie)).status,400);assert.equal((await req('/api/action',{action:'buy',id:'gear199',black:true},cookie)).status,400);
  assert.equal((await req('/api/action',{action:'accept',id:'quest0'},cookie)).status,200);
@@ -20,7 +22,7 @@ test('accounts, authoritative combat, actual leaderboard, PvP and restart persis
  const claimed=await req('/api/action',{action:'claim',id:'quest0'},cookie);assert.equal(claimed.data.state.level,2);assert.equal((await req('/api/action',{action:'claim',id:'quest0'},cookie)).status,400);
  const enhanced=await req('/api/action',{action:'upgrade',id:'gear0'},cookie);assert.equal(enhanced.data.state.calibration.gear0.level,1);
  const fitted=await req('/api/action',{action:'module',id:'gear0',slot:0,module:'damage'},cookie);assert.equal(fitted.status,200);assert.equal(fitted.data.state.calibration.gear0.modules[0],'damage');assert.equal((await req('/api/action',{action:'module',id:'gear0',slot:2,module:'health'},cookie)).status,400);
- assert.equal((await req('/api/action',{action:'exchange',direction:'sell',amount:1},cookie)).status,200);assert.equal((await req('/api/action',{action:'exchange',direction:'buy',amount:1},cookie)).status,200);
+ assert.equal((await req('/api/action',{action:'exchange',direction:'sell',amount:1},cookie)).status,400);assert.equal((await req('/api/action',{action:'exchange',direction:'buy',amount:1},cookie)).status,400);
  const printed=await req('/api/action',{action:'print',id:'implant'},cookie);assert.equal(printed.status,200);assert.equal(printed.data.state.printing.total,1);assert.equal(printed.data.state.scrap,6);
  const calibrated=await req('/api/action',{action:'calibrate',id:'gear0',boost:true,protect:true,success:1,level:99},cookie);assert.equal(calibrated.status,200);assert.equal(calibrated.data.state.calibration.gear0.level,2);assert.equal(calibrated.data.state.units,0);
  assert.equal((await req('/api/action',{action:'bank',direction:'deposit',amount:50},cookie)).status,200);assert.equal((await req('/api/action',{action:'bank',direction:'deposit',amount:0.5},cookie)).status,400);

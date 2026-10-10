@@ -4,7 +4,7 @@ import {record as log,activity} from './journal.js';
 import {gear} from './content.js';
 import {calibration,upgradeCost,itemStats} from './equipment.js';
 
-export function resources(s){return {units:s.units??3,scrap:s.scrap??6,bank:s.bank??0};}
+export function resources(s){return {units:s.units??0,scrap:s.scrap??6,bank:s.bank??0};}
 export function printing(s){return s.printing??{rank:1,xp:0,total:0};}
 export function printPlan(s,slot){const p=printing(s);return {cost:40+p.rank*10,scrap:2,xp:25,maxLevel:Math.min(50,p.rank+2),pool:gear.filter(g=>g.slot===slot&&g.level<=p.rank+2&&!ownsGear(s,g.id))};}
 export function printItem(s,slot,random=Math.random){
@@ -31,10 +31,8 @@ export function calibrateItem(s,id,options={},random=Math.random){
  s.lastCalibration={id,result};return true;
 }
 export function exchange(s,direction,amount){
- if(s.combat||!Number.isSafeInteger(amount)||amount<=0||amount>1000000)return false;const r=resources(s);
- if(direction==='buy'){if(s.credits<amount*100)return false;s.credits-=amount*100;s.units=r.units+amount;}
- else if(direction==='sell'){if(r.units<amount)return false;s.units=r.units-amount;s.credits+=amount*100;}
- else return false;log(s,`Đã đổi ${amount} Unit ${direction==='buy'?'từ':'sang'} credits.`);return true;
+ // Unit is premium currency. Legacy exchange requests cannot mint or convert it.
+ return false;
 }
 export function bankTransfer(s,direction,amount){
  if(s.combat||!Number.isSafeInteger(amount)||amount<=0||amount>1000000000)return false;const r=resources(s);

@@ -8,7 +8,7 @@ import {pveKills} from './achievements.js';
 import {gear,maps,enemies,bosses,quests} from './content.js';
 import {itemStats} from './equipment.js';
 import {resolveDungeonCombat} from './dungeon-layout.js';
-export function fresh(){return{version:1,railVersion:1,keyFragments:{},railKeys:[],createdAt:new Date().toISOString(),name:'Runner',level:1,xp:0,credits:180,units:3,scrap:6,bank:0,hp:100,energy:30,map:'map0',inventory:['gear0','gear1'],equipped:{weapon:'gear0',armor:'gear1',implant:null},active:[],completed:[],progress:{},wins:0,losses:0,kills:0,combat:null,log:['Kết nối thành công. Chào mừng đến thành phố tro.']};}
+export function fresh(){return{version:1,railVersion:1,keyFragments:{},railKeys:[],createdAt:new Date().toISOString(),name:'Runner',level:1,xp:0,credits:180,units:0,scrap:6,bank:0,hp:100,energy:30,map:'map0',inventory:['gear0','gear1'],equipped:{weapon:'gear0',armor:'gear1',implant:null},active:[],completed:[],progress:{},wins:0,losses:0,kills:0,combat:null,log:['Kết nối thành công. Chào mừng đến thành phố tro.']};}
 export function stats(s){
  const weapon=itemStats(s,s.equipped.weapon),armor=itemStats(s,s.equipped.armor),implant=itemStats(s,s.equipped.implant),special=itemStats(s,s.equipped.special),destructive=itemStats(s,s.equipped.destructive);
  const fitted=equipmentSlots.map(k=>itemStats(s,s.equipped[k])),sum=k=>fitted.reduce((n,g)=>n+(g[k]||0),0),extraArmor=['helmet','legs','boots'].reduce((n,k)=>n+itemStats(s,s.equipped[k]).power,0);

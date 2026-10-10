@@ -40,7 +40,7 @@ test('admin compensation validates before mutation and cannot replay after recei
   assert.equal(adminAction(db, admin, grant, now + 300000).status, 400);
   db.management.receipts = Array.from({length: 2000}, (_, i) => ({id: 'other-' + i, actor: 'admin', expiresAt: now + 300000}));
   assert.equal(adminAction(db, admin, payload('grant', {resource: 'units', amount: 1}), now).status, 429);
-  assert.equal(db.users[1].state.units, 3);
+  assert.equal(db.users[1].state.units, 0);
   db.users[1].state.role = 'admin'; assert(!isAdmin(db.users[1]));
 });
 

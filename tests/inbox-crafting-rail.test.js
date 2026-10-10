@@ -48,7 +48,7 @@ test('five rail tiers require distinct completed dungeons and Terminal assembly;
  const s=fresh();assert.equal(stationPlan(s,'glass').can,false);assert(stationPlan(s,'neon').can);s.level=39;rest(s);assert(!move(s,'map30'));
  for(const id of ['map20','map24','map29']){assert(move(s,id));assert(startFight(s));s.combat.currentHp=1;assert(turn(s,'attack',()=>1));rest(s);}
  assert.equal(fragments(s).length,0);assert(!railAction(s,{action:'key-assemble',id:'red',fragments:3}));
- const clear=id=>{s.map=id;rest(s);assert(enterDungeon(s));for(let floor=1;floor<=3;floor++){s.dungeon.bossDefeated=true;s.dungeon.x=13;s.dungeon.y=2;assert(stepDungeon(s,'up'));}};
+ const clear=id=>{s.map=id;rest(s);assert(enterDungeon(s));for(let floor=1;floor<=3;floor++){s.dungeon.bossDefeated=true;s.dungeon.cells=s.dungeon.cells.map(c=>['M','B'].includes(c)?'.':c);s.dungeon.x=13;s.dungeon.y=2;assert(stepDungeon(s,'up'));}};
  s.map='map20';assert(enterDungeon(s));assert(leaveDungeon(s));assert.equal(fragments(s).length,0);
  clear('map20');clear('map20');assert.equal(fragments(s).length,1);clear('map24');clear('map29');assert.equal(fragments(s).length,3);assert(!railAccess(s));assert(!move(s,'map30'));
  assert(railAction(s,{action:'key-assemble',id:'red'}));assert(!railAction(s,{action:'key-assemble',id:'red'}));assert(move(s,'map30'));assert(!move(s,'map40'));assert(!stationPlan(s,'summit').can);

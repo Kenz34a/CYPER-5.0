@@ -7,7 +7,7 @@ import {queueLoot,lootAction} from '../src/loot.js';
 import {inboxLifetime,ownsGear} from '../src/inventory-state.js';
 
 test('chest drops wait for collection and cannot be collected again on revisiting the tile',()=>{
- const s=fresh();enterDungeon(s);stepDungeon(s,'left',()=>.9);
+ const s=fresh();enterDungeon(s);s.dungeon.cells=s.dungeon.cells.map(c=>['M','B'].includes(c)?'.':c);stepDungeon(s,'left',()=>.9);
  assert.equal(s.pendingLoot.source,'Rương tiếp tế');assert.equal(s.stacks,undefined);
  assert.equal(s.credits,205);assert.equal(s.scrap,8);
  const id=s.pendingLoot.id;assert(lootAction(s,{action:'loot-take',id}));

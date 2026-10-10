@@ -55,19 +55,19 @@ Giao diện v0.11 dùng nền xanh tối, thẻ bo góc, icon SVG và thanh ch�
 
 ## Trung tâm thành phố và dịch vụ
 
-Nút Bản đồ trên thanh dưới mở Trung tâm Neon với shop, chợ đen, máy in, trạm hiệu chuẩn, sàn đổi Unit, ngân hàng và bảng nhiệm vụ. Có lối di chuyển tới các khu vực vừa cấp. Các cảnh thành phố và phòng thí nghiệm là SVG riêng của dự án.
+Nút Bản đồ trên thanh dưới mở Trung tâm Neon với shop, chợ đen, máy in, trạm hiệu chuẩn, cửa hàng Unit, ngân hàng và bảng nhiệm vụ. Có lối di chuyển tới các khu vực vừa cấp. Các cảnh thành phố và phòng thí nghiệm là SVG riêng của dự án.
 
-Máy in dùng 2 linh kiện và `40 + cấp nghề × 10` credits cho mỗi món, tạo một trang bị chưa sở hữu thuộc loại đã chọn. Mỗi bản in cho 25 XP nghề; lên cấp nghề cần `cấp nghề × 50` XP. Cấp nghề in độc lập với cấp nhân vật và mở mẫu trang bị đến cấp nghề +2. Địch PvE cho 1 linh kiện, boss cho 3; nhân vật được cấp 6 linh kiện và 3 Unit để khởi đầu. Tiến trình cũ chưa có các trường này cũng được dùng mức khởi đầu khi mở dịch vụ.
+Máy in dùng 2 linh kiện và `40 + cấp nghề × 10` credits cho mỗi món, tạo một trang bị chưa sở hữu thuộc loại đã chọn. Mỗi bản in cho 25 XP nghề; lên cấp nghề cần `cấp nghề × 50` XP. Cấp nghề in độc lập với cấp nhân vật và mở mẫu trang bị đến cấp nghề +2. Địch PvE cho 1 linh kiện, boss cho 3; nhân vật được cấp 6 linh kiện và 0 Unit để khởi đầu. Unit chỉ có từ nạp; số dư cũ đã có được giữ nguyên khi cập nhật.
 
 Trạm hiệu chuẩn là lựa chọn tiết kiệm có rủi ro, với phí 65% của nâng cấp bảo đảm trong chi tiết trang bị. Ở +0 luôn thành công; các mức sau giảm tỉ lệ thành công 8 điểm phần trăm mỗi mức và có 2.5–4% nguy cơ phá hủy. Dùng 1 Unit để tăng thành công 10 điểm phần trăm hoặc 2 Unit để ngăn phá hủy. UI hiển thị chính xác xác suất và chi phí trước mỗi lần thử. Phí vẫn bị tiêu thụ khi thất bại. Phá hủy xóa món đồ, module và vị trí đang trang bị; bảo vệ ngăn hoàn toàn kết quả này. Nâng tối đa +5.
 
-Sàn đổi dùng tỉ giá 100 credits = 1 Unit theo cả hai chiều. Ngân hàng cho gửi/rút credits; tiền gửi không chịu phạt mất 10% khi nhân vật thua trận. Tất cả dịch vụ bị khóa trong giao tranh và tài khoản online được kiểm tra tài nguyên trên server.
+Unit không đổi được từ/sang credits. Nạp hiện được admin xác nhận thủ công sau khi kiểm tra giao dịch; cổng thanh toán tự động chưa được tích hợp (xem [hướng dẫn admin](docs/admin.md)). Khi đang làm việc, mở **Bỏ qua hàng chờ**, xem phí rồi xác nhận dùng Unit để hoàn thành và nhận thưởng ngay: 1 Unit / phút còn lại, làm tròn lên. Công việc đã xong nhận miễn phí. Ngân hàng cho gửi/rút credits; tiền gửi không chịu phạt mất 10% khi nhân vật thua trận. Tất cả dịch vụ bị khóa trong giao tranh và tài khoản online được kiểm tra tài nguyên trên server.
 
 ## Dungeon ký tự
 
 Vào Dungeon từ Terminal, menu hoặc Trung tâm Neon. Mỗi lượt gồm ba tầng được sinh theo khu vực và số lượt vào. Đường đi nối thông tới mọi rương, điểm cứu trợ và boss. `@` là nhân vật, `#` là tường, `♟` là địch, `Ω` là boss, `▤` là rương, `+` là trạm cứu trợ, `!` là terminal, `△` là cửa tầng.
 
-Di chuyển bằng phím mũi tên/WASD, nút hướng hoặc chạm ô liền kề. Vào dungeon tốn 3 EN; giao tranh tốn 2 EN, di chuyển không tốn EN. Rương chỉ nhận một lần mỗi tầng; trạm cứu trợ và terminal chỉ dùng một lần. Địch và boss được dọn sau khi thắng, vẫn tính tiến trình nhiệm vụ hiện có. Rút lui quay về ô trước và giữ địch; thua trận đóng dungeon theo cơ chế phạt hiện tại. Hạ boss để mở cửa, hoàn thành tầng ba có thưởng thêm. Không thể nghỉ, chuyển khu vực hoặc vào PvP khi còn trong dungeon.
+Di chuyển bằng phím mũi tên/WASD, nút hướng hoặc chạm/click ô đích bất kỳ có đường đi. Nhân vật tự tìm đường, dừng khi gặp quái hoặc nhận chiến lợi phẩm. Vào dungeon tốn 3 EN; giao tranh tốn 2 EN, di chuyển không tốn EN. Rương chỉ nhận một lần mỗi tầng; trạm cứu trợ và terminal chỉ dùng một lần. Địch và boss được dọn sau khi thắng, vẫn tính tiến trình nhiệm vụ hiện có. Rút lui quay về ô trước và giữ địch; thua trận đóng dungeon theo cơ chế phạt hiện tại. Hạ hết quái và boss trên tầng mới mở được rương và cửa; rương khóa vẫn đi qua được. Tầng mới khóa lại theo số quái còn sống. Hoàn thành tầng ba có thưởng thêm. Không thể nghỉ, chuyển khu vực hoặc vào PvP khi còn trong dungeon.
 
 Trên điện thoại, thanh điều khiển cố định phía trên menu đáy, có nút hướng tối thiểu 46 px và tự đổi sang đánh/thuốc/rút lui khi giao tranh. Bản đồ co theo chiều cao màn hình; phần ký hiệu, đội và nhiệm vụ tầng mở trong các mục thu gọn. Trên desktop, điều khiển ở sát bản đồ và chiến đấu nằm ở cột bên cạnh. Các nút vũ khí, xung điện và thông tin rút lui vẫn có trong khung chiến đấu.
 

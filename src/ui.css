@@ -517,3 +517,13 @@ th { font-size: 12px; background: #192633; }
 #delete-form[hidden] { display: none; }
 @media (max-width: 400px) { header:has(.connection-state:not([hidden])) .header-location { display: none; } }
 @media (orientation: landscape) { .main { padding-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px)); padding-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px)); } }
+
+/* Destination movement and premium queue completion */
+.dungeon-grid .tile:not(:disabled):hover { outline: 1px solid var(--green); background: #bee1d61c; }
+.dungeon-grid .tile:not(:disabled):focus-visible { outline: 2px solid var(--acid); outline-offset: -2px; }
+.dungeon-grid .tile-locked { color: var(--muted); background: #30373580; }
+.dungeon-grid .tile-locked.player-tile { color: var(--acid); }
+.work-skip { margin: 12px 0; padding: 12px; border: 1px solid #dce64966; background: #dce64906; }
+.work-skip summary { cursor: pointer; color: var(--acid); font-weight: 600; }
+.work-skip p { font-size: 14px; margin: 10px 0; }
+.work-skip [data-action="work-skip"] { width: 100%; border-color: var(--acid); background: var(--acid); color: #1b1e1f; font-weight: 650; }

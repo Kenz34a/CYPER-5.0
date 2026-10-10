@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
-import {mkdtemp,rm} from 'node:fs/promises';
+import {mkdtemp,rm,readFile,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {once} from 'node:events';
@@ -19,7 +19,9 @@ test('private communications, profile customization, milestones and technology p
  for(const id of ['implant','weapon'])assert.equal((await act({action:'print',id})).status,200);
  assert.equal((await act({action:'milestone-claim',id:'printing'})).status,200);assert.equal((await act({action:'milestone-claim',id:'printing'})).status,400);
  assert.equal((await act({action:'pin-badge',id:'printer',slot:0})).status,200);assert.equal((await act({action:'title',id:'printer'})).status,200);assert.equal((await act({action:'pin-badge',id:'veteran',slot:1})).status,400);
- assert.equal((await act({action:'exchange',direction:'sell',amount:3})).status,200);
+ assert.equal((await act({action:'exchange',direction:'sell',amount:3})).status,400);
+ // Admin credit-support fixture replaces the retired Unit exchange.
+ await stop();const supported=JSON.parse(await readFile(path.join(directory,'players.json'),'utf8'));supported.users[0].state.credits+=300;await writeFile(path.join(directory,'players.json'),JSON.stringify(supported));await start();
  for(let i=0;i<2;i++){let r=await act({action:'fight'});assert.equal(r.status,200);while(r.data.state.combat)r=await act({action:'attack'});}
  assert.equal((await act({action:'corp-create',text:'Private Signal'})).status,200);let world=(await req('/api/world',null,a.cookie)).data;assert.equal((await act({action:'corp-join',id:world.corporation},b.cookie)).status,200);
  assert.equal((await act({action:'chat',channel:'guild',text:'private guild payload'})).status,200);world=(await req('/api/world',null,a.cookie)).data;const message=world.guildMessages[0];

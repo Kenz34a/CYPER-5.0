@@ -3,7 +3,7 @@ import {randomBytes,scryptSync,timingSafeEqual} from 'node:crypto';
 import {areaAccess} from './rail.js';
 import {maps} from './content.js';
 import {createFloor} from './dungeon-layout.js';
-import {enterDungeon,leaveDungeon,stepDungeon} from './dungeon.js';
+import {enterDungeon,leaveDungeon,stepDungeon,moveDungeon} from './dungeon.js';
 import {turn,awardVictory,note} from './game.js';
 import {dungeonModes} from './dungeon-events.js';
 
@@ -41,7 +41,7 @@ export function expeditionList(db,viewer,now=Date.now()){
  return (db.expeditions||[]).filter(e=>now-e.touchedAt<lifetime&&activeMembers(db,e).length&&(!e.corporation||e.corporation===viewer?.corporation)).map(e=>({id:e.id,name:e.name,map:e.map,mode:e.mode,ownerName:db.users.find(u=>u.id===e.owner)?.state.name||'Runner',count:activeMembers(db,e).length,limit:4,protected:!!e.password,startedAt:e.startedAt,joined:e.members.includes(viewer?.id),departed:e.departed.includes(viewer?.id)}));
 }
 export function expeditionParty(db,u){const e=sessionOf(db,u?.state||{});return e?activeMembers(db,e).map(v=>({name:v.state.name,level:v.state.level,hp:v.state.hp,floor:v.state.dungeon.floor,x:v.state.dungeon.x,y:v.state.dungeon.y})):[];}
-export const expeditionHandles=(s,action)=>!!s.dungeon?.instance&&['dungeon-step','leave-dungeon','attack','skill','special','destructive','heal','escape','item-use'].includes(action);
+export const expeditionHandles=(s,action)=>!!s.dungeon?.instance&&['dungeon-step','dungeon-move','leave-dungeon','attack','skill','special','destructive','heal','escape','item-use'].includes(action);
 
 export function expeditionAction(db,u,b,{now=Date.now(),random=Math.random,useItem=null}={}){
  const s=u.state;db.expeditions??=[];
@@ -61,6 +61,10 @@ export function expeditionAction(db,u,b,{now=Date.now(),random=Math.random,useIt
  }
  const e=sessionOf(db,s);if(!e||now-e.touchedAt>=lifetime)return false;
  syncExpedition(db,u,now);
+ if(b.action==='dungeon-move'){
+  const ok=moveDungeon(s,b.id,random,dir=>expeditionAction(db,u,{action:'dungeon-step',id:dir},{now,random,useItem}));
+  if(ok)e.touchedAt=now;return ok;
+ }
  if(b.action==='leave-dungeon'){
   if(!leaveDungeon(s))return false;e.touchedAt=now;e.departed.push(u.id);return true;
  }

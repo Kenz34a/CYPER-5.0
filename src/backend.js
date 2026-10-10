@@ -18,7 +18,7 @@ import {isIP} from 'node:net';
 import {randomBytes} from 'node:crypto';
 import {fresh,stats,note,move,startFight,turn,buy,equip,sell,accept,claim,rest} from './game.js';
 import {npcs} from './content.js';
-import {enterDungeon,leaveDungeon,stepDungeon} from './dungeon.js';
+import {enterDungeon,leaveDungeon,stepDungeon,moveDungeon} from './dungeon.js';
 import {upgrade,installModule,removeModule} from './equipment.js';
 import {printItem,calibrateItem,bankTransfer,exchange} from './services.js';
 import {initWorld,worldView,worldAction,shopDiscount} from './world.js';
@@ -123,6 +123,7 @@ async function handle(req,res,pathname,tx){
  case 'enter-dungeon':ok=enterDungeon(s,b.id||'normal',{corporation:!!db.corporations.find(c=>c.id===u.corporation)});break;
  case 'leave-dungeon':ok=leaveDungeon(s);break;
  case 'dungeon-step':ok=stepDungeon(s,b.id);break;
+ case 'dungeon-move':ok=moveDungeon(s,b.id);break;
  case 'loot-take':case 'loot-discard':ok=lootAction(s,b);break;
  case 'upgrade':ok=upgrade(s,b.id);break;
  case 'print':ok=printItem(s,b.id);break;

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fresh,move,startFight,rest,pvp} from '../src/game.js';
-import {workAction,workPlan,workRemaining} from '../src/work.js';
+import {workAction,workPlan,workRemaining,workSkipPlan,workKey} from '../src/work.js';
 import {printing,printItem} from '../src/services.js';
 import {craftSkill,executeCraft} from '../src/crafting.js';
 import {enterDungeon} from '../src/dungeon.js';
@@ -22,4 +22,20 @@ test('training advances skills without fabricated printing/crafting totals; save
 test('cancel keeps upfront costs, gives no reward and capped printing rank handles expansion',()=>{
  const s=fresh();s.printing={rank:49,xp:2440,total:7};assert(workAction(s,{action:'work-start',id:'recycle'},0));assert(workAction(s,{action:'work-cancel'},10000));assert.equal(s.energy,28);assert.equal(s.scrap,5);assert.equal(printing(s).xp,2440);assert(!workAction(s,{action:'work-claim'},999999));assert(!workAction(s,{action:'work-cancel'},999999));
  rest(s);assert(workAction(s,{action:'work-start',id:'recycle'},0));assert(workAction(s,{action:'work-claim'},30000));assert.equal(printing(s).rank,50);assert.equal(printing(s).xp,40);assert.equal(printing(s).total,7);
+});
+
+test('premium skip quotes rounded minutes, honors the approved maximum and finishes once with real rewards',()=>{
+ const s=fresh(),now=1000;assert.equal(s.units,0);assert(workAction(s,{action:'work-start',id:'mine'},now));
+ assert.equal(workSkipPlan(s,now).cost,2);assert.equal(workSkipPlan(s,now+60000).cost,1);assert.equal(workSkipPlan(s,now+119001).cost,1);
+ const id=workKey(s),snapshot=structuredClone(s);assert(!workAction(s,{action:'work-skip',id,amount:2,units:999},now));assert.deepEqual(s,snapshot);
+ s.units=4;
+ for(const b of [{id:'forged',amount:2},{id,amount:0},{id,amount:.5},{id,amount:1}]){const before=structuredClone(s);assert(!workAction(s,{action:'work-skip',...b},now));assert.deepEqual(s,before);}
+ assert(workAction(s,{action:'work-skip',id,amount:2,reward:{credits:999999},now:999999},now+60000));assert.equal(s.units,3);assert.equal(s.credits,212);assert.equal(s.work,null);assert.equal(s.activity.workCompleted,1);
+ assert(!workAction(s,{action:'work-skip',id,amount:2},now+60001));assert(!workAction(s,{action:'work-claim'},now+60001));
+ assert(workAction(s,{action:'work-start',id:'mine'},now+60002));assert.notEqual(workKey(s),id);const before=structuredClone(s);assert(!workAction(s,{action:'work-skip',id,amount:2},now+60002));assert.deepEqual(s,before);
+});
+test('finished queues are free, legacy saved jobs can be skipped, and training skips do not count as crafting',()=>{
+ const s=fresh();s.units=3;assert(workAction(s,{action:'work-start',id:'printing'},1000));delete s.work.key;const id=workKey(s);
+ assert(workAction(s,{action:'work-skip',id,amount:1},2000));assert.equal(s.units,2);assert.equal(s.printing.xp,25);assert.equal(s.printing.total,0);
+ assert(workAction(s,{action:'work-start',id:'printing'},3000));assert(!workAction(s,{action:'work-skip',id:workKey(s),amount:1},63000));assert.equal(s.units,2);assert(workAction(s,{action:'work-claim'},63000));assert.equal(s.printing.rank,2);assert.equal(s.printing.total,0);
 });
