@@ -140,3 +140,5 @@ v0.20 đồng bộ module có phẩm chất/cấp/chất lượng và chỉ số
 
 
 v0.20.1 hiển thị phiên bản server khi khởi động, thêm `/api/version`, nút kiểm tra cập nhật và thông báo bản mới trên màn chơi. Android dùng versionCode 11; iOS build 11.
+
+v0.20.2 tăng phí bỏ qua toàn server từ 10 lên 50 Unit/lượt, vẫn giảm 15 phút cho mọi công việc đang chờ. Web và app dùng cùng bảng phí; Android dùng versionCode 12, iOS build 12.

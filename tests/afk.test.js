@@ -29,16 +29,17 @@ test('stacked boosts expire independently; started bot rewards survive reload an
  assert.equal(s.level,4);assert.equal(s.xp,158);assert.equal(s.units,0);assert.equal(s.kills,0);assert.equal(s.activity.workCompleted,1);assert(!workAction(s,{action:'work-claim'},360001));
 });
 test('global skip reaches offline queues, is idempotent, and refuses empty or unaffordable purchases',()=>{
- const u={id:'buyer',state:{...fresh(),name:'Buyer',units:40,aiCores:10}},v={id:'offline',state:{...fresh(),name:'Offline',aiCores:10}},db={users:[u,v]};
+ const u={id:'buyer',state:{...fresh(),name:'Buyer',units:150,aiCores:10}},v={id:'offline',state:{...fresh(),name:'Offline',aiCores:10}},db={users:[u,v]};
  workAction(u.state,{action:'work-start',id:'bot',count:4},0);workAction(v.state,{action:'work-start',id:'bot',count:1},0);
- const b={action:'afk-global',id:'skip',amount:10,requestId:'1234567890123456',issuedAt:0};
- assert(afkWorldAction(db,u,b,100));assert.equal(u.state.units,30);assert.equal(u.state.work.endsAt,2700000);assert.equal(v.state.work.endsAt,100);assert.equal(v.state.activity?.workCompleted,undefined);
- assert(afkWorldAction(db,u,b,200));assert.equal(u.state.units,30);assert.equal(u.state.work.endsAt,2700000);assert.equal(db.afk.events.length,1);
- const saved=JSON.parse(JSON.stringify(db));assert(afkWorldAction(saved,saved.users[0],b,300));assert.equal(saved.users[0].state.units,30);
- assert(!afkWorldAction(db,u,{...b,amount:9},100));assert(!afkWorldAction(db,u,{...b,id:'xp',amount:5},100));
+ const b={action:'afk-global',id:'skip',amount:50,requestId:'1234567890123456',issuedAt:0},before=structuredClone(db);
+ assert(!afkWorldAction(db,u,{...b,amount:10},100));assert.deepEqual(db,before);
+ assert(afkWorldAction(db,u,b,100));assert.equal(u.state.units,100);assert.equal(u.state.work.endsAt,2700000);assert.equal(v.state.work.endsAt,100);assert.equal(v.state.activity?.workCompleted,undefined);
+ assert(afkWorldAction(db,u,b,200));assert.equal(u.state.units,100);assert.equal(u.state.work.endsAt,2700000);assert.equal(db.afk.events.length,1);
+ const saved=JSON.parse(JSON.stringify(db));assert(afkWorldAction(saved,saved.users[0],b,300));assert.equal(saved.users[0].state.units,100);
+ assert(!afkWorldAction(db,u,{...b,amount:49},100));assert(!afkWorldAction(db,u,{...b,id:'xp',amount:5},100));
  assert(!afkWorldAction(db,u,{...b,requestId:'new-12345678901234'},300001));
- u.state.units=0;assert(!afkWorldAction(db,u,{...b,requestId:'new-12345678901234'},100));assert.equal(u.state.work.endsAt,2700000);
- u.state.units=40;u.state.work.endsAt=0;assert(!afkWorldAction(db,u,{...b,requestId:'new-12345678901234'},200));assert.equal(u.state.units,40);
+ u.state.units=49;assert(!afkWorldAction(db,u,{...b,requestId:'new-12345678901234'},100));assert.equal(u.state.units,49);assert.equal(u.state.work.endsAt,2700000);
+ u.state.units=150;u.state.work.endsAt=0;assert(!afkWorldAction(db,u,{...b,requestId:'new-12345678901234'},200));assert.equal(u.state.units,150);
 });
 test('global buffs enforce caps and costs, and retries never charge twice',()=>{
  const u={id:'a',state:{...fresh(),units:100}},db={users:[u]};let seq=0;

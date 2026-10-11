@@ -1,6 +1,6 @@
 // Public rules for previews. Online purchases and job rewards are computed by the server.
 export const afkOffers = [
- {id:'skip',name:'Bỏ qua toàn server',cost:10,seconds:900,description:'Giảm 15 phút cho mọi công việc đang chờ, kể cả người chơi ngoại tuyến. Không tự nhận thưởng.'},
+ {id:'skip',name:'Bỏ qua toàn server',cost:50,seconds:900,description:'Giảm 15 phút cho mọi công việc đang chờ, kể cả người chơi ngoại tuyến. Không tự nhận thưởng.'},
  {id:'speed',name:'Giảm thời gian',cost:5,duration:1200000,description:'Giảm 40% thời gian các lượt bắt đầu trong 20 phút. Cộng dồn hai lần, tối đa 80%.'},
  {id:'reward',name:'Tăng phần thưởng',cost:8,duration:1200000,description:'Nhân 4 tài nguyên, credits và XP của các lượt bắt đầu trong 20 phút. Chi phí đầu vào giữ nguyên.'},
  {id:'xp',name:'Buff XP',cost:5,duration:1200000,description:'Thêm 80% XP cho các lượt bắt đầu trong 20 phút; kết hợp được với tăng phần thưởng.'}

@@ -1,5 +1,5 @@
 import {publicAssets} from './src/public-assets.js';
-const cacheName = 'cyper-public-v0.20.1';
+const cacheName = 'cyper-public-v0.20.2';
 const precache = ['/', ...publicAssets.filter(path => path !== '/sw.js')];
 const allowed = new Set(precache);
 self.addEventListener('install', event => event.waitUntil((async () => {

@@ -1,4 +1,4 @@
-# AFK và Unit (v0.18)
+# AFK và Unit (v0.20.2)
 
 Ở **Terminal**, chọn **Triển khai bot** hoặc **Thu thập**. Các nghề đào tạo và khai thác credits ở **Khu thương mại** cũng có màn chọn số lượt. Chọn số bằng ô nhập, thanh kéo, tối thiểu/tối đa hoặc các nút ±10/100/1.000. Số lượt hợp lệ từ 1 đến 1.000; server kiểm tra tổng tài nguyên trước khi trừ.
 
@@ -16,13 +16,13 @@ Vật tư nhận được chuyển vào hộp thư 7 ngày khi túi đầy. Bot 
 | Dịch vụ | Phí | Tác dụng |
 | --- | --- | --- |
 | Bỏ qua cá nhân | 1 Unit/phút còn lại, làm tròn lên | Hoàn thành và nhận thưởng ngay; phí thực tế không vượt mức đã xác nhận. |
-| Bỏ qua toàn server | 10 Unit | Giảm 15 phút cho mọi công việc đang chờ, kể cả người ngoại tuyến. Công việc xong vẫn cần nhận thưởng; không có ai chờ thì không trừ Unit. |
+| Bỏ qua toàn server | 50 Unit/lượt | Giảm 15 phút cho mọi công việc đang chờ, kể cả người ngoại tuyến. Công việc xong vẫn cần nhận thưởng; không có ai chờ thì không trừ Unit. |
 | Giảm thời gian toàn server | 5 Unit | Giảm 40%, cộng dồn tối đa 80%. Mỗi lần có hiệu lực 20 phút riêng. |
 | Tăng thưởng toàn server | 8 Unit | Nhân 4 tài nguyên, credits và XP trong 20 phút; không tăng chi phí đầu vào. |
 | Buff XP toàn server | 5 Unit | Thêm 80% XP trong 20 phút, kết hợp được với tăng thưởng. |
 
 Buff áp dụng cho công việc **bắt đầu khi buff đang có hiệu lực**. Thời gian và thưởng được chốt lúc bắt đầu; buff hết hạn hoặc được mua sau đó không đổi lượt đã chốt. Ví dụ: bot 2 lượt tốn 2 lõi AI, thời gian gốc 30 phút; giảm 80% còn 6 phút. Buff tăng thưởng chưa hết không thể mua chồng thêm; giảm thời gian đã đạt 80% cũng không trừ thêm tiền.
 
-Mua dịch vụ toàn server có màn xác nhận. Server trừ Unit và cập nhật mọi người trong cùng giao dịch lưu trữ. Mã yêu cầu chống trừ lặp khi gửi đồng thời hoặc gửi lại sau khi mất kết nối; dùng **Thử lại cùng giao dịch** nếu phản hồi chưa chắc chắn. Chat và mục tiêu cộng đồng hiển thị sự kiện kích hoạt.
+Mua dịch vụ toàn server có màn xác nhận. Từ v0.20.2, bỏ qua toàn server tăng từ 10 lên 50 Unit/lượt. Server chỉ nhận yêu cầu xác nhận đúng phí hiện tại; giao diện cũ gửi phí 10 Unit bị từ chối mà không trừ tiền. Server trừ Unit và cập nhật mọi người trong cùng giao dịch lưu trữ. Mã yêu cầu chống trừ lặp khi gửi đồng thời hoặc gửi lại sau khi mất kết nối; dùng **Thử lại cùng giao dịch** nếu phản hồi chưa chắc chắn. Chat và mục tiêu cộng đồng hiển thị sự kiện kích hoạt.
 
 Unit chỉ có từ nạp do admin xác nhận giao dịch và cấp bằng công cụ quản trị. Chưa tích hợp cổng thanh toán tự động hoặc đăng ký định kỳ. Người chơi khách thử AFK cục bộ miễn phí; dịch vụ toàn server cần tài khoản online. Xem [quản trị](admin.md) và [Neon/Render](neon-render.md).
