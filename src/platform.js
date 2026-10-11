@@ -1,9 +1,16 @@
+import {appVersion} from './settings.js';
+
 // Web uses same-origin fetch. Native apps use the OS HTTP client and cookie store.
 let native = null;
 let connected = typeof navigator === 'undefined' || navigator.onLine !== false;
 let reachable = true;
 let installPrompt = null;
 let waitingWorker = null;
+let webRegistration = null;
+let serverVersion = null;
+let checkingUpdates = null;
+let updateError = '';
+let versionChecked = false;
 let changed = () => {};
 let googlePending = null;
 const serverKey = 'cyper-server-url';
@@ -32,13 +39,14 @@ export function saveServerURL(value) {
   if (!native) throw new Error('Bản web dùng server của trang đang mở.');
   const url = validateServerURL(value, native.allowLocalHTTP);
   localStorage.setItem(serverKey, url);
+  serverVersion = null; versionChecked = false; updateError = '';
   reachable = true;
   return url;
 }
 export function platformStatus() {
   return {native: !!native, name: native?.name || 'web', server: serverURL(), connected, reachable,
     installed: !!native || (typeof matchMedia !== 'undefined' && matchMedia('(display-mode: standalone)').matches) || !!globalThis.navigator?.standalone,
-    canInstall: !!installPrompt, update: !!waitingWorker};
+    canInstall: !!installPrompt, update: !!waitingWorker, serverVersion, checkingUpdate: !!checkingUpdates, updateError, versionChecked};
 }
 
 export async function apiRequest(path, body) {
@@ -85,6 +93,37 @@ export async function installWebApp() {
   return choice.outcome === 'accepted' ? 'Đã yêu cầu cài ứng dụng.' : 'Bạn có thể cài lại từ menu trình duyệt.';
 }
 export function applyWebUpdate() { waitingWorker?.postMessage({type: 'ACTIVATE_UPDATE'}); }
+
+// Version probes never cache responses or touch a character/session.
+export function checkForUpdates() {
+  if (checkingUpdates) return checkingUpdates;
+  if (native && !serverURL()) return Promise.resolve('Chọn server trước khi kiểm tra phiên bản.');
+  checkingUpdates = Promise.resolve().then(async () => {
+    try {
+      let data;
+      if (native) data = await apiRequest('/api/version');
+      else {
+        const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), 5000);
+        try {
+          const response = await fetch('/api/version', {cache:'no-store', credentials:'same-origin', redirect:'error', signal:controller.signal});
+          if (!response.ok) throw new Error();
+          data = await response.json();
+        } finally { clearTimeout(timeout); }
+      }
+      if (typeof data?.version !== 'string' || !/^\d{1,4}\.\d{1,4}\.\d{1,4}$/.test(data.version)) throw new Error();
+      serverVersion = data.version; updateError = ''; versionChecked = true;
+      // A failed service-worker installation must not hide a valid server version.
+      if (webRegistration) await webRegistration.update().catch(() => {});
+      return serverVersion === appVersion ? `Giao diện và server cùng phiên bản v${appVersion}.` : `Giao diện v${appVersion} · server v${serverVersion}.`;
+    } catch {
+      serverVersion = null; versionChecked = true;
+      updateError = 'Chưa kiểm tra được phiên bản server. Kiểm tra kết nối hoặc khởi động lại server từ thư mục game mới.';
+      return updateError;
+    } finally { checkingUpdates = null; changed(); }
+  });
+  changed();
+  return checkingUpdates;
+}
 
 const googleErrors = {
   invalid:'Phiên Google đã hết hạn hoặc không hợp lệ. Hãy thử lại.', denied:'Đã hủy đăng nhập Google.',
@@ -163,23 +202,26 @@ export function startPlatform({onChange, onBack, onResume}) {
     native.network.getStatus().then(s => connection(s.connected)).catch(() => {});
     native.network.addListener('networkStatusChange', s => connection(s.connected));
     if (native.name === 'android') native.app.addListener('backButton', async () => { if (!onBack() && confirm('Thoát CYPER ZERO? Tiến trình đã được lưu.')) await native.app.exitApp(); });
-    native.app.addListener('appStateChange', ({isActive}) => { if (isActive) onResume(); });
+    native.app.addListener('appStateChange', ({isActive}) => { if (isActive) { onResume(); checkForUpdates(); } });
+    checkForUpdates();
     return;
   }
   window.addEventListener('online', () => connection(true));
   window.addEventListener('offline', () => connection(false));
   window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installPrompt = e; changed(); });
   window.addEventListener('appinstalled', () => { installPrompt = null; changed(); });
-  if (!('serviceWorker' in navigator) || !window.isSecureContext) return;
+  if (!('serviceWorker' in navigator) || !window.isSecureContext) { checkForUpdates(); return; }
   let controlled = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (controlled) location.reload();
     controlled = true;
   });
-  navigator.serviceWorker.register('/sw.js', {type: 'module'}).then(registration => {
-    const check = () => { if (registration.waiting && navigator.serviceWorker.controller) { waitingWorker = registration.waiting; changed(); } };
+  navigator.serviceWorker.register('/sw.js', {type: 'module', updateViaCache:'none'}).then(registration => {
+    webRegistration = registration;
+    const check = () => { if (registration.waiting && navigator.serviceWorker.controller && waitingWorker !== registration.waiting) { waitingWorker = registration.waiting; changed(); checkForUpdates(); } };
     check();
     registration.addEventListener('updatefound', () => registration.installing?.addEventListener('statechange', check));
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) registration.update().catch(() => {}); });
-  }).catch(() => {});
+    checkForUpdates();
+  }).catch(() => { checkForUpdates(); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdates(); });
 }

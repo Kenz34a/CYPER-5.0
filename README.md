@@ -9,6 +9,12 @@ npm start
 
 Chạy các lệnh trong thư mục có `package.json`. Server mặc định dùng cổng 3000; có thể đặt `PORT`. Chạy kiểm thử bằng `npm test`. Xem [hướng dẫn test trên máy và triển khai Neon + Render](docs/neon-render.md); `render.yaml` đã chuẩn bị Web Service, cần tự cấu hình secret `DATABASE_URL`.
 
+## Cập nhật bản đang chạy
+
+`npm ci` cài thư viện; `npm start` chạy mã trong thư mục hiện tại. Hai lệnh này không tải mã mới từ GitHub. Dừng server bằng Ctrl+C, cập nhật đúng [Kenz34a/CYPER-5.0](https://github.com/Kenz34a/CYPER-5.0) nhánh `main` (clone: `git pull --ff-only`; ZIP: tải bản mới và giải nén), rồi chạy lại hai lệnh trên, mỗi lệnh một dòng.
+
+Giữ `.data` và `.env` của bản đang dùng; nếu giải nén vào thư mục mới, sao lưu và chuyển dữ liệu riêng sang thư mục đó trước khi chạy. Từ v0.20.1, terminal hiện phiên bản server; **Hồ sơ → Cài đặt → Ứng dụng web** hiện cả phiên bản giao diện và server, có nút **Kiểm tra cập nhật**. Khi có giao diện mới, bấm **Cập nhật giao diện** trong thông báo trên màn chơi sau khi hoàn tất giao tranh/AFK. Không cần xóa dữ liệu trang web hoặc nhân vật. Xem [xử lý bản web vẫn cũ](docs/platforms.md#bản-web-vẫn-hiện-giao-diện-cũ).
+
 ## Web, Android và iOS
 
 v0.12 có bản web cài được (PWA), dự án Android và dự án iOS dùng Capacitor 8. App có sẵn giao diện, chơi khách được khi mất mạng; đăng nhập cùng tài khoản trên cùng server để tiếp tục nhân vật online giữa các thiết bị. Chưa có Render vẫn chơi khách ngay, sau đó nhập URL server trong Cài đặt. Xem [cách mở game, tạo APK và chạy iOS bằng Xcode](docs/platforms.md).

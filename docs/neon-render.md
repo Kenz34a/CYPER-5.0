@@ -17,6 +17,8 @@ Giữ cửa sổ lệnh mở và nhập `localhost:3000` trong trình duyệt tr
 - Dừng bằng Ctrl+C. Không xóa `.data` nếu muốn giữ nhân vật.
 - `npm test` chạy kiểm thử với dữ liệu tạm, tách khỏi nhân vật đang chơi.
 
+Nếu đã tải bản mới mà vẫn thấy giao diện cũ, xem [cách kiểm tra mã server và bộ nhớ PWA](platforms.md#bản-web-vẫn-hiện-giao-diện-cũ). `npm ci` và `npm start` không cập nhật mã từ GitHub.
+
 ## 2. Tạo Neon
 
 1. Tạo project và database PostgreSQL **riêng cho game** trong Neon. Chọn vùng gần vùng Render.

@@ -527,3 +527,13 @@ th { font-size: 12px; background: #192633; }
 .work-skip summary { cursor: pointer; color: var(--acid); font-weight: 600; }
 .work-skip p { font-size: 14px; margin: 10px 0; }
 .work-skip [data-action="work-skip"] { width: 100%; border-color: var(--acid); background: var(--acid); color: #1b1e1f; font-weight: 650; }
+
+.version-notice {display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid #adbf5b;background:#292d1d;color:#dae6b1;padding:12px 14px;margin-bottom:14px;font-size:14px;line-height:1.6;border-radius:9px}
+.version-notice[hidden] {display:none}
+.version-notice b {font-size:12px;letter-spacing:.5px}
+.version-notice p {margin:4px 0;overflow-wrap:anywhere}
+.version-notice small {display:block;color:#c7d8a9;font-size:12px}
+.version-notice button {flex-shrink:0;min-height:40px}
+.version-details {border-top:1px solid #485c50;padding-top:10px;margin-top:16px}
+.version-details p {font-size:13px;line-height:1.7}
+@media(max-width:600px){.version-notice {flex-direction:column;align-items:stretch}.version-notice button {align-self:flex-start}}

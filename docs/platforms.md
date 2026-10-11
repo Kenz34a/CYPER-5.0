@@ -25,6 +25,16 @@ Bản web có manifest và service worker. Sau lần tải đầu hoàn tất, c
 
 PWA trên iPhone dùng được khi chưa có bản ký từ Xcode. Đây là bản web cài trên màn hình chính; dự án iOS bên dưới là app native riêng.
 
+### Bản web vẫn hiện giao diện cũ
+
+1. Dừng tiến trình bằng Ctrl+C trong terminal đang chạy. Tải mã từ **Kenz34a/CYPER-5.0**, nhánh `main`; repository **DexterHuang/CyberCodeOnline** là tài liệu tham chiếu, không phải bản game CYPER đã sửa. Nếu clone bằng Git, chạy `git pull --ff-only` trong đúng thư mục. Nếu dùng ZIP, tải lại ZIP của nhánh `main` rồi giải nén.
+2. Giữ bản sao `.data` và `.env` riêng. Nếu đổi thư mục chạy, chuyển những dữ liệu này sang thư mục mới; tài khoản nằm trong `.data/players.json` khi dùng chế độ JSON. Giữ cùng địa chỉ và trình duyệt để tiếp tục nhân vật khách. Không xóa localStorage, cookie hoặc dữ liệu trang web để cập nhật giao diện.
+3. Trong thư mục có `package.json`, chạy **hai lệnh riêng** `npm ci` rồi `npm start`. Chúng không tự tải mã mới. Từ v0.20.1, đầu ra có `CYPER // ZERO v0.20.1 listening on port 3000`; phiên bản tăng theo các bản sau.
+4. Mở đúng cổng server đang chạy. Vào **Hồ sơ → Cài đặt → Ứng dụng web → Kiểm tra cập nhật** để xem phiên bản giao diện và server. Có thể mở đường dẫn `/api/version` trên cùng địa chỉ để đọc phiên bản server trực tiếp; phản hồi không được cache. Nếu đường dẫn này không có, server có thể đang chạy mã trước v0.20.1.
+5. Nếu server mới nhưng giao diện cũ, chờ tải bản mới rồi chọn **Cập nhật phiên bản mới** trong Cài đặt. Từ v0.20.1 cũng có thông báo/nút **Cập nhật giao diện** ngay trên màn chơi. Nút bị khóa trong giao tranh, công việc và hộp thoại đang xử lý; không tự tải lại giữa trận. Nhân vật và phiên đăng nhập được giữ lại.
+
+Module có phẩm chất được nhận từ quái/boss/rương hoặc **Túi đồ → Chế tạo → MODULE**. Module cũ giữ nguyên chỉ số nên trang bị đang mặc không tự tăng sức mạnh khi cập nhật.
+
 ## 2. Cấu hình server cho app
 
 Hiện chưa có Render: app mở ở **chế độ khách**, không cần nhập URL. Sau khi triển khai theo [Neon + Render](neon-render.md), mở **Hồ sơ → Cài đặt → Kết nối ứng dụng**, nhập địa chỉ gốc HTTPS của Web Service, lưu rồi đăng nhập. Đăng xuất trước khi đổi server. Chỉ nhập URL công khai của backend; **DATABASE_URL của Neon luôn ở server**.
@@ -127,3 +137,6 @@ v0.19 đồng bộ hồ sơ nghề, bảng chỉ số và liên hệ giữa runn
 
 
 v0.20 đồng bộ module có phẩm chất/cấp/chất lượng và chỉ số riêng, khảm/tháo, chế tạo và chiến lợi phẩm. Android dùng versionCode 10; iOS dùng build 10. Xem [module](modules.md). Bản iOS cần build và ký bằng Xcode trên macOS.
+
+
+v0.20.1 hiển thị phiên bản server khi khởi động, thêm `/api/version`, nút kiểm tra cập nhật và thông báo bản mới trên màn chơi. Android dùng versionCode 11; iOS build 11.

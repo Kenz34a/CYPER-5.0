@@ -6,6 +6,7 @@ import {mkdtemp, rm, readFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {apiRequest, configureNative, validateServerURL, saveServerURL, serverURL} from '../src/platform.js';
+import {appVersion} from '../src/settings.js';
 import {publicAssets} from '../src/public-assets.js';
 
 test('native server selection accepts HTTPS and limits development HTTP to local hosts', () => {
@@ -36,6 +37,8 @@ test('native transport preserves server authority, cookie session, logout and PO
       if (response.headers.get('set-cookie')) cookie = response.headers.get('set-cookie').split(';')[0];
       return {status: response.status, data: await response.json()};
     }}});
+    const version=await fetch(base+'/api/version');assert.equal(version.headers.get('cache-control'),'no-store');assert.deepEqual(await version.json(),{version:appVersion});
+    const head=await fetch(base+'/api/version',{method:'HEAD'});assert.equal(head.status,200);assert.equal(await head.text(),'');assert.equal((await fetch(base+'/api/version',{method:'POST'})).status,405);
     const registered = await apiRequest('/api/register', {username: 'native_runner', password: 'platform-test-password'});
     assert.equal((await apiRequest('/api/me')).user.id, registered.user.id);
     await assert.rejects(apiRequest('/api/action', {action: 'settings', values: {admin: true}}), error => error.status === 400);
